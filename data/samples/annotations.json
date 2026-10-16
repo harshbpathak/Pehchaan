@@ -1,0 +1,248 @@
+[
+  {
+    "variant_id": "variant_c33c5ad75f0189bd1179dcf3",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchips"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b798bbbaab3675372ee8c4c3",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_894e450e8e7f3219fffbd7a8",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_700ff916add10df61b609425",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9e4e7b29e161704389906809",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_906b5343dde8cfb4588d3456",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e08e47e302b6bbca771ac442",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_eb55739fc76852783c3006c9",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_3f38d289f8363246f70c8c4b",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_03a7205f8986150abe18ca81",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_1a8529389b2b0d2708b9250d",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_afb743cbbf7de77afdb268a2",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  }
+]

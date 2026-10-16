@@ -1,0 +1,84 @@
+{
+  "dataset": "Google Data Commons ClaimReview Markup Tool feed",
+  "downloaded_at": "2026-10-18 (Asia/Calcutta)",
+  "feed_url": "https://storage.googleapis.com/datacommons-feeds/claimreview/latest/data.json",
+  "feed_sha256": "00212b11cf4db52abd313a5e05e3c830357ac956993003ff8f0873d6b3d0ba58",
+  "attribution": "Data Commons / Google Fact Check Tools and the publishers named per record",
+  "compilation_license": "https://creativecommons.org/licenses/by/4.0/",
+  "license_notes": "Individual markup licenses are preserved when present. Publisher article content is not included. See publisher terms for article content.",
+  "transformations": "12 ClaimReview objects selected without editing their source fields. Narrative, topic and entity annotations are separate AI-assisted inferences.",
+  "records": [
+    {
+      "variant_id": "variant_c33c5ad75f0189bd1179dcf3",
+      "url_original": "https://factly.in/no-government-is-not-implanting-microchips-into-human-bodies-through-covid-19-vaccine/",
+      "source_record_index": 70863,
+      "publisher_name": "FACTLY"
+    },
+    {
+      "variant_id": "variant_b798bbbaab3675372ee8c4c3",
+      "url_original": "https://www.factcheck.org/2021/07/scicheck-spoof-video-furthers-microchip-conspiracy-theory/",
+      "source_record_index": 70602,
+      "publisher_name": "FactCheck.org"
+    },
+    {
+      "variant_id": "variant_894e450e8e7f3219fffbd7a8",
+      "url_original": "https://www.politifact.com/factchecks/2021/jul/01/instagram-posts/video-microchip-reader-finding-chip-vaccinated-wom/",
+      "source_record_index": 70661,
+      "publisher_name": "PolitiFact"
+    },
+    {
+      "variant_id": "variant_700ff916add10df61b609425",
+      "url_original": "https://srilanka.factcrescendo.com/english/false-claim-linking-rockefeller-patent-to-5g-and-mrna-cell-control/",
+      "source_record_index": 313,
+      "publisher_name": "Fact Crescendo Sri Lanka"
+    },
+    {
+      "variant_id": "variant_9e4e7b29e161704389906809",
+      "url_original": "https://www.bbc.com/news/52168096",
+      "source_record_index": 87584,
+      "publisher_name": "BBC Reality Check"
+    },
+    {
+      "variant_id": "variant_906b5343dde8cfb4588d3456",
+      "url_original": "https://verafiles.org/articles/vera-files-fact-check-viral-posts-falsely-claim-covid-19-thr",
+      "source_record_index": 85402,
+      "publisher_name": "Vera Files"
+    },
+    {
+      "variant_id": "variant_e08e47e302b6bbca771ac442",
+      "url_original": "https://verafiles.org/articles/vera-files-fact-check-fb-posts-float-conspiracy-theory-5g-rf",
+      "source_record_index": 86455,
+      "publisher_name": "Vera Files"
+    },
+    {
+      "variant_id": "variant_eb55739fc76852783c3006c9",
+      "url_original": "https://www.politifact.com/factchecks/2024/may/08/viral-image/houston-we-have-no-problem-this-video-doesnt-prove/",
+      "source_record_index": 27293,
+      "publisher_name": "PolitiFact"
+    },
+    {
+      "variant_id": "variant_3f38d289f8363246f70c8c4b",
+      "url_original": "https://factly.in/wikileaks-has-not-released-the-footage-of-nasas-moon-landing-shot-in-the-nevada-desert/",
+      "source_record_index": 36574,
+      "publisher_name": "FACTLY"
+    },
+    {
+      "variant_id": "variant_03a7205f8986150abe18ca81",
+      "url_original": "https://www.dw.com/en/fact-check-climate-deniers-misinterpret-antarctic-ice-study/a-73044336",
+      "source_record_index": 5886,
+      "publisher_name": "Deutsche Welle"
+    },
+    {
+      "variant_id": "variant_1a8529389b2b0d2708b9250d",
+      "url_original": "https://www.logicallyfacts.com/en/fact-check/misleading-temperature-differences-recorded-in-the-u-k-on-the-same-date-a-year-apart-cited-misleadingly-to-deny-climate-change",
+      "source_record_index": 20441,
+      "publisher_name": "Logically Facts"
+    },
+    {
+      "variant_id": "variant_afb743cbbf7de77afdb268a2",
+      "url_original": "https://pesacheck.org/missing-context-arctic-sea-ice-is-steadily-decreasing-because-of-climate-change-8ea37af193dc",
+      "source_record_index": 10789,
+      "publisher_name": "PesaCheck"
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "verified_on": "2026-10-18 (Asia/Calcutta)",
+  "milestone": "ClaimReview ingestion and FalkorDB graph validation",
+  "environment": {
+    "python": "3.12.10",
+    "falkordb_server": "4.22.1",
+    "falkordb_sdk": "1.8.0",
+    "image_digest": "sha256:b0bdcac2cbaff989e77cb0610439b7a9289e86de033ccbbd4368b66fb680ae7a"
+  },
+  "tests": {
+    "passed": 15,
+    "failed": 0,
+    "live_database_included": true,
+    "ruff": "passed"
+  },
+  "preparation": {
+    "source": "https://storage.googleapis.com/datacommons-feeds/claimreview/latest/data.json",
+    "source_sha256": "00212b11cf4db52abd313a5e05e3c830357ac956993003ff8f0873d6b3d0ba58",
+    "scanned": 90028,
+    "selected": 250,
+    "duplicates": 0,
+    "filtered": 89778
+  },
+  "record_rejections": 0,
+  "records_with_warnings": 69,
+  "full_dataset_reingestion_counts_unchanged": true,
+  "full_dataset_validation": {
+    "ok": true,
+    "graph": "pehchan",
+    "checked_records": 250,
+    "failures": [],
+    "stats": {
+      "nodes": {
+        "Publisher": 53,
+        "FactCheck": 250,
+        "Topic": 4,
+        "NarrativeFrame": 5,
+        "Claim": 248,
+        "Entity": 2,
+        "ClaimVariant": 248
+      },
+      "relationships": {
+        "PUBLISHED_BY": 250,
+        "EXPRESSES": 248,
+        "CHECKS": 250,
+        "MENTIONS": 7,
+        "USES_FRAME": 12,
+        "ABOUT_TOPIC": 12
+      }
+    },
+    "bfs_example": [
+      [
+        [
+          "claim_81a430fe919ad67ca6f275cd",
+          "frame_523609aa5b17c8ee46eb78bf",
+          "topic_2c2e2eed2e2921d7ee6c0058",
+          "entity_28d6e49bf7b2c82b89e207de"
+        ],
+        [
+          "EXPRESSES",
+          "USES_FRAME",
+          "ABOUT_TOPIC",
+          "MENTIONS"
+        ]
+      ]
+    ],
+    "narrative_path_example": {
+      "from_id": "variant_700ff916add10df61b609425",
+      "related_id": "variant_c33c5ad75f0189bd1179dcf3",
+      "related_claim": "The government is implanting microchips into human bodies through COVID-19 vaccine in order to take them under control",
+      "frame": "Biomedical technology as covert control",
+      "node_ids": [
+        "variant_700ff916add10df61b609425",
+        "claim_81a430fe919ad67ca6f275cd",
+        "frame_523609aa5b17c8ee46eb78bf",
+        "claim_f9fd55dba9389b5a8358506a",
+        "variant_c33c5ad75f0189bd1179dcf3"
+      ],
+      "relationships": [
+        "EXPRESSES",
+        "USES_FRAME",
+        "USES_FRAME",
+        "EXPRESSES"
+      ],
+      "factcheck_url": "https://factly.in/no-government-is-not-implanting-microchips-into-human-bodies-through-covid-19-vaccine/",
+      "verdict_original": "FALSE",
+      "publisher": "FACTLY",
+      "edge_provenance": [
+        {
+          "type": "EXPRESSES",
+          "basis": "exact_normalized_text_only",
+          "reviewed_by": null,
+          "rationale": null,
+          "source_variant_id": null
+        },
+        {
+          "type": "USES_FRAME",
+          "basis": "curated_inference",
+          "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+          "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+          "source_variant_id": "variant_700ff916add10df61b609425"
+        },
+        {
+          "type": "USES_FRAME",
+          "basis": "curated_inference",
+          "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+          "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+          "source_variant_id": "variant_c33c5ad75f0189bd1179dcf3"
+        },
+        {
+          "type": "EXPRESSES",
+          "basis": "exact_normalized_text_only",
+          "reviewed_by": null,
+          "rationale": null,
+          "source_variant_id": null
+        }
+      ],
+      "factcheck_id": "factcheck_7aa70fce2cb1f1011a5e32f0",
+      "publisher_id": "publisher_85b68d61affb0200a671460c",
+      "relevance": "narrative_context_only",
+      "uncertainty": "Shared curated frame does not establish claim equivalence or coordination."
+    },
+    "shortest_path_example": [
+      [
+        [
+          "variant_700ff916add10df61b609425",
+          "claim_81a430fe919ad67ca6f275cd",
+          "frame_523609aa5b17c8ee46eb78bf",
+          "claim_f9fd55dba9389b5a8358506a",
+          "variant_c33c5ad75f0189bd1179dcf3"
+        ],
+        [
+          "EXPRESSES",
+          "USES_FRAME",
+          "USES_FRAME",
+          "EXPRESSES"
+        ]
+      ]
+    ]
+  },
+  "sample_demo_validation": {
+    "ok": true,
+    "graph": "pehchan_demo",
+    "checked_records": 12,
+    "failures": [],
+    "stats": {
+      "nodes": {
+        "Publisher": 9,
+        "FactCheck": 12,
+        "Topic": 4,
+        "NarrativeFrame": 5,
+        "Claim": 12,
+        "Entity": 2,
+        "ClaimVariant": 12
+      },
+      "relationships": {
+        "PUBLISHED_BY": 12,
+        "EXPRESSES": 12,
+        "CHECKS": 12,
+        "MENTIONS": 7,
+        "USES_FRAME": 12,
+        "ABOUT_TOPIC": 12
+      }
+    },
+    "bfs_example": [
+      [
+        [
+          "claim_f9fd55dba9389b5a8358506a",
+          "frame_523609aa5b17c8ee46eb78bf",
+          "topic_2c2e2eed2e2921d7ee6c0058",
+          "entity_9e3841e8ee63279fd19862f2"
+        ],
+        [
+          "EXPRESSES",
+          "USES_FRAME",
+          "ABOUT_TOPIC",
+          "MENTIONS"
+        ]
+      ]
+    ],
+    "narrative_path_example": {
+      "from_id": "variant_c33c5ad75f0189bd1179dcf3",
+      "related_id": "variant_700ff916add10df61b609425",
+      "related_claim": "A Rockefeller patent proves that 5G and mRNA vaccines can remotely control human cells.",
+      "frame": "Biomedical technology as covert control",
+      "node_ids": [
+        "variant_c33c5ad75f0189bd1179dcf3",
+        "claim_f9fd55dba9389b5a8358506a",
+        "frame_523609aa5b17c8ee46eb78bf",
+        "claim_81a430fe919ad67ca6f275cd",
+        "variant_700ff916add10df61b609425"
+      ],
+      "relationships": [
+        "EXPRESSES",
+        "USES_FRAME",
+        "USES_FRAME",
+        "EXPRESSES"
+      ],
+      "factcheck_url": "https://srilanka.factcrescendo.com/english/false-claim-linking-rockefeller-patent-to-5g-and-mrna-cell-control/",
+      "verdict_original": "False",
+      "publisher": "Fact Crescendo Sri Lanka",
+      "edge_provenance": [
+        {
+          "type": "EXPRESSES",
+          "basis": "exact_normalized_text_only",
+          "reviewed_by": null,
+          "rationale": null,
+          "source_variant_id": null
+        },
+        {
+          "type": "USES_FRAME",
+          "basis": "curated_inference",
+          "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+          "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+          "source_variant_id": "variant_c33c5ad75f0189bd1179dcf3"
+        },
+        {
+          "type": "USES_FRAME",
+          "basis": "curated_inference",
+          "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+          "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+          "source_variant_id": "variant_700ff916add10df61b609425"
+        },
+        {
+          "type": "EXPRESSES",
+          "basis": "exact_normalized_text_only",
+          "reviewed_by": null,
+          "rationale": null,
+          "source_variant_id": null
+        }
+      ],
+      "factcheck_id": "factcheck_f499e203b0de14289b084663",
+      "publisher_id": "publisher_e262461278386bcaa7d15963",
+      "relevance": "narrative_context_only",
+      "uncertainty": "Shared curated frame does not establish claim equivalence or coordination."
+    },
+    "shortest_path_example": [
+      [
+        [
+          "variant_c33c5ad75f0189bd1179dcf3",
+          "claim_f9fd55dba9389b5a8358506a",
+          "frame_523609aa5b17c8ee46eb78bf",
+          "claim_81a430fe919ad67ca6f275cd",
+          "variant_700ff916add10df61b609425"
+        ],
+        [
+          "EXPRESSES",
+          "USES_FRAME",
+          "USES_FRAME",
+          "EXPRESSES"
+        ]
+      ]
+    ],
+    "idempotent_reingestion": true,
+    "submitted_claim_example": {
+      "text": "A microchip reader for pets detected a chip in a vaccinated arm",
+      "candidates": [
+        {
+          "variant_id": "variant_b798bbbaab3675372ee8c4c3",
+          "text": "A microchip reader for pets detected a chip in the arm of a woman vaccinated against COVID-19.",
+          "score": 0.666667,
+          "method": "token_jaccard_baseline",
+          "relevance": "unverified_candidate"
+        },
+        {
+          "variant_id": "variant_894e450e8e7f3219fffbd7a8",
+          "text": "A video shows an animal chip scanner detecting a microchip where a woman was vaccinated.",
+          "score": 0.285714,
+          "method": "token_jaccard_baseline",
+          "relevance": "unverified_candidate"
+        },
+        {
+          "variant_id": "variant_1a8529389b2b0d2708b9250d",
+          "text": "Temperature differences recorded in the U.K. on the same date a year apart shows that climate change is a hoax and is a result of geoengineering.",
+          "score": 0.114286,
+          "method": "token_jaccard_baseline",
+          "relevance": "unverified_candidate"
+        },
+        {
+          "variant_id": "variant_afb743cbbf7de77afdb268a2",
+          "text": "A post on X (formerly Twitter) which claims that climate change is a scam because there has been no loss in Arctic Sea ice",
+          "score": 0.090909,
+          "method": "token_jaccard_baseline",
+          "relevance": "unverified_candidate"
+        },
+        {
+          "variant_id": "variant_eb55739fc76852783c3006c9",
+          "text": "Video proves the moon landing was a hoax.",
+          "score": 0.052632,
+          "method": "token_jaccard_baseline",
+          "relevance": "unverified_candidate"
+        }
+      ],
+      "candidate_sources": [
+        {
+          "url": "https://www.factcheck.org/2021/07/scicheck-spoof-video-furthers-microchip-conspiracy-theory/",
+          "verdict_original": "False",
+          "publisher": "FactCheck.org"
+        }
+      ],
+      "interpretation": "Unverified lexical candidates; no new verdict."
+    },
+    "entity_bridge_example": [
+      [
+        [
+          "variant_700ff916add10df61b609425",
+          "claim_81a430fe919ad67ca6f275cd",
+          "entity_28d6e49bf7b2c82b89e207de",
+          "claim_0fa99ffbd04605ff1c7aa472",
+          "variant_9e4e7b29e161704389906809"
+        ],
+        [
+          "EXPRESSES",
+          "MENTIONS",
+          "MENTIONS",
+          "EXPRESSES"
+        ]
+      ]
+    ],
+    "no_match_example": {
+      "text": "Underwater quartz clocks transmit encrypted rainfall forecasts",
+      "candidates": [],
+      "interpretation": "No matching record in this sample; truth is undetermined."
+    }
+  },
+  "limits": [
+    "Only 12 of the 250 records have narrative/entity annotations.",
+    "Annotations are AI-assisted inferences; human review is pending.",
+    "Search is lexical, not semantic equivalence verification.",
+    "Agents, MCP, case management and frontend are outside this milestone."
+  ]
+}

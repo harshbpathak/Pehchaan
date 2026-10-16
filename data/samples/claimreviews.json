@@ -1,0 +1,428 @@
+[
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "FACTLY",
+      "url": "https://factly.in/"
+    },
+    "claimReviewed": "The government is implanting microchips into human bodies through COVID-19 vaccine in order to take them under control",
+    "datePublished": "2021-06-21",
+    "itemReviewed": {
+      "@type": "Claim",
+      "appearance": [
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.facebook.com/punjabnewsofficial/videos/773893856620499"
+        }
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "SOCIAL MEDIA POST"
+      },
+      "datePublished": "2021-06-16"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "FALSE",
+      "bestRating": "5",
+      "image": "https://factly.in/wp-content/uploads//2018/12/False.png",
+      "ratingExplanation": "There is no evidence of the government implanting microchips into human bodies in order to control them. Also, there is no information regarding the government making vaccination mandatory to obtain passport",
+      "ratingValue": "1",
+      "worstRating": "1"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://factly.in/no-government-is-not-implanting-microchips-into-human-bodies-through-covid-19-vaccine/"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "image": "https://d10r9aj6omusou.cloudfront.net/factstream-logo-image-d669a00c-15d4-409e-811c-e82135db8000.png",
+      "name": "FactCheck.org",
+      "url": "https://www.factcheck.org/"
+    },
+    "claimReviewed": " A microchip reader for pets detected a chip in the arm of a woman vaccinated against COVID-19.",
+    "itemReviewed": {
+      "@type": "Claim",
+      "author": {
+        "@type": "Person",
+        "image": "https://www.factstream.co/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbzdNIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--22336977e08e353a5246570276bab63e197b8dd1/c2843c39-e914-4ba3-8d32-8928cce5898e.png?disposition=attachment",
+        "jobTitle": "-",
+        "name": "Viral video"
+      },
+      "datePublished": "2021-06-15"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "False",
+      "bestRating": "10",
+      "image": "https://www.factstream.co/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBZ3ciLCJleHAiOm51bGwsInB1ciI6ImJsb2JfaWQifX0=--515ab59b0dc06bbc4032da94253cbef2b8c260a4/https-3A-2F-2Fdhpikd1t89arn.cloudfront.net-2Frating_images-2Ffactcheck.org-2Ffalse.png?disposition=attachment",
+      "ratingExplanation": "A video purports to show a microchip reader for pets detecting a chip in a person vaccinated against COVID-19 — but the original video was created as a joke.",
+      "ratingValue": "6",
+      "worstRating": "0"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools API",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://www.factcheck.org/2021/07/scicheck-spoof-video-furthers-microchip-conspiracy-theory/"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "image": "https://d10r9aj6omusou.cloudfront.net/factstream-logo-image-61554e34-b525-4723-b7ae-d1860eaa2296.png",
+      "name": "PolitiFact",
+      "url": "https://www.politifact.com/"
+    },
+    "claimReviewed": "A video shows an animal chip scanner detecting a microchip where a woman was vaccinated.",
+    "itemReviewed": {
+      "@type": "Claim",
+      "author": {
+        "@type": "Person",
+        "image": "https://www.factstream.co/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBblBNIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--0a74830e0ac7bf0e562a876055820d7f2955191d/e86a97b0-5f49-4f3d-ad45-9a8e62ca2adc.jpg?disposition=attachment",
+        "jobTitle": "on the internet ",
+        "name": "Instagram post"
+      },
+      "datePublished": "2021-06-26"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "Pants on Fire",
+      "bestRating": "9",
+      "image": "https://www.factstream.co/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBZ3ciLCJleHAiOm51bGwsInB1ciI6ImJsb2JfaWQifX0=--515ab59b0dc06bbc4032da94253cbef2b8c260a4/https-3A-2F-2Fdhpikd1t89arn.cloudfront.net-2Frating_images-2Fpolitifact-2Ftom-pof.png?disposition=attachment",
+      "ratingExplanation": "The video was intended as a “joke,” according to the person who created it.",
+      "ratingValue": "5",
+      "worstRating": "0"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools API",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://www.politifact.com/factchecks/2021/jul/01/instagram-posts/video-microchip-reader-finding-chip-vaccinated-wom/"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "Fact Crescendo Sri Lanka",
+      "url": "https://srilanka.factcrescendo.com/"
+    },
+    "claimReviewed": "A Rockefeller patent proves that 5G and mRNA vaccines can remotely control human cells.",
+    "datePublished": "2026-05-14",
+    "itemReviewed": {
+      "@type": "Claim",
+      "author": {
+        "@type": "Person",
+        "name": "Viral social media posts"
+      },
+      "datePublished": "2026-05-14"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "False"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://srilanka.factcrescendo.com/english/false-claim-linking-rockefeller-patent-to-5g-and-mrna-cell-control/"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "BBC Reality Check",
+      "url": "https://www.bbc.com/"
+    },
+    "claimReviewed": "5G technology is spreading coronavirus",
+    "datePublished": "2020-04-15",
+    "itemReviewed": {
+      "@type": "Claim",
+      "author": {
+        "@type": "Person",
+        "name": "Various - Facebook, YouTube and Instagram accounts"
+      }
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "These claims are false"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://www.bbc.com/news/52168096"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "Vera Files",
+      "url": "https://verafiles.org/"
+    },
+    "claimReviewed": "The \"bacteria\" that causes COVID-19 is amplified by 5G technology.",
+    "datePublished": "2020-06-15",
+    "itemReviewed": {
+      "@type": "Claim",
+      "appearance": [
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.efogator.com/2020/05/breaking-how-italy-doctors-disobeyed.html"
+        },
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.gistflash.com/discovery-autopsies-prove-that-covid-19-is-a-disseminated-intravascular-coagulation-pulmonary-thrombosis/lifestyle/health/"
+        }
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Efogator.com and gistflash.com"
+      },
+      "datePublished": "2020-05-01"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "False"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://verafiles.org/articles/vera-files-fact-check-viral-posts-falsely-claim-covid-19-thr"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "Vera Files",
+      "url": "https://verafiles.org/"
+    },
+    "claimReviewed": "Humans are getting sick because the “bioengineered” coronavirus in one’s body is reacting to 5G",
+    "datePublished": "2020-05-18",
+    "itemReviewed": {
+      "@type": "Claim",
+      "appearance": [
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.facebook.com/groups/860655947349093/permalink/2976080865806580/"
+        },
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.facebook.com/lilybethmangalao/posts/10218275800338799"
+        },
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.facebook.com/rubelyn.gamalo.4/posts/771872366675277"
+        },
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.facebook.com/1654329024836583/posts/2613911252211684"
+        }
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Multiple FB netizens"
+      },
+      "datePublished": "2020-03-30"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "False"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://verafiles.org/articles/vera-files-fact-check-fb-posts-float-conspiracy-theory-5g-rf"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "image": "https://d10r9aj6omusou.cloudfront.net/factstream-logo-image-61554e34-b525-4723-b7ae-d1860eaa2296.png",
+      "name": "PolitiFact",
+      "url": "https://www.politifact.com/"
+    },
+    "claimReviewed": "Video proves the moon landing was a hoax.\n",
+    "itemReviewed": {
+      "@type": "Claim",
+      "author": {
+        "@type": "Person",
+        "image": "https://www.factstream.co/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBNjhzQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--a008081c173967d1e8e25fe43d9c75d799e36a47/542d537b-7346-42e2-a832-f3dcc5cada2c.jpg?disposition=attachment",
+        "jobTitle": "on the internet",
+        "name": "Viral image"
+      },
+      "datePublished": "2024-04-12"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "Pants on Fire",
+      "image": "https://www.factstream.co/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBZ3ciLCJleHAiOm51bGwsInB1ciI6ImJsb2JfaWQifX0=--515ab59b0dc06bbc4032da94253cbef2b8c260a4/https-3A-2F-2Fdhpikd1t89arn.cloudfront.net-2Frating_images-2Fpolitifact-2Ftom-pof.png?disposition=attachment"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools API",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://www.politifact.com/factchecks/2024/may/08/viral-image/houston-we-have-no-problem-this-video-doesnt-prove/"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "FACTLY",
+      "url": "https://factly.in/"
+    },
+    "claimReviewed": "WikiLeaks released the footage of moon landing scenes filmed in the Nevada DesertF",
+    "datePublished": "2024-02-28",
+    "itemReviewed": {
+      "@type": "Claim",
+      "appearance": [
+        {
+          "@type": "CreativeWork",
+          "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02kT7mU9hsesP9ZxHYqVFiePc3E3qDBTpSdav8KSzMsbAi2KgjwPPKygaWMGNJciF1l&id=100003320080240"
+        }
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "SOCIAL MEDIA POST"
+      },
+      "datePublished": "2024-02-11"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "FALSE",
+      "bestRating": "5",
+      "image": "https://factly.in/wp-content/uploads//2018/12/False.png",
+      "ratingExplanation": " WikiLeaks has not released any such footage. The viral video is an amalgamation of the real footage of NASA’s Apollo moon landing and the behind-the-scenes footage of the Hollywood movie ‘Capricorn One’.",
+      "ratingValue": "1",
+      "worstRating": "1"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://factly.in/wikileaks-has-not-released-the-footage-of-nasas-moon-landing-shot-in-the-nevada-desert/"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "Deutsche Welle",
+      "url": "https://www.dw.com/"
+    },
+    "claimReviewed": "Scientists have had to pause the Climate Change Hoax Scam",
+    "datePublished": "2025-06-26",
+    "itemReviewed": {
+      "@type": "Claim",
+      "appearance": [
+        {
+          "@type": "CreativeWork",
+          "url": "https://archive.ph/9rilq"
+        }
+      ],
+      "datePublished": "2025-05-05"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "Misleading: One post even featured a GIF that the user believed showed new land emerging off the coast of Dubai due to falling sea levels — apparently unaware of the artificial Palm Islands constructed there between 2001 and 2007. The findings in the Chinese study are based on publicly available data from NASA's Gravity Recovery and Climate Experiment satellites, which have been measuring the Earth's gravitational field since 2002 and have documented changes in the planet's ice and water masses. The data may be correct, but its interpretation by conspiratorial social media users is not — a situation not helped by the researchers' decision to insert an increasing average trend curve next to the preceding decreasing curve depicting ice mass.  \"This is perfect fodder for people who are intentionally looking to spread disinformation,\" said Johannes Feldmann, a physicist at the Potsdam Institute for Climate Impact Research near Berlin.  Feldmann emphasized that climate science relies on long-term data — typically over 20 to 30 years — to identify meaningful trends. \"Two, three or even five years are far too little to identify a long-term trend,\" he explained.  Cherry-picking short-term data is a common tactic among climate change deniers. \"There are always phases where the increase [in temperature] levels off a bit, which people suddenly take to mean: global warming has stopped, the trend is reversing,\" Feldmann added. \"But it's never turned out to be true.\""
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://www.dw.com/en/fact-check-climate-deniers-misinterpret-antarctic-ice-study/a-73044336"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "Logically Facts",
+      "url": "https://www.logicallyfacts.com/"
+    },
+    "claimReviewed": "Temperature differences recorded in the U.K. on the same date a year apart shows that climate change is a hoax and is a result of geoengineering. ",
+    "datePublished": "2024-08-01",
+    "itemReviewed": {
+      "@type": "Claim",
+      "author": {
+        "@type": "Person",
+        "name": "Facebook"
+      },
+      "datePublished": "2024-06-13",
+      "firstAppearance": {
+        "@type": "CreativeWork",
+        "url": "https://www.facebook.com/photo/?fbid=429155750013144&set=a.112925251636197"
+      }
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "Misleading"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://www.logicallyfacts.com/en/fact-check/misleading-temperature-differences-recorded-in-the-u-k-on-the-same-date-a-year-apart-cited-misleadingly-to-deny-climate-change"
+  },
+  {
+    "@context": "http://schema.org",
+    "@type": "ClaimReview",
+    "author": {
+      "@type": "Organization",
+      "name": "PesaCheck",
+      "url": "https://pesacheck.org/"
+    },
+    "claimReviewed": "A post on X (formerly Twitter) which claims that climate change is a scam because there has been no loss in Arctic Sea ice",
+    "datePublished": "2024-12-21",
+    "itemReviewed": {
+      "@type": "Claim",
+      "appearance": [
+        {
+          "@type": "CreativeWork",
+          "url": "https://x.com/TonyClimate/status/1817541829103104380"
+        }
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Tony Heller"
+      },
+      "datePublished": "2024-07-28"
+    },
+    "reviewRating": {
+      "@type": "Rating",
+      "alternateName": "Missing Context"
+    },
+    "sdPublisher": {
+      "@type": "Organization",
+      "name": "Google Fact Check Tools",
+      "url": "https://g.co/factchecktools"
+    },
+    "url": "https://pesacheck.org/missing-context-arctic-sea-ice-is-steadily-decreasing-because-of-climate-change-8ea37af193dc"
+  }
+]
