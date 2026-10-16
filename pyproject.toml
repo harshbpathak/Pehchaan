@@ -4,13 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pehchan-ai"
-version = "0.1.0"
-description = "Provenance-preserving ClaimReview ingestion and FalkorDB investigation foundation"
+version = "0.2.0"
+description = "Graph-native misinformation investigation with local models, specialist workflows and MCP"
 requires-python = ">=3.11"
 dependencies = ["falkordb>=1.2,<2", "ijson>=3.3,<4"]
 
 [project.optional-dependencies]
+llm = ["httpx>=0.27,<1"]
 dev = ["pytest>=8,<10", "ruff>=0.11,<1"]
+semantic = ["sentence-transformers>=5.1,<6", "transformers>=4.44,<5", "torch>=2.6,<3", "sentencepiece>=0.2,<1", "langdetect==1.0.9"]
+server = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "mcp>=1.28,<2", "httpx>=0.27,<1"]
+ui = ["streamlit>=1.40,<2", "pyvis>=0.3,<1", "requests>=2.32,<3"]
 
 [project.scripts]
 pehchan = "pehchan.cli:main"
@@ -20,7 +24,7 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-markers = ["integration: requires a live FalkorDB server"]
+markers = ["integration: requires a live FalkorDB server", "models: requires downloaded local models and FalkorDB"]
 
 [tool.ruff]
 line-length = 100
