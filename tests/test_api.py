@@ -78,11 +78,13 @@ def test_mcp_tool_registration_and_annotations():
         "get_claim_evidence",
         "explore_narrative_graph",
         "find_evidence_path",
+        "expand_narrative_context",
         "assemble_evidence_dossier",
         "create_review_case",
         "investigate_claim",
     }
     for tool in tools:
+        assert tool.outputSchema is not None
         assert tool.annotations.readOnlyHint == (
             tool.name not in {"create_review_case", "investigate_claim"}
         )

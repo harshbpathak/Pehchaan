@@ -1,4 +1,4 @@
-"""Exercise discovery and all seven tools with the official MCP HTTP client."""
+"""Exercise discovery and all eight tools with the official MCP HTTP client."""
 
 import asyncio
 import json
@@ -29,6 +29,12 @@ async def main():
                 {
                     "from_id": "variant_700ff916add10df61b609425",
                     "to_id": "variant_9e4e7b29e161704389906809",
+                },
+            ),
+            (
+                "expand_narrative_context",
+                {
+                    "claim": "Bill Gates secretly funds a plan to track everyone with implanted chips."
                 },
             ),
             (
@@ -63,7 +69,7 @@ async def main():
                 {"tool": name, "ok": True, "structured_result": structured is not None}
             )
             print(f"PASS {name}", flush=True)
-    assert len(report["tools"]) == 7 and len(report["calls"]) == 7
+    assert len(report["tools"]) == 8 and len(report["calls"]) == 8
     report["ok"] = True
     path = Path("artifacts/mcp-smoke.json")
     path.parent.mkdir(parents=True, exist_ok=True)

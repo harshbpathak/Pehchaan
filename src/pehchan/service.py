@@ -6,6 +6,7 @@ from .graph import GraphStore
 from .inference import configuration, configured_inference
 from .investigation import CaseStore, Orchestrator
 from .models import model_root
+from .rules import tag
 from .semantic import ClaimScout, VectorIndex
 
 
@@ -37,6 +38,7 @@ class ApplicationService:
             "get_claim_evidence": store.evidence,
             "explore_narrative_graph": store.narrative_paths,
             "find_evidence_path": store.shortest_path,
+            "expand_narrative_context": self.expand_narrative_context,
             "assemble_evidence_dossier": self.assemble_evidence_dossier,
             "create_review_case": self.create_review_case,
             "investigate_claim": self.investigate_claim,
@@ -73,6 +75,13 @@ class ApplicationService:
 
     def find_similar_claims(self, claim: str, limit: int = 10):
         return self.scout_agent.scout(claim, limit)
+
+    def expand_narrative_context(self, claim: str, limit: int = 10):
+        tags = tag(claim)
+        related = self.store.shared_context(
+            [e["name"] for e in tags["entities"]], tags["frames"], [], limit
+        )
+        return {"submission_tags": tags, "related": related}
 
     def assemble_evidence_dossier(self, claim: str):
         return self.orchestrator().assemble(claim)
