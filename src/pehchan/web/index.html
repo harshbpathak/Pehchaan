@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="only light">
   <meta name="darkreader-lock">
-  <title>Pehchan AI · One false claim, a whole new story</title>
+  <title>Pehchan AI · No record, no reply</title>
   <meta name="description" content="One false claim about a war, a crisis or a protest can shift the whole narrative. Pehchan matches forwards to existing fact-checks through a FalkorDB graph and drafts a reply that cites only real records.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css">
   <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js" defer></script>
   <script src="/assets/app.js" defer></script>
@@ -17,36 +17,145 @@
 <body>
   <a class="skip" href="#investigate">Skip to the investigation</a>
 
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <!-- The mark: a message split by a record. Plates take the current text colour; the match line is ember. -->
+    <symbol id="pehchan-mark" viewBox="0 0 32 32">
+      <path d="M10 4H18.1L11.1 28H10A6 6 0 0 1 4 22V10A6 6 0 0 1 10 4Z" fill="currentColor"/>
+      <path d="M20.9 4H22A6 6 0 0 1 28 10V22A6 6 0 0 1 22 28H13.9Z" transform="translate(1 1.4)" fill="currentColor"/>
+      <path d="M19.5 4L12.5 28" transform="translate(0.5 0.7)" stroke="#EF5B3F" stroke-width="1.6" stroke-linecap="round"/>
+    </symbol>
+    <!-- An isometric tile for the diagram. -->
+    <symbol id="tile" viewBox="0 0 88 56">
+      <polygon points="44,0 88,22 44,44 0,22" fill="#fff" stroke="currentColor" stroke-opacity=".35"/>
+      <polygon points="0,22 44,44 44,56 0,34" fill="currentColor" fill-opacity=".08" stroke="currentColor" stroke-opacity=".25"/>
+      <polygon points="44,44 88,22 88,34 44,56" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-opacity=".25"/>
+    </symbol>
+  </svg>
+
   <header class="nav">
-    <a class="brand" href="#top" aria-label="Pehchan AI home">
-      <span class="brand-mark" aria-hidden="true">◈</span>
-      <span class="brand-name">PEHCHAN</span>
-    </a>
-    <nav aria-label="Sections">
-      <a href="#investigate">Investigate</a>
-      <a href="#how">How it works</a>
-      <a href="#graph">Graph</a>
-      <a href="#proof">Proof</a>
-      <a href="#connect">Connect your AI</a>
-    </nav>
-    <span class="chip chip-track">Graph Hacks · Track 1</span>
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Pehchan AI home">
+        <svg class="brand-mark"><use href="#pehchan-mark"/></svg>
+        <span class="brand-name">Pehchan</span>
+      </a>
+      <nav class="nav-links" aria-label="Sections">
+        <a href="#investigate">Investigate</a>
+        <a href="#rule">The rule</a>
+        <a href="#how">How it works</a>
+        <a href="#graph">Graph</a>
+        <a href="#proof">Proof</a>
+        <a href="#connect">Connect your AI</a>
+      </nav>
+      <div class="nav-right">
+        <span class="nav-track">Graph Hacks · Track 1</span>
+        <button type="button" class="status-pill" id="status-pill" data-tone="running" aria-expanded="false" aria-controls="status-panel">
+          <i class="dot" aria-hidden="true"></i><span id="status-pill-text">checking FalkorDB…</span><span class="caret" aria-hidden="true">⌄</span>
+        </button>
+        <div class="status-panel glass" id="status-panel" hidden>
+          <dl>
+            <dt>graph</dt><dd><span class="badge badge-pass" id="sp-graph">–</span></dd>
+            <dt>engine</dt><dd id="sp-engine">–</dd>
+            <dt>size</dt><dd id="sp-size">–</dd>
+            <dt>agent</dt><dd id="sp-agent">–</dd>
+            <dt>access</dt><dd><span class="badge badge-info" id="sp-access">–</span></dd>
+          </dl>
+          <p>Live from <code>GET /health</code>. Unknown values show as "–", never as a guess.</p>
+        </div>
+      </div>
+    </div>
   </header>
 
   <main id="top">
-    <section class="hero">
-      <p class="eyebrow">The world is moving fast</p>
-      <h1 class="display hero-title">One false claim.<br>A whole new <span class="mark">story.</span></h1>
-      <p class="lede">We have lived through a pandemic, wars and crises in a few short years. Every time, all it took to ignite anger and shift the narrative was one false claim, forwarded fast enough. Pehchan is how we change that.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#investigate">Check a forward now</a>
-        <a class="btn btn-ghost" href="#spark">See how a narrative ignites</a>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="frame-marks" aria-hidden="true"><span class="tl"></span><span class="tr"></span></div>
+      <div class="scroll-cue" aria-hidden="true"><span class="mono-label">Scroll to explore</span><i></i></div>
+      <div class="hero-copy">
+        <a class="ring" href="#spark"><span>New: the 2026 events are in the graph · LPG · Iran · CJP · Ukraine <b>›</b></span></a>
+        <h1 class="display hero-title" id="hero-title">
+          <span class="line"><span>No record,</span></span>
+          <span class="line"><span class="gradient-text">no reply.</span></span>
+        </h1>
+        <p class="lede">Pehchan won't answer a forward until FalkorDB returns the record: a reviewed wording that matches, the publisher's own rating, and the path that connects it to your message. Otherwise it says <b>"unverified"</b> and queues it for a fact-checker.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#investigate">Check a forward <span class="arrow">→</span></a>
+          <a class="btn btn-ghost" href="#how">See how it decides</a>
+          <a class="btn btn-ghost" href="#connect">Use it from Claude, ChatGPT or Gemini</a>
+        </div>
       </div>
-      <dl class="stats" id="stats" aria-live="polite">
-        <div><dt>Fact-checks in the graph</dt><dd data-stat="claims">—</dd></div>
-        <div><dt>Entities</dt><dd data-stat="entities">69</dd></div>
-        <div><dt>Narrative frames</dt><dd data-stat="frames">14</dd></div>
-        <div><dt>MCP tools</dt><dd>8</dd></div>
-      </dl>
+
+      <div class="numbers">
+        <dl>
+          <div>
+            <dt><span class="mono-label">Graph</span><i></i><span class="mono-label good">live</span></dt>
+            <dd><span class="big" data-stat="claims">—</span><p class="text">claim wordings in FalkorDB right now, from 645 fact-checks by 64 publishers, with 69 entities and 14 narrative frames linking them. Read from this server's <code>/health</code>.</p></dd>
+          </div>
+          <div>
+            <dt><span class="mono-label">Measured</span><i></i><span class="mono-label good">held-out</span></dt>
+            <dd><span class="big">30<small>/30</small></span><p class="text">held-out queries (24 paraphrases, 6 translations into Hindi, Spanish, German, French and Indonesian) whose recorded wording lands in the top five by the FalkorDB vector index. Word overlap finds 25 of 30.</p></dd>
+          </div>
+          <div>
+            <dt><span class="mono-label">By construction</span><i></i><span class="mono-label good">lower is better</span></dt>
+            <dd><span class="big">0</span><p class="text">URLs or ratings written by the model. Every citation in a reply is read from a fact-check record; a reference the application cannot confirm is dropped and listed, never shown as a source.</p></dd>
+          </div>
+        </dl>
+        <p class="foot">Retrieval measured 18 Oct 2026 on the 248-variant graph · Docs/retrieval-evaluation.json. The graph has since grown; the check has not been rerun.</p>
+      </div>
+    </section>
+
+    <section class="section" id="rule" aria-labelledby="rule-title">
+      <p class="eyebrow">00 / The rule</p>
+      <h2 class="statement" id="rule-title">An agent that <span class="hl">cites before it replies.</span> Every claim it makes is a FalkorDB query: a matching record, the rating its publisher gave, and the path from that record to your message.</h2>
+      <div class="figs">
+        <article class="fig">
+          <span class="mono-label">Fig 0.1</span>
+          <svg viewBox="0 0 300 190" aria-hidden="true">
+            <g fill="none" stroke="#232842" stroke-opacity=".3">
+              <polygon points="150,22 240,67 150,112 60,67"/>
+              <polygon points="150,62 240,107 150,152 60,107"/>
+            </g>
+            <circle cx="105" cy="55" r="4" fill="#232842" fill-opacity=".45"/>
+            <circle cx="190" cy="82" r="4" fill="#232842" fill-opacity=".45"/>
+            <path d="M118 44 C 140 40, 160 120, 182 135" stroke="#EF5B3F" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <circle cx="118" cy="44" r="5" fill="#EF5B3F"/>
+            <circle cx="182" cy="135" r="5" fill="#EF5B3F"/>
+            <text x="60" y="178" font-family="Geist Mono, monospace" font-size="10" fill="#5B6075">entailment → 0.93 · ← 0.91</text>
+          </svg>
+          <h3>Match, or no claim</h3>
+          <p><code>db.idx.vector.queryNodes</code> finds recorded wordings by meaning, in any language. An NLI model must then agree in both directions before a record counts as the same claim. No match, no citation.</p>
+        </article>
+        <article class="fig">
+          <span class="mono-label">Fig 0.2</span>
+          <svg viewBox="0 0 300 190" aria-hidden="true">
+            <text x="52" y="38" font-family="Geist Mono, monospace" font-size="10" fill="#5B6075">1/degree = 0.25</text>
+            <text x="212" y="38" font-family="Geist Mono, monospace" font-size="10" fill="#5B6075">0.009</text>
+            <path d="M60 50 C 90 50, 130 60, 150 120 S 200 160, 230 158" stroke="#3FA57A" stroke-width="6" stroke-linecap="round" fill="none"/>
+            <path d="M240 50 C 220 60, 200 90, 190 110 S 170 140, 150 158" stroke="#232842" stroke-opacity=".35" stroke-width="1.5" fill="none"/>
+            <polygon points="150,118 230,158 150,180 70,158" fill="none" stroke="#232842" stroke-opacity=".3"/>
+            <text x="166" y="78" font-family="Geist Mono, monospace" font-size="10" fill="#5B6075">"Bill Gates"</text>
+            <text x="232" y="112" font-family="Geist Mono, monospace" font-size="10" fill="#5B6075">"5G"</text>
+          </svg>
+          <h3>Context, not evidence</h3>
+          <p>With no direct match the detective widens through shared entities and frames. Rarer nodes weigh more (<code>1/degree</code>); hits that share only a hub like 5G, or only a place, are dropped. Nothing widened is ever cited as evidence.</p>
+        </article>
+        <article class="fig">
+          <span class="mono-label">Fig 0.3</span>
+          <svg viewBox="0 0 300 190" aria-hidden="true">
+            <g fill="none" stroke="#232842" stroke-opacity=".3">
+              <polygon points="150,30 240,75 150,120 60,75"/>
+              <polygon points="150,70 240,115 150,160 60,115"/>
+            </g>
+            <circle cx="92" cy="60" r="7" fill="#A57BE0"/>
+            <circle cx="186" cy="97" r="5" fill="#EF5B3F"/>
+            <path d="M99 62 L 180 95" stroke="#A57BE0" stroke-width="2.5" stroke-dasharray="4 4"/>
+            <circle cx="92" cy="140" r="7" fill="none" stroke="#A57BE0" stroke-width="2"/>
+            <path d="M92 133 C 92 100, 92 80, 92 68" stroke="#A57BE0" stroke-width="1.5" fill="none"/>
+            <text x="110" y="144" font-family="Geist Mono, monospace" font-size="10" fill="#5B6075">repeat · 0.96 · 3.8 s</text>
+            <text x="150" y="62" font-family="Geist Mono, monospace" font-size="9" fill="#5B6075" transform="rotate(21 150 62)">MATCHES</text>
+          </svg>
+          <h3>Remember on the graph</h3>
+          <p>A saved case writes the message back as a <code>Submission</code> with <code>MATCHES</code> edges. A reworded repeat is answered through those edges in seconds, without rerunning the models, and says so.</p>
+        </article>
+      </div>
     </section>
 
     <div class="marquee-band" aria-hidden="true">
@@ -67,7 +176,7 @@
     </div>
 
     <section class="section" id="spark" aria-labelledby="spark-title">
-      <p class="eyebrow">00 / The spark</p>
+      <p class="eyebrow">01 / The spark</p>
       <h2 class="display section-title" id="spark-title">Big events.<br>Small lies. <span class="mark">Huge fires.</span></h2>
       <p class="lede narrow">When the world is anxious, people forward first and check later. A single invented claim, about a cure, a shortage, an attack or a protest, can turn fear into anger before anyone asks where it came from.</p>
       <ul class="events" aria-label="Recent world events">
@@ -77,7 +186,6 @@
         <li class="event e-mint"><span class="event-kicker">War</span><h3>Russia–Ukraine war</h3><p>Old footage, invented bans and fake announcements recycled across languages.</p><span class="event-cover covered">In the graph today</span></li>
         <li class="event e-lilac"><span class="event-kicker">Protest</span><h3>CJP protest</h3><p>A single misattributed photo or slogan can change how a whole movement is seen.</p><span class="event-cover covered">In the graph today</span></li>
       </ul>
-
       <ol class="ignite" aria-label="How a narrative ignites">
         <li><span class="ignite-n">1</span><b>An event</b><span>Something real happens and people are worried.</span></li>
         <li><span class="ignite-n">2</span><b>A false claim</b><span>Someone invents or recycles a claim that fits the fear.</span></li>
@@ -89,21 +197,22 @@
     </section>
 
     <section class="section" id="investigate" aria-labelledby="investigate-title">
-      <p class="eyebrow">01 / Investigate</p>
+      <p class="eyebrow">02 / Investigate</p>
       <h2 class="display section-title" id="investigate-title">Paste the forward.</h2>
       <form class="card claim-form" id="claim-form">
         <label for="claim">What claim did you receive?</label>
         <textarea id="claim" name="claim" maxlength="4000" rows="3" required
           placeholder="Example: Bill Gates wants to put microchips in people through the covid vaccine."></textarea>
         <div class="examples" role="group" aria-label="Example claims">
-          <span class="examples-label">Try:</span>
+          <span class="examples-label">Try</span>
           <button type="button" class="chip chip-example" data-claim="पुतिन ने रूस में 5G पर प्रतिबंध लगा दिया और सभी टावर नष्ट करवा दिए।" lang="hi">हिन्दी forward</button>
+          <button type="button" class="chip chip-example" data-claim="The LPG crisis in India hikes the prices by 100%.">LPG rumour</button>
           <button type="button" class="chip chip-example" data-claim="Bill Gates wants to put microchips in people through the covid vaccine.">Recycled hoax</button>
           <button type="button" class="chip chip-example" data-claim="Bill Gates secretly funds a plan to track everyone with implanted chips.">Known narrative</button>
           <button type="button" class="chip chip-example" data-claim="Underwater quartz clocks transmit encrypted rainfall forecasts.">Brand new claim</button>
         </div>
         <div class="form-actions">
-          <button type="submit" class="btn btn-primary" id="run">Run the agents</button>
+          <button type="submit" class="btn btn-primary" id="run">Run the agents <span class="arrow">→</span></button>
           <span class="hint" id="run-hint">Read-only. Nothing is saved unless you choose to.</span>
         </div>
       </form>
@@ -112,20 +221,117 @@
     </section>
 
     <section class="section section-tint" id="how" aria-labelledby="how-title">
-      <p class="eyebrow">02 / How it works</p>
-      <h2 class="display section-title" id="how-title">Agents propose. The graph decides.</h2>
+      <p class="eyebrow">03 / How it works</p>
+      <h2 class="section-title display" id="how-title">Agents propose. The graph decides.</h2>
+      <p class="lede narrow">Three specialists suggest; a read-only FalkorDB query decides what counts as a match, what is only context, and what gets remembered.</p>
+
+      <figure class="diagram" aria-label="How a forward flows through Pehchan">
+        <svg viewBox="-190 0 1380 500" role="img" aria-labelledby="diagram-title">
+          <title id="diagram-title">Forwards, fact-checks, event imports and rules flow into the FalkorDB claim graph; the agents propose and the graph decides; out come a cited reply, a review queue, a written-back submission and MCP tools.</title>
+          <defs>
+            <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#232842" fill-opacity=".5"/></marker>
+          </defs>
+
+          <!-- inputs (left) -->
+          <g class="part" data-caption="<b>Forwards.</b> The message as received, in any language. The application always searches the exact wording; the model never retypes it." tabindex="0" color="#232842">
+            <use href="#tile" x="60" y="92" width="88" height="56" class="tile"/>
+            <text x="46" y="112" text-anchor="end" font-size="15" font-weight="600">Forwards</text>
+            <text x="46" y="130" text-anchor="end" font-size="12" class="sub">WhatsApp-style messages</text>
+            <path d="M150 118 C 260 118, 330 230, 440 262" class="flow" fill="none" stroke="#EF5B3F" stroke-width="1.5"/>
+          </g>
+          <g class="part" data-caption="<b>Fact-checks.</b>645 ClaimReview records from 64 publishers, kept with their original ratings, URLs and provenance. Ratings never move to a different claim." tabindex="0" color="#232842">
+            <use href="#tile" x="60" y="192" width="88" height="56" class="tile"/>
+            <text x="46" y="212" text-anchor="end" font-size="15" font-weight="600">Fact-checks</text>
+            <text x="46" y="230" text-anchor="end" font-size="12" class="sub">ClaimReview feed</text>
+            <path d="M150 218 C 250 218, 330 262, 440 278" class="flow" fill="none" stroke="#232842" stroke-opacity=".5" stroke-width="1.5"/>
+          </g>
+          <g class="part" data-caption="<b>2026 events.</b> LPG crisis, Iran war, CJP protest and Russia-Ukraine reviews imported from the same feed, so this year's rumours have something to match." tabindex="0" color="#232842">
+            <use href="#tile" x="60" y="292" width="88" height="56" class="tile"/>
+            <text x="46" y="312" text-anchor="end" font-size="15" font-weight="600">2026 events</text>
+            <text x="46" y="330" text-anchor="end" font-size="12" class="sub">LPG · Iran · CJP · Ukraine</text>
+            <path d="M150 318 C 250 318, 340 300, 440 294" class="flow" fill="none" stroke="#232842" stroke-opacity=".5" stroke-width="1.5"/>
+          </g>
+          <g class="part" data-caption="<b>Rules.</b> Reviewable keyword rules tag narrative frames and entities on every record and on your message. Each tag carries the span it came from and is labelled as an inference." tabindex="0" color="#232842">
+            <use href="#tile" x="60" y="392" width="88" height="56" class="tile"/>
+            <text x="46" y="412" text-anchor="end" font-size="15" font-weight="600">Frames &amp; entities</text>
+            <text x="46" y="430" text-anchor="end" font-size="12" class="sub">rule-tagged · with spans</text>
+            <path d="M150 418 C 250 418, 340 340, 440 310" class="flow" fill="none" stroke="#232842" stroke-opacity=".5" stroke-width="1.5"/>
+          </g>
+          <text x="300" y="196" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="#5B6075">EVIDENCE IN</text>
+
+          <!-- agents (top) -->
+          <g class="part" data-caption="<b>The agents.</b> Claim Scout retrieves, Graph Detective traces and widens, Evidence &amp; Response decides. Each has a fixed tool list; a call outside it is refused and recorded." tabindex="0" color="#232842">
+            <use href="#tile" x="440" y="30" width="120" height="76" class="tile"/>
+            <circle cx="478" cy="60" r="6" fill="#EF5B3F"/><circle cx="500" cy="52" r="6" fill="#232842" fill-opacity=".5"/><circle cx="522" cy="60" r="6" fill="#3FA57A"/>
+            <text x="500" y="20" text-anchor="middle" font-size="15" font-weight="600">Pehchan agents</text>
+            <text x="500" y="128" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" class="sub">PROPOSE · THE GRAPH DECIDES</text>
+            <path d="M486 106 L 486 232" class="flow" fill="none" stroke="#232842" stroke-opacity=".5" stroke-width="1.5" marker-end="url(#arr)"/>
+            <path d="M514 232 L 514 106" class="flow" fill="none" stroke="#A57BE0" stroke-width="1.5" marker-end="url(#arr)"/>
+            <text x="476" y="176" text-anchor="end" font-family="Geist Mono, monospace" font-size="10" letter-spacing="1.5" class="sub">CANDIDATES</text>
+            <text x="524" y="176" font-family="Geist Mono, monospace" font-size="10" letter-spacing="1.5" class="sub">VERDICTS</text>
+          </g>
+
+          <!-- the graph (centre) -->
+          <g class="part" data-caption="<b>FalkorDB claim graph.</b> One graph holds claims, wordings, fact-checks, publishers, frames, entities and every saved submission. Vector index, algo.SPpaths, algo.BFS and the write-back all run here. Remove it and nothing works." tabindex="0" color="#232842">
+            <polygon points="500,232 640,302 500,372 360,302" fill="#fff" stroke="#232842" stroke-opacity=".4" class="tile"/>
+            <polygon points="360,302 500,372 500,386 360,316" fill="#232842" fill-opacity=".08"/>
+            <polygon points="500,372 640,302 640,316 500,386" fill="#232842" fill-opacity=".14"/>
+            <g stroke="#232842" stroke-opacity=".35" fill="none">
+              <path d="M440 300 L 500 270 L 560 300 L 520 330 L 470 326 Z"/><path d="M500 270 L 520 330"/><path d="M440 300 L 520 330"/>
+            </g>
+            <path d="M440 300 L 500 270 L 560 300" stroke="#3FA57A" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="500" cy="270" r="7" fill="#EF5B3F"/><circle cx="440" cy="300" r="5" fill="#3FA57A"/><circle cx="560" cy="300" r="5" fill="#3FA57A"/><circle cx="520" cy="330" r="4" fill="#6C8EEA"/><circle cx="470" cy="326" r="4" fill="#A57BE0"/>
+            <circle cx="392" cy="246" r="20" fill="#FFF5CF" stroke="#232842" stroke-opacity=".3"/>
+            <text x="500" y="424" text-anchor="middle" font-size="18" font-weight="600">● FalkorDB claim graph</text>
+            <text x="500" y="450" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" class="sub">645 FACT-CHECKS · VECTORS · PATHS · BFS</text>
+            <text x="500" y="470" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" class="sub">MEMORY ON THE NODES</text>
+          </g>
+
+          <!-- outputs (right) -->
+          <text x="630" y="196" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="#5B6075">PROOF OUT</text>
+          <g class="part" data-caption="<b>Drafted reply.</b> A template filled only from graph records: publisher, rating, URL, and whether the match is direct or only context. A person approves it before it goes anywhere." tabindex="0" color="#232842">
+            <path d="M560 262 C 660 230, 730 118, 850 118" class="flow" fill="none" stroke="#3FA57A" stroke-width="1.5"/>
+            <use href="#tile" x="852" y="92" width="88" height="56" class="tile"/>
+            <text x="954" y="112" font-size="15" font-weight="600">Drafted reply</text>
+            <text x="954" y="130" font-size="12" class="sub">cites records only</text>
+          </g>
+          <g class="part" data-caption="<b>Review queue.</b> A new claim, or a narrative variant with no direct review, is queued for a fact-checker at high priority instead of being guessed at." tabindex="0" color="#232842">
+            <path d="M560 278 C 660 262, 740 218, 850 218" class="flow" fill="none" stroke="#232842" stroke-opacity=".5" stroke-width="1.5"/>
+            <use href="#tile" x="852" y="192" width="88" height="56" class="tile"/>
+            <text x="954" y="212" font-size="15" font-weight="600">Review queue</text>
+            <text x="954" y="230" font-size="12" class="sub">new claims, flagged</text>
+          </g>
+          <g class="part" data-caption="<b>Written back.</b> A saved case becomes a Submission node with MATCHES edges to what it matched and MENTIONS/USES_FRAME edges to its tags. The next forward is answered through them." tabindex="0" color="#232842">
+            <path d="M560 294 C 660 300, 740 318, 850 318" class="flow" fill="none" stroke="#A57BE0" stroke-width="1.5"/>
+            <use href="#tile" x="852" y="292" width="88" height="56" class="tile"/>
+            <text x="954" y="312" font-size="15" font-weight="600">Written back</text>
+            <text x="954" y="330" font-size="12" class="sub">Submission · MATCHES</text>
+          </g>
+          <g class="part" data-caption="<b>MCP tools.</b> Six read-only tools over Streamable HTTP, each returning structured results; Claude, ChatGPT and Gemini can call the same graph. Writes stay behind a token." tabindex="0" color="#232842">
+            <path d="M560 310 C 660 340, 740 418, 850 418" class="flow" fill="none" stroke="#232842" stroke-opacity=".5" stroke-width="1.5"/>
+            <use href="#tile" x="852" y="392" width="88" height="56" class="tile"/>
+            <text x="954" y="412" font-size="15" font-weight="600">MCP tools</text>
+            <text x="954" y="430" font-size="12" class="sub">Claude · ChatGPT · Gemini</text>
+          </g>
+        </svg>
+        <figcaption class="diagram-foot">
+          <span class="caption" id="diagram-caption"><span class="mono-label">Hover a part</span></span>
+          <span class="mono-label">illustrative</span>
+        </figcaption>
+      </figure>
+
       <ol class="steps">
-        <li><span class="step-n">1</span><div><h3>Recall</h3><p>Has this wording been seen before? A FalkorDB vector index over past submissions answers instantly through the edges the agent wrote last time.</p><span class="who">FalkorDB vector index</span></div></li>
-        <li><span class="step-n">2</span><div><h3>Scout</h3><p>Find recorded wordings by meaning, in many languages, then check both directions of entailment before calling anything a match.</p><span class="who">Multilingual embeddings · NLI</span></div></li>
-        <li><span class="step-n">3</span><div><h3>Trace</h3><p>Follow claim → narrative frame → related claim → fact-check → publisher, plus native BFS and bounded paths.</p><span class="who">Cypher · algo.BFS</span></div></li>
-        <li><span class="step-n">4</span><div><h3>Widen</h3><p>No direct match? Walk through the entities and frames the message shares with reviewed claims. Rare connections count more than hubs.</p><span class="who">Graph Detective</span></div></li>
-        <li><span class="step-n">5</span><div><h3>Decide</h3><p>Known recycled claim, variant of a known narrative, or new. Draft a reply from graph records only, or queue it for a fact-checker.</p><span class="who">Evidence &amp; Response</span></div></li>
-        <li><span class="step-n">6</span><div><h3>Remember</h3><p>Write the message back into the graph, linked to what it matched, so the next forward is answered by following an edge.</p><span class="who">Submission write-back</span></div></li>
+        <li><span class="step-n">01</span><div><h3>Recall</h3><p>Has this wording been seen before? A FalkorDB vector index over past submissions answers instantly through the edges the agent wrote last time.</p><span class="who">FalkorDB vector index</span></div></li>
+        <li><span class="step-n">02</span><div><h3>Scout</h3><p>Find recorded wordings by meaning, in many languages, then check both directions of entailment before calling anything a match.</p><span class="who">Multilingual embeddings · NLI</span></div></li>
+        <li><span class="step-n">03</span><div><h3>Trace</h3><p>Follow claim → narrative frame → related claim → fact-check → publisher, plus native BFS and <code>algo.SPpaths</code>.</p><span class="who">Cypher · algo.BFS · algo.SPpaths</span></div></li>
+        <li><span class="step-n">04</span><div><h3>Widen</h3><p>No direct match? Walk through the entities and frames the message shares with reviewed claims. Rare connections count more than hubs; places alone never count.</p><span class="who">Graph Detective</span></div></li>
+        <li><span class="step-n">05</span><div><h3>Decide</h3><p>Known recycled claim, variant of a known narrative, or new. Draft a reply from graph records only, or queue it for a fact-checker.</p><span class="who">Evidence &amp; Response</span></div></li>
+        <li><span class="step-n">06</span><div><h3>Remember</h3><p>Write the message back into the graph, linked to what it matched, so the next forward is answered by following an edge.</p><span class="who">Submission write-back</span></div></li>
       </ol>
     </section>
 
     <section class="section" id="graph" aria-labelledby="graph-title">
-      <p class="eyebrow">03 / Graph</p>
+      <p class="eyebrow">04 / Graph</p>
       <h2 class="display section-title" id="graph-title">See the connection.</h2>
       <p class="lede narrow">Claims, fact-checks, publishers, frames and entities as they sit in FalkorDB. Dashed lines are inferences; solid lines come from source records. Run an investigation to focus this view on its closest match.</p>
       <div class="graph-legend" aria-hidden="true">
@@ -154,7 +360,7 @@
     </section>
 
     <section class="section section-tint" id="proof" aria-labelledby="proof-title">
-      <p class="eyebrow">04 / Proof</p>
+      <p class="eyebrow">05 / Proof</p>
       <h2 class="display section-title" id="proof-title">We measured it.</h2>
       <div class="proof-grid">
         <div class="card">
@@ -164,16 +370,16 @@
             <thead><tr><th scope="col">Method</th><th scope="col">hit@5</th><th scope="col">Translations</th></tr></thead>
             <tbody>
               <tr><td>Word overlap</td><td>25/30</td><td>3/6</td></tr>
-              <tr><td>FalkorDB vector index</td><td>30/30</td><td>6/6</td></tr>
-              <tr><td>Vector index + graph</td><td>30/30</td><td>6/6</td></tr>
+              <tr class="best"><td>FalkorDB vector index</td><td>30/30</td><td>6/6</td></tr>
+              <tr class="best"><td>Vector index + graph</td><td>30/30</td><td>6/6</td></tr>
             </tbody>
           </table>
-          <p class="muted small">Embeddings already find every case here, so the graph adds no retrieval gain on this set. Its job is widening, recall and explanation.</p>
+          <p class="muted small">Embeddings already find every case here, so the graph adds no retrieval gain on this set. Its job is widening, recall and explanation. Measured on the 248-variant graph; not rerun since the 2026 import.</p>
         </div>
         <div class="card">
           <h3>What the graph does that search cannot</h3>
           <ul class="ticks">
-            <li>Links a vaccine-microchip claim to a climate claim through <b>Bill Gates</b> in four hops.</li>
+            <li>Links a vaccine-microchip claim to a climate claim through <b>Bill Gates</b> in four hops, in 0.05 s with <b>algo.SPpaths</b>.</li>
             <li>Answers a repeated forward through a <b>MATCHES</b> edge the agent wrote, without rerunning models.</li>
             <li>Finds reviewed claims for a new wording through shared <b>entities and frames</b>, weighted by rarity.</li>
             <li>Shows every edge's basis: source record, rule inference or model assessment.</li>
@@ -183,7 +389,7 @@
     </section>
 
     <section class="section" id="connect" aria-labelledby="connect-title">
-      <p class="eyebrow">05 / Connect your AI</p>
+      <p class="eyebrow">06 / Connect your AI</p>
       <h2 class="display section-title" id="connect-title">Bring it into your chat.</h2>
       <p class="lede narrow">Pehchan is an MCP server. The public endpoint is read-only: six tools for searching, tracing and assembling dossiers. Nothing is saved.</p>
       <div class="card endpoint">
@@ -225,7 +431,7 @@
   <footer class="footer">
     <p class="display footer-title">Pehchan <span class="mark">AI</span></p>
     <p>Ratings belong to the publishers that wrote them and apply to the wording they reviewed. Pehchan does not decide what is true. Data: Google Fact Check Tools / Data Commons ClaimReview feed.</p>
-    <p class="small">Built on FalkorDB for WeMakeDevs Graph Hacks.</p>
+    <p class="small">Built on FalkorDB for WeMakeDevs Graph Hacks, Track 1.</p>
   </footer>
 </body>
 </html>
