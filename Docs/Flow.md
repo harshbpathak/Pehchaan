@@ -96,6 +96,9 @@ The diagram shows the retained deterministic baseline. Default CLI/API/MCP inves
 | F-37 | Compare retrieval methods on held-out queries | `scripts/evaluate_retrieval.py` | `Docs/retrieval-evaluation.json` |
 | F-38 | Use the web app | Browser at `/` | Only through the write route when saving a case |
 | F-39 | Publish a public read-only endpoint | `scripts/run_public.py` | Tunnel, public API process, token and endpoint files |
+| F-40 | Load the graph into another FalkorDB (e.g. Cloud) | `scripts/load_graph.py` | Target graph nodes, edges, vectors and index |
+| F-41 | Test and deploy on every push | GitHub Actions `ci-cd.yml` | EC2 update and/or Space rebuild (main only, when configured) |
+| F-42 | Provision an EC2 server | `deploy/ec2/setup.sh` | Packages, app, restored graph, env file, service, Caddy |
 
 ## F-01 — Prepare runtime and configuration
 
@@ -590,6 +593,30 @@ python -m pip install -c requirements.lock -e ".[dev]"
 **Steps:** Locate or download `cloudflared` → start a quick tunnel to `127.0.0.1:8100`, logging to `artifacts/tunnel.log` → read the `trycloudflare.com` hostname → load or create distinct tokens in `artifacts/public-tokens.json` → start uvicorn on 8100 with the public host, public read mode and tokens → wait for local then public `/health` → write `artifacts/public-endpoint.json` and print web/MCP URLs and client instructions → run until Ctrl+C or a child exits, then terminate both.
 
 **Failure branches:** No hostname within 60 s → stop the tunnel and exit; API not healthy within 90 s → exit with the log path; tunnel slow to answer → warning, continue. Rate-limited visitors receive 429. Unauthenticated write, case-list and `/mcp/` requests receive 401/403.
+
+## F-40 — Load the graph into another FalkorDB
+
+**Entry:** [scripts/load_graph.py](../scripts/load_graph.py). **Decision:** ADR-054.
+
+**Steps:** Read `FALKORDB_*` connection settings → validate both prepared datasets and their annotations before any write (F-06, F-07) → init schema → ingest each dataset (F-09) → embed every stale variant and create the vector index (F-23) → print node/edge counts and embedding coverage.
+
+**Failure branches:** Invalid input stops before writing; connection or TLS errors propagate (this cloud instance answers only without TLS); rerunning is idempotent. Saved investigations and submissions are not copied. Tested on a scratch local graph, then run against FalkorDB Cloud on 18 October 2026: 645 reviews, 641 embedded variants, both datasets valid.
+
+## F-41 — Test and deploy on every push
+
+**Entry:** [.github/workflows/ci-cd.yml](../.github/workflows/ci-cd.yml). **Decision:** ADR-054.
+
+**Steps:** Push or pull request → start the pinned FalkorDB image as a service → install CPU PyTorch and all extras with the lock constraints → `ruff check`, `ruff format --check`, `pytest` with integration tests on → on `main` only, after tests pass: (EC2, when `EC2_HOST`/`EC2_SSH_KEY` exist) SSH in and run `deploy/ec2/update.sh <sha>`, which checks out the commit, installs, restarts and waits for `/health`; (Space, when `HF_TOKEN`/`HF_SPACE` exist) upload the Space files pinned to the SHA so the Space rebuilds.
+
+**Failure branches:** Lint or test failure blocks deployment; missing `HF_TOKEN`/`HF_SPACE` skips deployment with a warning; a Space build failure appears in the Space's build logs, not in GitHub.
+
+## F-42 — Provision an EC2 server
+
+**Entry:** [deploy/ec2/setup.sh](../deploy/ec2/setup.sh) `<hostname> <openrouter-key>`. **Decision:** ADR-055.
+
+**Steps:** Install packages → add 4 GB swap if RAM is under 7 GB → clone the app, create the venv, install CPU PyTorch and extras, download models → restore `~/falkordb-data.tgz` into the FalkorDB volume if the volume does not exist → start FalkorDB with a restart policy → create `/etc/pehchan.env` (mode 600) with generated read/write tokens unless it exists → install and start the systemd service → install Caddy and proxy the hostname with a 180 s read timeout → wait for `/health`.
+
+**Failure branches:** Any command failure stops the script (`set -euo pipefail`); rerunning is safe and keeps existing tokens and data. Certificate issuance fails if DNS or ports 80/443 are wrong. Not yet run against a real instance.
 
 ## Original blueprint flow status
 
