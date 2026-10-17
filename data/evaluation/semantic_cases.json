@@ -1,0 +1,13 @@
+[
+  {"id":"paraphrase-chip","kind":"paraphrase","claim":"A pet microchip scanner detected a chip in a woman's arm after a COVID-19 vaccination.","target":"variant_b798bbbaab3675372ee8c4c3","expected":"SAME_PROPOSITION"},
+  {"id":"paraphrase-5g","kind":"paraphrase","claim":"5G mobile technology spreads the coronavirus.","target":"variant_9e4e7b29e161704389906809","expected":"SAME_PROPOSITION"},
+  {"id":"paraphrase-5g-passive","kind":"paraphrase","claim":"Coronavirus is being spread by 5G technology.","target":"variant_9e4e7b29e161704389906809","expected":"SAME_PROPOSITION"},
+  {"id":"negation-5g","kind":"contradiction","claim":"5G technology does not spread coronavirus.","target":"variant_9e4e7b29e161704389906809","expected":"CONTRADICTION"},
+  {"id":"negation-chip","kind":"contradiction","claim":"A microchip reader for pets did not detect a chip in the arm of a woman vaccinated against COVID-19.","target":"variant_b798bbbaab3675372ee8c4c3","expected":"CONTRADICTION"},
+  {"id":"topic-distractor","kind":"distractor","claim":"5G networks provide high speed internet access.","expected":"NO_CONFIDENT_MATCH"},
+  {"id":"vaccine-distractor","kind":"distractor","claim":"COVID-19 vaccines reduce the risk of severe illness.","expected":"NO_CONFIDENT_MATCH"},
+  {"id":"entity-distractor","kind":"distractor","claim":"Bill Gates founded a software company.","expected":"NO_CONFIDENT_MATCH"},
+  {"id":"unfamiliar-clock","kind":"unfamiliar","claim":"Underwater quartz clocks transmit encrypted rainfall forecasts.","expected":"NO_CONFIDENT_MATCH"},
+  {"id":"unfamiliar-agriculture","kind":"unfamiliar","claim":"Purple carrots generate satellite navigation signals.","expected":"NO_CONFIDENT_MATCH"},
+  {"id":"unsupported-hindi","kind":"language-abstention","claim":"टीकों में लोगों को ट्रैक करने वाली माइक्रोचिप होती है।","expected":"NO_CONFIDENT_MATCH"}
+]
