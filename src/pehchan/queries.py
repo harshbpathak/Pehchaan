@@ -9,6 +9,7 @@ LABELS = (
     "NarrativeFrame",
     "Topic",
     "Investigation",
+    "Submission",
 )
 
 UPSERT_REVIEW = """
@@ -74,3 +75,67 @@ RETURN [n IN nodes | n.id], [e IN edges | type(e)]
 """
 
 VARIANTS = "MATCH (v:ClaimVariant) RETURN v.id, v.text, v.normalized_text ORDER BY v.id"
+
+# Widening: fact-checked claims sharing frames/entities with a submission. Rarer shared nodes
+# weigh more (1/degree), so "5G" alone ranks below "Bill Gates" plus a specific frame.
+SHARED_CONTEXT = """
+MATCH (n)
+WHERE (n:Entity AND n.name IN $entities) OR (n:NarrativeFrame AND n.name IN $frames)
+MATCH (n)<-[:MENTIONS|USES_FRAME]-(:Claim)
+WITH n, count(*) AS degree
+MATCH (n)<-[r:MENTIONS|USES_FRAME]-(c:Claim)<-[:EXPRESSES]-(v:ClaimVariant)
+WHERE NOT v.id IN $exclude
+WITH v, c, collect({label: labels(n)[0], name: n.name, relation: type(r), basis: r.basis,
+                    reviewed_by: r.reviewed_by, evidence_span: r.evidence_span,
+                    degree: degree}) AS shared,
+     sum(1.0 / degree) AS score
+MATCH (fc:FactCheck)-[:CHECKS]->(v)
+MATCH (fc)-[:PUBLISHED_BY]->(pub:Publisher)
+RETURN v.id, v.text, c.id, shared, score, fc.id, fc.url, fc.verdict_original, fc.review_date,
+       pub.name
+ORDER BY score DESC, v.id, fc.id
+LIMIT $limit
+"""
+
+SUBMISSION_SEARCH = """
+CALL db.idx.vector.queryNodes('Submission', 'embedding', $limit, vecf32($vector))
+YIELD node, score
+OPTIONAL MATCH (i:Investigation)-[:SUBMITTED]->(node)
+OPTIONAL MATCH (node)-[m:MATCHES]->(v:ClaimVariant)
+RETURN node.id, node.text, score, i.id, i.status, i.finding,
+       collect(DISTINCT {variant_id: v.id, text: v.text, relation: m.relation,
+                         similarity: m.similarity, assessment_json: m.assessment_json})
+ORDER BY score ASC, node.id
+"""
+
+# Write-back: the submitted wording joins the graph, linked to what the agent established.
+LINK_SUBMISSION = """
+MATCH (i:Investigation {id: $investigation_id})
+MERGE (s:Submission {id: $id})
+SET s.text = $text, s.normalized_text = $normalized_text, s.embedding = vecf32($vector),
+    s.embedding_model = $model, s.embedding_revision = $revision,
+    s.first_seen = coalesce(s.first_seen, $created_at), s.last_seen = $created_at,
+    s.times_seen = coalesce(s.times_seen, 0) + 1
+MERGE (i)-[:SUBMITTED]->(s)
+WITH s
+UNWIND $matches AS match
+MATCH (v:ClaimVariant {id: match.variant_id})
+MERGE (s)-[m:MATCHES]->(v)
+SET m.relation = match.relation, m.similarity = match.similarity,
+    m.assessment_json = match.assessment_json, m.basis = 'model_assessment',
+    m.investigation_id = $investigation_id
+RETURN count(m)
+"""
+
+LINK_SUBMISSION_CONTEXT = """
+MATCH (s:Submission {id: $id})
+UNWIND $items AS item
+MATCH (n {id: item.node_id})
+WHERE n:Entity OR n:NarrativeFrame
+FOREACH (_ IN CASE WHEN n:Entity THEN [1] ELSE [] END |
+  MERGE (s)-[r:MENTIONS]->(n)
+  SET r.basis = 'rule_inference', r.evidence_span = item.evidence_span)
+FOREACH (_ IN CASE WHEN n:NarrativeFrame THEN [1] ELSE [] END |
+  MERGE (s)-[r:USES_FRAME]->(n) SET r.basis = 'rule_inference')
+RETURN count(n)
+"""

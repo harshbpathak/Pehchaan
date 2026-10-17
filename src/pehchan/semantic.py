@@ -136,6 +136,45 @@ class VectorIndex:
         return results
 
 
+class SubmissionIndex:
+    """Vector memory of previously investigated wordings, kept in FalkorDB beside the claims."""
+
+    def __init__(self, store):
+        self.store = store
+
+    def ensure(self):
+        result = self.store.graph.list_indices()
+        headers = [item[1] for item in result.header]
+        for row in result.result_set:
+            item = dict(zip(headers, row))
+            if item["label"] == "Submission" and "VECTOR" in item["types"].get("embedding", []):
+                return
+        self.store.graph.create_node_vector_index(
+            "Submission", "embedding", dim=DIMENSION, similarity_function="cosine"
+        )
+
+    def recall(self, vector: list[float], limit: int = 3) -> list[dict]:
+        from .queries import SUBMISSION_SEARCH
+
+        self.ensure()
+        results = []
+        for sid, text, distance, case_id, status, finding, links in self.store.read(
+            SUBMISSION_SEARCH, {"vector": valid_vector(vector), "limit": limit}
+        ):
+            results.append(
+                {
+                    "submission_id": sid,
+                    "text": text,
+                    "similarity": round(max(-1.0, min(1.0, 1.0 - float(distance))), 6),
+                    "investigation_id": case_id,
+                    "status": status,
+                    "finding": finding,
+                    "matches": [m for m in links if m["variant_id"] is not None],
+                }
+            )
+        return results
+
+
 @dataclass(frozen=True)
 class Assessment:
     relation: str
@@ -182,6 +221,12 @@ class ClaimScout:
         self.store = store
         self._embedder = embedder
         self._relevance_model = relevance_model
+
+    def embed(self, text: str) -> list[float]:
+        from .models import Embedder
+
+        self._embedder = self._embedder or Embedder()
+        return valid_vector(self._embedder.encode([text])[0])
 
     def scout(self, submitted_claim: str, limit: int = 10) -> dict:
         from .models import Embedder, RelevanceModel, language

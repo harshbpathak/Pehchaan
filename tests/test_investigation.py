@@ -12,6 +12,7 @@ from pehchan.investigation import (
     EvidenceResponse,
     Orchestrator,
     Specialist,
+    decide,
 )
 from pehchan.records import normalize_review
 
@@ -189,3 +190,126 @@ def test_contradiction_and_conflicting_source_ratings_require_review(case_graph,
     conflicting = Orchestrator(store, StubScout(record)).assemble("Synthetic query")
     assert conflicting["status"] == "NEEDS_HUMAN_REVIEW"
     assert conflicting["reason"] == "SOURCE_RATINGS_REQUIRE_RECONCILIATION"
+
+
+def report_stub(citations=(), context=(), related=(), status="INSUFFICIENT_EVIDENCE"):
+    return {
+        "status": status,
+        "citations": list(citations),
+        "scout": {"context": list(context)},
+        "widening": {"related": list(related)},
+        "uncertainties": [],
+        "priority": "NORMAL",
+    }
+
+
+def test_decision_distinguishes_recycled_narrative_and_new_claims():
+    direct = {
+        "relevance": "SAME_PROPOSITION",
+        "publisher": "Checks",
+        "reviewed_claim": '"Quoted claim"',
+        "verdict_original": "False",
+        "review_date": "2024-01-01",
+        "url": "https://checks.example/a",
+        "factcheck_id": "fc_a",
+    }
+    recycled = report_stub([direct], status="EVIDENCE_DOSSIER_READY")
+    decide(recycled)
+    assert recycled["finding"] == "KNOWN_RECYCLED_CLAIM"
+    assert recycled["draft_reply"]["cites"] == ["fc_a"]
+    assert '""' not in recycled["draft_reply"]["text"]
+    assert not recycled["review_queue"]["queued"]
+
+    related = {
+        "publisher": "Checks",
+        "text": "A related claim",
+        "verdict_original": "False",
+        "url": "https://checks.example/b",
+        "factcheck_id": "fc_b",
+        "shared": [{"name": "Bill Gates"}],
+    }
+    variant = report_stub(related=[related])
+    decide(variant)
+    assert variant["finding"] == "KNOWN_NARRATIVE_VARIANT"
+    assert variant["status"] == "NEEDS_HUMAN_REVIEW"
+    assert variant["reason"] == "RELATED_NARRATIVE_CONTEXT_FOUND"
+    assert "not confirmed" in variant["draft_reply"]["text"]
+
+    new = report_stub()
+    decide(new)
+    assert new["finding"] == "NEW_CLAIM"
+    assert new["status"] == "INSUFFICIENT_EVIDENCE"
+    assert new["review_queue"]["queued"] and new["priority"] == "HIGH"
+    assert new["draft_reply"]["cites"] == []
+
+
+class MemoryScout(StubScout):
+    """Stub scout with a fixed embedding so write-back and recall run against FalkorDB."""
+
+    calls = 0
+
+    def scout(self, claim):
+        MemoryScout.calls += 1
+        return super().scout(claim)
+
+    def embed(self, text):
+        return [1.0] + [0.0] * 383
+
+
+@pytest.mark.integration
+def test_written_submission_is_recalled_through_its_matches_edge(case_graph):
+    store, record = case_graph
+    MemoryScout.calls = 0
+    first = Orchestrator(store, MemoryScout(record)).investigate("Synthetic query", "mem-1")
+    assert first["finding"] == "KNOWN_RECYCLED_CLAIM"
+    stats = store.stats()
+    assert stats["nodes"]["Submission"] == 1
+    assert stats["relationships"]["MATCHES"] == 1
+    assert stats["relationships"]["SUBMITTED"] == 1
+
+    second = Orchestrator(store, MemoryScout(record)).investigate("Synthetic query!", "mem-2")
+    assert MemoryScout.calls == 1  # the repeat never reached retrieval/relevance models
+    assert second["inference"]["mode"] == "graph_recall"
+    assert second["prior_submission"]["investigation_id"] == first["investigation_id"]
+    assert second["finding"] == "KNOWN_RECYCLED_CLAIM"
+    assert second["citations"][0]["factcheck_id"] == record["factcheck_id"]
+    assert store.stats()["nodes"]["Submission"] == 2
+
+
+@pytest.mark.integration
+def test_no_direct_match_widens_through_shared_entities(case_graph, review):
+    from pehchan.annotations import load_annotations
+
+    store, _ = case_graph
+    other = copy.deepcopy(review)
+    other["claimReviewed"] = "Bill Gates hides microchips in vaccines."
+    other["url"] = "https://checks.example/review/gates"
+    gates = normalize_review(other, "test", "test", 3)
+    rows = [
+        {
+            "variant_id": gates["variant_id"],
+            "reviewed_by": "test",
+            "rationale": "test",
+            "entities": [{"name": "Bill Gates", "type": "Person", "evidence_span": "Bill Gates"}],
+        }
+    ]
+    store.ingest([gates], load_annotations_rows(load_annotations, rows, gates))
+    report = Orchestrator(store, MemoryScout(gates, None)).investigate(
+        "Bill Gates is funding a secret plot.", "widen-1"
+    )
+    assert report["finding"] == "KNOWN_NARRATIVE_VARIANT"
+    assert report["widening"]["related"][0]["variant_id"] == gates["variant_id"]
+    assert report["citations"] == []  # context is never promoted to evidence
+    assert any(t.get("tool") == "expand_shared_context" for t in report["agent_trace"])
+    assert store.stats()["relationships"]["MENTIONS"] == 2  # claim + written-back submission
+
+
+def load_annotations_rows(loader, rows, record):
+    import json
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as folder:
+        path = Path(folder) / "annotations.json"
+        path.write_text(json.dumps(rows), encoding="utf-8")
+        return loader(path, [record])

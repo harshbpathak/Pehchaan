@@ -138,6 +138,36 @@ class GraphStore:
             raise ValueError("depth must be between 1 and 6")
         return self.read(queries.BFS, {"variant_id": variant_id, "depth": depth})
 
+    def shared_context(
+        self, entities: list[str], frames: list[str], exclude: list[str], limit: int = 10
+    ) -> list[dict]:
+        """Fact-checked claims reached through shared frames/entities; context, never evidence."""
+        if not 1 <= limit <= 50:
+            raise ValueError("limit must be between 1 and 50")
+        if not entities and not frames:
+            return []
+        keys = (
+            "variant_id",
+            "text",
+            "claim_id",
+            "shared",
+            "score",
+            "factcheck_id",
+            "url",
+            "verdict_original",
+            "review_date",
+            "publisher",
+        )
+        rows = self.read(
+            queries.SHARED_CONTEXT,
+            {"entities": entities, "frames": frames, "exclude": exclude, "limit": limit},
+        )
+        results = [dict(zip(keys, row)) for row in rows]
+        for result in results:
+            result["score"] = round(result["score"], 6)
+            result["relevance"] = "shared_narrative_context_only"
+        return results
+
     def candidates(self, submitted_claim: str, limit: int = 5) -> list[dict]:
         """Transparent lexical baseline, not semantic or factual equivalence detection."""
         if not 1 <= limit <= 20 or not submitted_claim.strip():
