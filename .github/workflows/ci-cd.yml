@@ -1,0 +1,101 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Lint and test (with a real FalkorDB)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      falkordb:
+        # Same pinned image as compose.yaml.
+        image: falkordb/falkordb@sha256:b0bdcac2cbaff989e77cb0610439b7a9289e86de033ccbbd4368b66fb680ae7a
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 3s
+          --health-timeout 2s
+          --health-retries 20
+    env:
+      FALKORDB_HOST: 127.0.0.1
+      FALKORDB_PORT: "6379"
+      PEHCHAN_INTEGRATION: "1"
+      PEHCHAN_INFERENCE: deterministic
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.lock
+            pyproject.toml
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install "torch==2.14.1" --index-url https://download.pytorch.org/whl/cpu
+          pip install -c requirements.lock -e ".[semantic,server,ui,dev]"
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+      - name: Test
+        # Real-model tests (PEHCHAN_MODELS=1) need a 1 GB download and are run locally.
+        run: pytest -q
+
+  deploy:
+    name: Deploy to Hugging Face Space
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: production
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE: ${{ vars.HF_SPACE }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check deployment settings
+        run: |
+          if [ -z "$HF_TOKEN" ] || [ -z "$HF_SPACE" ]; then
+            echo "::warning::Set the HF_TOKEN secret and HF_SPACE variable to enable deployment."
+            echo "SKIP=1" >> "$GITHUB_ENV"
+          fi
+      - uses: actions/setup-python@v5
+        if: env.SKIP != '1'
+        with:
+          python-version: "3.12"
+      - name: Pin the Space to this commit and upload
+        if: env.SKIP != '1'
+        run: |
+          pip install "huggingface_hub>=0.25,<1"
+          mkdir -p space
+          cp deploy/huggingface/README.md space/README.md
+          sed "s/^ARG PEHCHAN_REF=.*/ARG PEHCHAN_REF=${GITHUB_SHA}/" deploy/huggingface/Dockerfile > space/Dockerfile
+          grep -q "ARG PEHCHAN_REF=${GITHUB_SHA}" space/Dockerfile
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+
+          HfApi(token=os.environ["HF_TOKEN"]).upload_folder(
+              repo_id=os.environ["HF_SPACE"],
+              repo_type="space",
+              folder_path="space",
+              commit_message=f"Deploy {os.environ['GITHUB_SHA'][:7]}",
+          )
+          print(f"Uploaded; the Space rebuilds from commit {os.environ['GITHUB_SHA'][:7]}.")
+          PY
+
