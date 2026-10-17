@@ -72,6 +72,34 @@ Requests use `Authorization: Bearer <credential>`. Read access can inspect cases
 
 There are no user accounts, tenant-specific case ownership, OAuth implementation, quotas or multi-worker locking. The deployed credential grants access to the configured collection. Run one API worker; the shared local service serializes model/graph operations.
 
+## AWS EC2 with one-command setup and CI/CD (recommended permanent hosting)
+
+Implemented as scripts and a pipeline (ADR-055, F-41, F-42). Pehchan needs about 3-4 GB of RAM for its two local models and FalkorDB, which rules out 512 MB free tiers; a t3.medium or t4g.medium with swap runs it on AWS credits.
+
+1. **Back up the graph on the laptop:** `docker compose stop falkordb`, then `docker run --rm -v pehchan_falkordb-data:/data -v ${PWD}:/backup alpine tar czf /backup/falkordb-data.tgz -C /data .`, then `docker compose start falkordb`.
+2. **Launch EC2** (ap-south-1): Ubuntu 24.04, t3.medium or larger, 30 GB gp3, key pair, security group SSH from your IP plus HTTP/HTTPS from anywhere. Attach an Elastic IP. Hostname: your domain's A record, or `<ip-with-dashes>.sslip.io`.
+3. **Copy and run setup:** `scp -i key.pem falkordb-data.tgz deploy/ec2/setup.sh ubuntu@<ip>:~` then `ssh -i key.pem ubuntu@<ip> "bash setup.sh <hostname> <openrouter-key>"`. It installs everything, restores the graph, writes `/etc/pehchan.env` with fresh tokens (prints the write token once), starts the service and obtains HTTPS.
+4. **CI/CD:** add GitHub repository secrets `EC2_HOST` (the IP or hostname) and `EC2_SSH_KEY` (the private key contents). Every push to `main` that passes tests runs [update.sh](../deploy/ec2/update.sh) over SSH: checkout of the exact commit, dependency update, restart and health check.
+
+## Hugging Face Space + FalkorDB Cloud (alternative)
+
+Use when a free or paid Space is available to you; the Docker image was built and run locally.
+
+Implemented as files and a pipeline (ADR-054, F-40, F-41); the accounts, secrets and first deploy are operator steps.
+
+1. **FalkorDB Cloud:** create a free instance and note host, port, username, password and whether TLS is on.
+2. **Load the graph from the laptop** (it has the prepared files and models):
+   ```powershell
+   $env:FALKORDB_HOST="<cloud host>"; $env:FALKORDB_PORT="<port>"
+   $env:FALKORDB_USERNAME="<user>"; $env:FALKORDB_PASSWORD="<password>"; $env:FALKORDB_SSL="true"
+   .\.tools\python\python.exe scripts/load_graph.py --graph pehchan
+   ```
+   Expect 645 FactCheck, 641 ClaimVariant, 641 embedded. Saved cases are not copied.
+3. **Hugging Face:** create a Space (SDK: Docker, hardware: CPU basic). In Settings → Variables and secrets add `FALKORDB_HOST`, `FALKORDB_PORT`, `FALKORDB_USERNAME`, `FALKORDB_PASSWORD`, `FALKORDB_SSL`, `FALKORDB_GRAPH=pehchan`, `OPENROUTER_API_KEY`, `PEHCHAN_OPENROUTER_MODEL=openai/gpt-oss-120b`, `PEHCHAN_PUBLIC_READ=1`, `PEHCHAN_PUBLIC_HOSTS=<owner>-<space>.hf.space`, and two distinct random `PEHCHAN_API_TOKEN` / `PEHCHAN_WRITE_TOKEN` values.
+4. **GitHub:** add repository secret `HF_TOKEN` (a Hugging Face write token) and repository variable `HF_SPACE=<owner>/<space>`. Every push to `main` that passes CI uploads [deploy/huggingface](../deploy/huggingface/) to the Space with the Dockerfile pinned to that commit; the Space rebuilds (about 10 minutes) and serves the web app and `/public/mcp/` at `https://<owner>-<space>.hf.space`.
+
+Limits: free CPU Spaces sleep after about 48 hours without visits and take a minute or more to wake (connectors may time out on the first call); Space storage is ephemeral, which is fine because the graph lives in FalkorDB Cloud; the in-memory rate limiter resets on restart.
+
 ## Quick public demo through a Cloudflare tunnel
 
 Implemented in [scripts/run_public.py](../scripts/run_public.py) (ADR-049, F-39). It downloads `cloudflared` into ignored `.tools/` if missing, opens a quick tunnel to `127.0.0.1:8100`, reads the generated `*.trycloudflare.com` hostname, generates distinct read/write tokens into ignored `artifacts/public-tokens.json`, and starts a separate single-worker API with `PEHCHAN_PUBLIC_HOSTS=<that host>` and `PEHCHAN_PUBLIC_READ=1`. The local API on 8000 is untouched. The web page, `/health`, read-only graph routes, `/api/dossier`, `/api/scout` and `/public/mcp/` work without credentials; case history, writes and `/mcp/` require tokens. Rate limiting applies per `CF-Connecting-IP`.
