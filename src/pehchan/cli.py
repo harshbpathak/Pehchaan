@@ -42,10 +42,33 @@ def main() -> int:
     path.add_argument("from_id")
     path.add_argument("to_id")
     sub.add_parser("stats")
+    sub.add_parser("download-models", help="download pinned local embedding and NLI checkpoints")
+    sub.add_parser("embed", help="incrementally embed stored variants and create the vector index")
+    sub.add_parser("embedding-status", help="inspect vector coverage and model provenance")
+    for name in ("semantic-search", "scout"):
+        command = sub.add_parser(name)
+        command.add_argument("claim")
+        command.add_argument("--limit", type=int, default=10)
+    for name in ("investigate", "dossier"):
+        command = sub.add_parser(name)
+        command.add_argument("claim")
+        if name == "investigate":
+            command.add_argument("--request-id")
+    sub.add_parser("cases")
+    command = sub.add_parser("case")
+    command.add_argument("investigation_id")
+    command = sub.add_parser("review")
+    command.add_argument("investigation_id")
+    command.add_argument("--state", required=True, choices=["OPEN", "IN_PROGRESS", "RESOLVED"])
+    command.add_argument("--note", default="")
     args = parser.parse_args()
     store = None
     try:
-        if args.command == "prepare":
+        if args.command == "download-models":
+            from .models import download_models
+
+            result = download_models()
+        elif args.command == "prepare":
             result = prepare(
                 args.input,
                 args.output,
@@ -76,6 +99,42 @@ def main() -> int:
                 result = store.bfs(args.variant_id)
             elif args.command == "path":
                 result = store.shortest_path(args.from_id, args.to_id)
+            elif args.command in {"embed", "embedding-status", "semantic-search", "scout"}:
+                from .models import Embedder
+                from .semantic import ClaimScout, VectorIndex
+
+                if args.command == "embed":
+                    result = VectorIndex(store).build(Embedder())
+                elif args.command == "embedding-status":
+                    result = VectorIndex(store).status()
+                elif args.command == "semantic-search":
+                    if not args.claim.strip() or len(args.claim) > 4000:
+                        raise ValueError("Claim must contain 1–4000 characters.")
+                    result = VectorIndex(store).search(
+                        Embedder().encode([args.claim])[0], args.limit
+                    )
+                else:
+                    result = ClaimScout(store).scout(args.claim, args.limit)
+            elif args.command in {"investigate", "dossier", "cases", "case", "review"}:
+                from .inference import configured_inference
+                from .investigation import CaseStore, Orchestrator
+
+                if args.command == "investigate":
+                    result = Orchestrator(store, inference=configured_inference()).investigate(
+                        args.claim, args.request_id
+                    )
+                elif args.command == "dossier":
+                    result = Orchestrator(store, inference=configured_inference()).assemble(
+                        args.claim
+                    )
+                elif args.command == "cases":
+                    result = CaseStore(store).list()
+                elif args.command == "case":
+                    result = CaseStore(store).get(args.investigation_id)
+                else:
+                    result = CaseStore(store).update_review(
+                        args.investigation_id, args.state, args.note
+                    )
             else:
                 result = store.stats()
         if args.command == "prepare":
@@ -93,10 +152,20 @@ def main() -> int:
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(rendered + "\n", encoding="utf-8")
         return 1 if isinstance(result, dict) and result.get("ok") is False else 0
-    except (ValueError, KeyError, OSError, RedisError, ijson.JSONError) as exc:
+    except (
+        ValueError,
+        KeyError,
+        OSError,
+        RedisError,
+        ijson.JSONError,
+        RuntimeError,
+        ImportError,
+    ) as exc:
         # Never echo connection strings, passwords or the raw exception from a network client.
         if isinstance(exc, (ValueError, KeyError, FileNotFoundError)):
             print(f"Input error: {exc}", file=sys.stderr)
+        elif isinstance(exc, (RuntimeError, ImportError)):
+            print(f"Setup error: {exc}", file=sys.stderr)
         else:
             print(
                 f"Operation failed ({type(exc).__name__}). Check input and FalkorDB availability.",
