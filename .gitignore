@@ -9,3 +9,7 @@ data/raw/
 data/processed/
 artifacts/
 .models/
+
+# Database backups (contain the full graph and saved cases)
+*.tgz
+*.pem
