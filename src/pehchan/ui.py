@@ -44,8 +44,29 @@ def show_dossier(report):
         "NEEDS_HUMAN_REVIEW": "Human review needed",
         "INSUFFICIENT_EVIDENCE": "Evidence is insufficient",
     }
+    findings = {
+        "KNOWN_RECYCLED_CLAIM": ("Known recycled claim", st.success),
+        "KNOWN_NARRATIVE_VARIANT": ("Variant of a known narrative", st.warning),
+        "NEW_CLAIM": ("New claim · queued for a fact-checker", st.info),
+    }
+    if report.get("finding") in findings:
+        label, banner = findings[report["finding"]]
+        banner(f"**{label}** — {(report.get('review_queue') or {}).get('reason', '')}")
+    prior = report.get("prior_submission")
+    if prior and report.get("inference", {}).get("mode") == "graph_recall":
+        st.caption(
+            f"Recalled through the graph: this wording matches an earlier submission "
+            f"(similarity {prior['similarity']:.3f}, case {prior['investigation_id']}) and was "
+            "answered by following its MATCHES edges."
+        )
+    elif prior:
+        st.caption(f"Seen before in case {prior['investigation_id']} ({prior.get('finding')}).")
     st.subheader(labels.get(status, status))
     st.write(report["recommended_action"])
+    if report.get("draft_reply"):
+        with st.container(border=True):
+            st.markdown("**Drafted reply** · requires human approval")
+            st.text(report["draft_reply"]["text"])
     inference = report.get("inference", {})
     if inference.get("mode") == "gemini":
         st.caption("Tool-calling inference: Google AI Studio · " + inference["model"])
@@ -83,6 +104,24 @@ def show_dossier(report):
             st.caption(
                 f"Source record: {source['factcheck_id']} · File SHA-256: {source['source_sha256']}"
             )
+    related = (report.get("widening") or {}).get("related", [])
+    if related:
+        st.markdown("#### Widened through shared entities and frames")
+        st.caption(
+            "No review of this exact claim. These fact-checked claims share rule-tagged entities "
+            "or narrative frames with it; they are context, not evidence for this submission."
+        )
+        for item in related[:6]:
+            shared = ", ".join(sorted({x["name"] for x in item["shared"]}))
+            with st.expander(f"{item['publisher']} · {item['verdict_original'][:90]}"):
+                st.write(item["text"])
+                st.caption(f"Shared: {shared} · context score {item['score']:.3f}")
+                for edge in item["shared"]:
+                    st.caption(
+                        f"Claim -[{edge['relation']}]-> {edge['label']} '{edge['name']}' · "
+                        f"basis {edge['basis']} · {edge['reviewed_by']}"
+                    )
+                st.link_button("Open publisher fact-check", item["url"])
     if report["scout"]["context"]:
         with st.expander("Related context and uncertain matches"):
             for candidate in report["scout"]["context"]:
@@ -90,8 +129,13 @@ def show_dossier(report):
                 st.caption(
                     candidate["assessment"]["relation"] + " · " + candidate["assessment"]["reason"]
                 )
-    with st.expander("How the investigation ran"):
-        st.dataframe(report["agent_trace"], hide_index=True, width="stretch")
+    st.markdown("#### How the agents decided")
+    for n, step in enumerate(report["agent_trace"], 1):
+        tool = step.get("tool") or step.get("status", "")
+        timing = f" · {step['duration_ms']} ms" if "duration_ms" in step else ""
+        st.markdown(f"{n}. **{step['agent']}** → `{tool}`{timing}")
+        if step.get("reason"):
+            st.caption(step["reason"])
     with st.expander("Uncertainty and evidence quality"):
         for uncertainty in report["uncertainties"] + report["quality"]["warnings"]:
             st.write("• " + uncertainty)
@@ -119,6 +163,11 @@ with st.sidebar:
             st.warning(
                 "Set GEMINI_API_KEY in the backend environment and restart the API to enable Gemma inference."
             )
+        st.caption(
+            f"Inference: Gemma ({inference.get('model')})"
+            if inference.get("mode") == "gemini"
+            else "Inference: offline specialists"
+        )
         st.caption(f"Collection: {health['claims']} claim variants")
         st.caption(
             "Ready to investigate" if health["status"] == "ready" else "Collection setup required"
