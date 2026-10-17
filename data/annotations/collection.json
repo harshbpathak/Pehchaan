@@ -1,0 +1,5954 @@
+[
+  {
+    "variant_id": "variant_700ff916add10df61b609425",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Rockefeller",
+        "type": "Person",
+        "evidence_span": "Rockefeller"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_8dd32d7a706458ac80c0d452",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_59490dc8618dc9f68cf2795c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_aadb8f0e50f8dda36c2437ab",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_76abb3c3e5ab7c5d50d34690",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_03a7205f8986150abe18ca81",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_12b32d84f67eaa1daf5c726e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Magnetic pole shift",
+        "type": "Concept",
+        "evidence_span": "magnetic poles"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_5627b2979974c8fa0907e961",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_67f3ce8db389b5aa43d906eb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_6f987f52a8846c002d36a855",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Greenland",
+        "type": "Place",
+        "evidence_span": "Greenland"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6b30c4c3c48926a37f076bb9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_41ae8cd6d1350ac65de38347",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_5dcbc444050cef41a430bd58",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "コロナ"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_afb743cbbf7de77afdb268a2",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_3a23617672ac1e68e39918a3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Wildfire",
+        "type": "Event",
+        "evidence_span": "wildfires"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f953e784b06f242288df66bd",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Airtel",
+        "type": "Organization",
+        "evidence_span": "Airtel"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_424dd0483eccced898956771",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_b0c81149f1d893c4dd8e79b1",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2e22b87586cd64d7857ff42a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Donald Trump",
+        "type": "Person",
+        "evidence_span": "Trump"
+      },
+      {
+        "name": "JD Vance",
+        "type": "Person",
+        "evidence_span": "Vance"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4dae8fd3e553dfcb4297d424",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_b8faf53d09313765d8aeec63",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_a83ec209cc153f4413c599ed",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_0a1db85a48867af705986f43",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_ea0695d7f9c4919e08bf18a8",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Kamala Harris",
+        "type": "Person",
+        "evidence_span": "Kamala Harris"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d8a35bdf7c752fdb5996092e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Kamala Harris",
+        "type": "Person",
+        "evidence_span": "Kamala Harris"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_1a8529389b2b0d2708b9250d",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Curated thematic connection; propositions may differ."
+      },
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Geoengineering",
+        "type": "Concept",
+        "evidence_span": "geoengineering"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e1304d939a6463902f948f76",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_33c2b012befa6182c97ffb9d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      },
+      {
+        "name": "Reliance Jio",
+        "type": "Organization",
+        "evidence_span": "Jio"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_7196d606adf9319b73fc1060",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "JD Vance",
+        "type": "Person",
+        "evidence_span": "Vance"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_cbf4c3acced5df5103ec37d4",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_fca24d8cfd5c9a64faf5fe3b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "World Economic Forum",
+        "type": "Organization",
+        "evidence_span": "WEF"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b754a372267057af314a2c72",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_106f13dbb94aa8ea859c3ff2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_eb55739fc76852783c3006c9",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_efac0b26e1ebfbb6de25dd80",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      },
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "NASA",
+        "type": "Organization",
+        "evidence_span": "NASA"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_32a609ef3a47a39067ed8958",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d86923fc05f9c8d4d85867eb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      },
+      {
+        "name": "Marburg virus",
+        "type": "Disease",
+        "evidence_span": "Marburg"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_67ebcfcd447a5ee4e4950576",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5g"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_26a410bcab6bfc7810c96585",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_d1fa804c855bab6704330601",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "United Nations",
+        "type": "Organization",
+        "evidence_span": "UN"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4f69e0bdf7a086c359c5bcb9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_82f8b0725617deba79789767",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Geoengineering",
+        "type": "Concept",
+        "evidence_span": "Geoengineering"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f8a82ce1e069dfa1483a7679",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_5bc58c5c368d48ce97365c8d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_507a74c3d2881c0551941844",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_3f38d289f8363246f70c8c4b",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      },
+      {
+        "name": "WikiLeaks",
+        "type": "Organization",
+        "evidence_span": "WikiLeaks"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_a8d395468409d66118eec5de",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Wildfire",
+        "type": "Event",
+        "evidence_span": "wildfire"
+      },
+      {
+        "name": "Canada",
+        "type": "Place",
+        "evidence_span": "Canada"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_0c9ed49a89267502d0ce9fe2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Canada",
+        "type": "Place",
+        "evidence_span": "Canada"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b694c8707ed3bb893f133f1e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e6684490498f716e1dce64a8",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "World Economic Forum",
+        "type": "Organization",
+        "evidence_span": "WEF"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6101719f4767af35e76bcc09",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Hillary Clinton",
+        "type": "Person",
+        "evidence_span": "Hillary Clinton"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c4ad59528df9b0880471fe1a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e9f043a2909535be1ede1b4d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "covid"
+      },
+      {
+        "name": "Peru",
+        "type": "Place",
+        "evidence_span": "Peruaanse"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4fe76c69ad49245fedc7e1cf",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_329f09348682d0a80320bff3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Peru",
+        "type": "Place",
+        "evidence_span": "Peru"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d629ab9caaf73e8e1469e0d8",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "Vodafone",
+        "type": "Organization",
+        "evidence_span": "Vodafone"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_7ef24834df5e573f91956c30",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_5ab5541dc09f12a9fa5f4825",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e94947af07b1a69645e08ed5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_cd362b7800358b8891803bd3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Judith Curry",
+        "type": "Person",
+        "evidence_span": "Judith Curry"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_44d4321e0a8b0db9c3b48e1c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      },
+      {
+        "name": "Marburg virus",
+        "type": "Disease",
+        "evidence_span": "Marburg"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_abb2c33e330e9cfed5651ab7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2d965208abc98f8709bd2c85",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "Moon Landing"
+      },
+      {
+        "name": "Buzz Aldrin",
+        "type": "Person",
+        "evidence_span": "Buzz Aldrin"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_cab3840cb67460b19877d197",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "Moon Landing"
+      },
+      {
+        "name": "Buzz Aldrin",
+        "type": "Person",
+        "evidence_span": "Buzz Aldrin"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_ad1a76ec52bcdfb3bf0f71b5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "کرونا"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_44c8407b461346aa4997c695",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_25cfbc93be5beafa3a917603",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_60c08142b145caf96414fca2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_0b4a1b4ddc87f64f99ca1185",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "World Economic Forum",
+        "type": "Organization",
+        "evidence_span": "WEF"
+      },
+      {
+        "name": "Yuval Noah Harari",
+        "type": "Person",
+        "evidence_span": "Harari"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_be1f53e4105669f3e9eec577",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c9ce10f79c7b3a3a9a738cf3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Bill Gates",
+        "type": "Person",
+        "evidence_span": "Bill Gates"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d1f457d25ffc8e7e40772b50",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_236623771eefe02ca45582eb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      },
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "NASA",
+        "type": "Organization",
+        "evidence_span": "NASA"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_ab10943ccb327c95df53462d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_055010d1dfb34764f2da3c54",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Milankovitch cycles",
+        "type": "Concept",
+        "evidence_span": "Milankovitch"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_789205add04bf951784c3cad",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "Moon landing"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9955d58055304f18749df83e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_1455a3efbe30eff561d0773c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Vladimir Putin",
+        "type": "Person",
+        "evidence_span": "Putin"
+      },
+      {
+        "name": "Russia",
+        "type": "Place",
+        "evidence_span": "Russia"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9a0db6ff2481c5b724e9c8c6",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_89c82cd931baef83c9da2858",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_d346d2dbea67661af8d97e3f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_1b1ffa9eae75c2eb642451c7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_f4f343b30f6fdb31e0b2d9c0",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "CBDC",
+        "type": "Technology",
+        "evidence_span": "CBDC"
+      },
+      {
+        "name": "World Economic Forum",
+        "type": "Organization",
+        "evidence_span": "WEF"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4543bf2102cebe622ade0a9b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Milankovitch cycles",
+        "type": "Concept",
+        "evidence_span": "Milankovitch"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b1771e83b5a631d4acae13cb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Wildfire",
+        "type": "Event",
+        "evidence_span": "wildfires"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_fe45169b7d51c3b9d8bf76e1",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Pope Francis",
+        "type": "Person",
+        "evidence_span": "Pope Francis"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4a26c4dbb2445f12710f532d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Magnetic pole shift",
+        "type": "Concept",
+        "evidence_span": "pole shift"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_78d851044a23e15a4a7061d9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_528bc05cd2afa2396069483d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_6369377fb1e41e12abb4777b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Vladimir Putin",
+        "type": "Person",
+        "evidence_span": "Poutine"
+      },
+      {
+        "name": "Russia",
+        "type": "Place",
+        "evidence_span": "Russie"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2105ffbdf685f7bc260361b7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Vladimir Putin",
+        "type": "Person",
+        "evidence_span": "Poetin"
+      },
+      {
+        "name": "Russia",
+        "type": "Place",
+        "evidence_span": "Rusland"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_63a1206d69c8649c53d81b97",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_68890d6e1b24aa33aaae762a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f91cb5669a4e735dbbe35bf9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_27142c28ef2734b6b6b34893",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Geoengineering",
+        "type": "Concept",
+        "evidence_span": "Chem Trails"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_05b7044932f2b775a149161c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Kamala Harris",
+        "type": "Person",
+        "evidence_span": "Kamala Harris"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_a8b9c897d922d9da17ea38fb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "CBDC",
+        "type": "Technology",
+        "evidence_span": "CBDC"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9f7936c079670a206d714bd9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_5e16390d75ed4de00dd7fba8",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Greta Thunberg",
+        "type": "Person",
+        "evidence_span": "Greta Thunberg"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_8d48e738a8b2d1ab74a448d4",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_5081bb09a938040427ae08a4",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      },
+      {
+        "name": "Richard Nixon",
+        "type": "Person",
+        "evidence_span": "Nixon"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e476465268ebd1c9f57b215e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Geoengineering",
+        "type": "Concept",
+        "evidence_span": "weather modification"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f4cac3780ae70676061e3564",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Samsung",
+        "type": "Organization",
+        "evidence_span": "Samsung"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_db7fa317997bd39335cbf975",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_4e8d4b4a566919016dc70ea2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Magnetic pole shift",
+        "type": "Concept",
+        "evidence_span": "Magnetic pole"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b50c1197719cc41149949a7a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_59fec4811dc114a71e9ee1c7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate policy as a pretext for elite control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_0e319649887b0487d1f47ba2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_155814e9bcec1229d09f8be0",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "Birds"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d42a73e893246644c69f5d8a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to natural cycles",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      },
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_18e1849881e28108504df25f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "Chips"
+      },
+      {
+        "name": "Klaus Schwab",
+        "type": "Person",
+        "evidence_span": "Klaus Schwab"
+      },
+      {
+        "name": "Ursula von der Leyen",
+        "type": "Person",
+        "evidence_span": "von der Leyen"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_ba869b9e7b7f0400b616ee22",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      },
+      {
+        "name": "WikiLeaks",
+        "type": "Organization",
+        "evidence_span": "Wikileaks"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4fa3620a1f15882eaa895cf4",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change attributed to deliberate manipulation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Wildfire",
+        "type": "Event",
+        "evidence_span": "forest fires"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2fab9c1fb3cd8029e41a00ba",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      },
+      {
+        "name": "Buzz Aldrin",
+        "type": "Person",
+        "evidence_span": "Buzz Aldrin"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9ab1a4dcbec8ac8e51a18c21",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Joe Biden",
+        "type": "Person",
+        "evidence_span": "Biden"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_071dd4e74e6b61346e829761",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Peru",
+        "type": "Place",
+        "evidence_span": "Peru"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_bca4e2329606f43a01f4737f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_94f54a20da9857f0135e61e0",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_575abb63a432052e480d62fd",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "INDIA"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_25d957f58909c71096b522a5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_2d7f777c4c1245ac1af37342",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_f6b0d9aa43c6623fbee773cb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "Hindistan"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "Çin"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_55d8b2c9c4432bb480eaaca2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_afade7cdc4bde1c9f37d2d95",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e60e4e8a37ab1d48f9b12faa",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e653cf4270c24856c59dc01d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "World Economic Forum",
+        "type": "Organization",
+        "evidence_span": "WEF"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c8c728ef1274f3968c9bf95b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_be85b0a6946dbd484c901044",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Ron Johnson",
+        "type": "Person",
+        "evidence_span": "Ron Johnson"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_01ed7e1e0ba3a24d1c8bc96b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2ad1ac06b4cc41ea0b85c8c9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_39beb998e0384d7533f97574",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Joe Biden",
+        "type": "Person",
+        "evidence_span": "Biden"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_bb42347c90f4c436f618cdbf",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_2c8f57800a2c7e23dd646958",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      },
+      {
+        "name": "Pfizer",
+        "type": "Organization",
+        "evidence_span": "Pfizer"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_081f6d73a49a4ff2275d5c8f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_074073e993a5d8bc9d50576c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "Vögel"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_39b21a4556898c2d9ecb11cf",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Moon landing as a staged event",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Moon landing",
+        "type": "Event",
+        "evidence_span": "moon landing"
+      },
+      {
+        "name": "Buzz Aldrin",
+        "type": "Person",
+        "evidence_span": "Buzz Aldrin"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_bce175ec8acee05aa80f00a1",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2d773647f9ecaaab4a9c02a3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_44c0e2a82bef6dcacca37c1f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Greenland",
+        "type": "Place",
+        "evidence_span": "Greenland"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d90ccbc1374b756129bdb725",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "chip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "covid"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4f0c6b265284d508e30e6d1b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_5b439bd390242a7268fc8ad8",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9176cd2ee18ab7c1633aa959",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "Microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d07a37516134c22d3b33984b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_6e201cc35940b0e78fc0cce9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_6e6f1b5a28563870fb926981",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_ce09c7d4c2f866a379d037ce",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2f3181f73ca87eba8936865f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_39cf2f6d9a66ff13d31794a6",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b798bbbaab3675372ee8c4c3",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_894e450e8e7f3219fffbd7a8",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9d8579267acf4627f77eb083",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c33c5ad75f0189bd1179dcf3",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Curated thematic connection; propositions may differ."
+      },
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchips"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_82934fe580071f8594f883cb",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_18f043030d8aa8bc70640f94",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f892e823be3462a01d142cac",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      },
+      {
+        "name": "AstraZeneca",
+        "type": "Organization",
+        "evidence_span": "AstraZeneca"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_aa9379d49ff102c9e2c9be1c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Reliance Jio",
+        "type": "Organization",
+        "evidence_span": "Jio"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "Gujarat"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_34fb9e78f6639cd360e43292",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_913f8cea2af2d4a180bf31bc",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_7debb0f14810dc5c47bcd432",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "Pfizer",
+        "type": "Organization",
+        "evidence_span": "Pfizer"
+      },
+      {
+        "name": "Microsoft",
+        "type": "Organization",
+        "evidence_span": "Microsoft"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_21a2fc94f548eab52ec59552",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d92f2643d69950eea36bf2ba",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "birds"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6572559980ba3db5b8a3edcf",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_c3164f899b6f82b2303430af",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Huawei",
+        "type": "Organization",
+        "evidence_span": "Huawei"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_75092f756b8d49b87cef4ebd",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_36f7441cbf7787f8ab7639c0",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Huawei",
+        "type": "Organization",
+        "evidence_span": "Huawei"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_ca307107098fdace06c93b30",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f9236c672a1928cc4ae350d7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Netherlands",
+        "type": "Place",
+        "evidence_span": "NL"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_aabd0182e2771de0ed9b4573",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_174f62b5e9254a9c389d21df",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Ted Cruz",
+        "type": "Person",
+        "evidence_span": "Ted Cruz"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6275b9eb8224356a667a0bb5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Ted Cruz",
+        "type": "Person",
+        "evidence_span": "Ted Cruz"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6a50017f0dfa0b40d36aeb47",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Climate change as a fabricated deception",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Space"
+      },
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "NASA",
+        "type": "Organization",
+        "evidence_span": "NASA"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6b37de53ce1f556d4b6e6e26",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Joe Biden",
+        "type": "Person",
+        "evidence_span": "Biden"
+      },
+      {
+        "name": "Donald Trump",
+        "type": "Person",
+        "evidence_span": "Trump"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_14087cbc5f98e02142fa8276",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "Microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_005b95cdf5241ace9e3f5aa7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_3a9bef856a4f0ee32d85376e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_67ed6396c68d73b8a0d913d6",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f6082e918aa65ea6bcdf8771",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "chip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_bf50a3be9c8d4574c322a070",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "Birds"
+      },
+      {
+        "name": "Reliance Jio",
+        "type": "Organization",
+        "evidence_span": "Jio"
+      },
+      {
+        "name": "India",
+        "type": "Place",
+        "evidence_span": "India"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_fb42e698dc6657a59142ff94",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_76d0e170a00f4ac29e90697f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Donald Trump",
+        "type": "Person",
+        "evidence_span": "trump"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2ba36e0d734c31f6933f9d86",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_715406558be93ef131e9e71f",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_89dd34f1960664347196033d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "PÁJAROS"
+      },
+      {
+        "name": "Croatia",
+        "type": "Place",
+        "evidence_span": "CROACIA"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9c6113ed78a74b11d3c1421a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6a2319703efc4f1c1b29222a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_3d4382bd54d7dab91393fcc5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "Joe Biden",
+        "type": "Person",
+        "evidence_span": "Biden"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_dff6cbdd50b12947ab35063e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_55fd3a4b85ac008a329c9997",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "corona"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_0d678709e7337a5435daef97",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Nancy Mace",
+        "type": "Person",
+        "evidence_span": "Nancy Mace"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2f6b457b4180cd3f9ddca261",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "Climate"
+      }
+    ],
+    "entities": []
+  },
+  {
+    "variant_id": "variant_cfac1594054207b2d1883ef9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      },
+      {
+        "name": "Italy",
+        "type": "Place",
+        "evidence_span": "Italy"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c7ed2616fa89cc6517c72510",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Covid"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_07477bd56c327b08cf413c20",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6cd38f487439950d14757655",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_20717cb231d1b6163341bafa",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_bc323ddd934c0cea7de5fa9e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c686438bb099c982b5529dc9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_231887ad3901a3a0a9e73c06",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Corona"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9e471d73f04ac727842178b5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "பறவைகள்"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e3655c2cb525831393dad3d3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_330f687321e8e926d3fe0e2e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_21f625e78039cb58423a932e",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d5c3859c252aebe9af62a470",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "Bill Gates",
+        "type": "Person",
+        "evidence_span": "Bill Gates"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_580481396f7b82b04ec30916",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_3e793eda030db61338cc0463",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "Vögel"
+      },
+      {
+        "name": "Croatia",
+        "type": "Place",
+        "evidence_span": "Kroatien"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4a2d1f0801bfe95f45e4b3a9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_6a8f8c08e4ae178632bc6f30",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_4e4c99ea9746ed1c31647df5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "vogels"
+      },
+      {
+        "name": "Croatia",
+        "type": "Place",
+        "evidence_span": "Kroatië"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_bfbdfa31cedd73a5e738a96c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "Bill Gates",
+        "type": "Person",
+        "evidence_span": "Bill Gates"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_1d541f7cb2911daf394523a4",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_b1dc813659c2e33958ff46ea",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "China"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_83ae1ac2600ca061d66e0180",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2de99051dfaf1d5c85819bed",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_56387d39c8d18849afde7d20",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_0065b33ca041b4ddb4e528ae",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Peru",
+        "type": "Place",
+        "evidence_span": "Perú"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_906b5343dde8cfb4588d3456",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_cfc96fcb66dea409f1573a9b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "Wuhan"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_de45a54554aa143f042d0db7",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "Bill Gates",
+        "type": "Person",
+        "evidence_span": "Bill Gates"
+      },
+      {
+        "name": "Microsoft",
+        "type": "Organization",
+        "evidence_span": "Microsoft"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_1a815d3ecfc73eac93b873ef",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_0248afe71824c72fa1c9b3fd",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5g"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_493544ecbc66c52a8fbbad2c",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_22264829b4444ced0b256268",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "Vögel"
+      },
+      {
+        "name": "Croatia",
+        "type": "Place",
+        "evidence_span": "Kroatien"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_edf18a05df2826c7e6bafdbf",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      },
+      {
+        "name": "Gates Foundation",
+        "type": "Organization",
+        "evidence_span": "Gates Foundation"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_7b47d77d3553f72a83a7b0ec",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "World Health Organization",
+        "type": "Organization",
+        "evidence_span": "OMS"
+      },
+      {
+        "name": "Italy",
+        "type": "Place",
+        "evidence_span": "Italia"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_e08e47e302b6bbca771ac442",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d6dbb71f5ab15b4815b58030",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_83dbab991063c7db214634a3",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      },
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "MICRO CHIP"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_49f577b96225d7bf10b896e0",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "chips"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      },
+      {
+        "name": "CBDC",
+        "type": "Technology",
+        "evidence_span": "digital currency"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_db5cb662930b84c93763cea9",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_be1a9d898b0d5fa3f28b62ee",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c80ebec747845c7bf8606065",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "Chinesa"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_3941e26336ebbc97744f4046",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "CORONA"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_0ae5446c5a889ced298aa4f6",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_de5402b47fb55a25da3fe783",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Corona"
+      },
+      {
+        "name": "Bill Gates",
+        "type": "Person",
+        "evidence_span": "Bill Gates"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_51a56688c5afc80bc2d35a70",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "China"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_2bf82039549679a07ba6a795",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "estorninos"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_9e4e7b29e161704389906809",
+    "reviewed_by": "Codex (AI-assisted text inspection; human review pending)",
+    "rationale": "The recorded claim text expresses this broad frame. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Curated thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_8c89c7672798a049e6758ebf",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Biomedical technology as covert control",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "microchip"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      },
+      {
+        "name": "Bill Gates",
+        "type": "Person",
+        "evidence_span": "Bill Gates"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_07a2d7d2ea99664ab258346b",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "Vaccination as microchip implantation",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "Vaccines"
+      }
+    ],
+    "entities": [
+      {
+        "name": "Microchip",
+        "type": "Technology",
+        "evidence_span": "MICROCHIP"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_f3db973a556feffabfd4351d",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      },
+      {
+        "name": "Destruction or banning of 5G infrastructure",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "corona"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "Chinese"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_07720593a4689c126b5b5493",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "COVID"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_c6189b51e127da52af5ed824",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_963c2af1232094f0e15a3bad",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5g"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_1e1080da3fcb882b4c4783d5",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_d869fa598936e7cda02c769a",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_57dfce6c32c9bffed05e54a2",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G as a cause of coronavirus illness",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "COVID-19",
+        "type": "Disease",
+        "evidence_span": "Coronavirus"
+      },
+      {
+        "name": "China",
+        "type": "Place",
+        "evidence_span": "China"
+      }
+    ]
+  },
+  {
+    "variant_id": "variant_a62529110669e9f9a69a0435",
+    "reviewed_by": "Claude Code (rule-based keyword annotation, scripts/annotate_collection.py; human review pending)",
+    "rationale": "Assigned by an explicit keyword rule over the recorded claim text. This annotation is an inference, not publisher markup, proof of claim equivalence, or coordination.",
+    "frames": [
+      {
+        "name": "5G infrastructure as a health hazard",
+        "description": "Rule-assigned thematic connection; propositions may differ."
+      }
+    ],
+    "topics": [
+      {
+        "name": "5G"
+      }
+    ],
+    "entities": [
+      {
+        "name": "5G",
+        "type": "Technology",
+        "evidence_span": "5G"
+      },
+      {
+        "name": "Birds",
+        "type": "Animal",
+        "evidence_span": "Birds"
+      }
+    ]
+  }
+]
