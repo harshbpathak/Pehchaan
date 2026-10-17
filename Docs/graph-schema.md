@@ -12,6 +12,10 @@ graph LR
   C -->|MENTIONS| E[Entity]
   I[Investigation] -->|EXAMINES| V
   I -->|CITES| FC
+  I -->|SUBMITTED| S[Submission]
+  S -->|MATCHES| V
+  S -->|MENTIONS| E
+  S -->|USES_FRAME| F
 ```
 
 | Label | Identity and important fields |
@@ -23,11 +27,12 @@ graph LR
 | NarrativeFrame | ID from normalized annotation name; name, description |
 | Topic | ID from normalized annotation name; name |
 | Entity | ID from normalized name and type; name, type |
-| Investigation | Random or request-derived ID; submitted_claim, status, created_at, priority, report_json, review_state, review_note |
+| Investigation | Random or request-derived ID; submitted_claim, status, finding, created_at, priority, report_json, review_state, review_note |
+| Submission | ID from normalized submitted wording; text, normalized_text, embedding (own vector index), embedding model/revision, first_seen, last_seen, times_seen |
 
 `date` on a variant is taken only from the reviewed claim's `itemReviewed.datePublished` when supplied, not from the review date. The complete original dates remain in each FactCheck's source-record JSON. When multiple reviews share a variant, variant properties represent the most recently ingested record; use source records for historical provenance.
 
-All eight labels have ID range indexes. Source ingestion is single-writer, merges by ID, and validation detects duplicate IDs, orphaned reviews and invalid variant-to-canonical-claim cardinality. Investigation nodes now represent actual persisted actions; empty-evidence cases have no fabricated EXAMINES/CITES links.
+All nine labels have ID range indexes. Source ingestion is single-writer, merges by ID, and validation detects duplicate IDs, orphaned reviews and invalid variant-to-canonical-claim cardinality. Investigation nodes now represent actual persisted actions; empty-evidence cases have no fabricated EXAMINES/CITES links.
 
 ## Vector retrieval
 
@@ -79,3 +84,9 @@ BFS follows outgoing relationships on the tested server and returns reachable no
 The bounded shortest connection explores `EXPRESSES`, `USES_FRAME`, and `MENTIONS` in either direction, up to eight relationships, orders paths by length, and returns one minimum-length path within that bound. It excludes shared publisher and topic nodes as shortcuts. It is a bounded Cypher path query, not the native `shortestPath` function; this server rejects undirected native shortest-path traversals. BFS satisfies the native graph-algorithm validation.
 
 Entity bridging can connect `variant_700ff916add10df61b609425` to `variant_9e4e7b29e161704389906809` through the explicitly mentioned `5G` entity. That path expresses shared subject matter, not support for either claim or evidence of coordinated circulation.
+
+## Submission write-back and recall
+
+Persisted investigations write the submitted wording back as a `Submission` node ([ADR-046](Decision.md)). `MATCHES` edges carry the Scout's relation, similarity and assessment JSON with `basis: 'model_assessment'`; `MENTIONS`/`USES_FRAME` edges carry `basis: 'rule_inference'` from [rules.py](../src/pehchan/rules.py). A later submission whose embedding is at least 0.95 cosine-similar to one with a `SAME_PROPOSITION` match is answered by following those edges (`inference.mode = graph_recall`). Read-only dossiers recall but never write.
+
+Widening ([ADR-045](Decision.md)) uses `SHARED_CONTEXT` in [queries.py](../src/pehchan/queries.py): fact-checked claims sharing tagged entities/frames, scored by the sum of `1/degree` of shared nodes. Hits below 0.05 (only hub nodes shared) are dropped.

@@ -90,6 +90,10 @@ The diagram shows the retained deterministic baseline. Default CLI/API/MCP inves
 | F-31 | Launch local API and UI processes | `scripts/run_local.py` | Local processes/logs |
 | F-32 | Infer with Gemma and execute validated tool calls | CLI/API/MCP investigation or dossier | Case writes only after successful assembly via F-26 |
 | F-33 | Configure and verify hosted Gemma inference | Environment and `scripts/smoke_inference.py` | Local report; no case |
+| F-34 | Annotate the whole collection with keyword rules | `scripts/annotate_collection.py`, then F-09 | Annotation JSON; then graph edges |
+| F-35 | Widen through shared entities/frames and classify the finding | Every dossier/investigation without a direct match; MCP `expand_narrative_context` | None |
+| F-36 | Recall a prior submission and write a submission back | Start of every dossier/investigation; end of persisted investigations | Submission node and SUBMITTED/MATCHES/MENTIONS/USES_FRAME edges (investigations only) |
+| F-37 | Compare retrieval methods on held-out queries | `scripts/evaluate_retrieval.py` | `Docs/retrieval-evaluation.json` |
 
 ## F-01 — Prepare runtime and configuration
 
@@ -396,23 +400,25 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 ## F-25 — Orchestrate specialists and assemble a dossier
 
-**Entry:** CLI `dossier`, [Orchestrator / specialists](../src/pehchan/investigation.py). **Decisions:** ADR-033, ADR-034.
+**Entry:** CLI `dossier`, [Orchestrator / specialists](../src/pehchan/investigation.py). **Decisions:** ADR-033, ADR-034, ADR-045, ADR-046.
 
 **Steps:**
 
+0. Orchestrator recalls earlier submissions (F-36). A near-identical submission with a direct match replaces step 1 with its MATCHES edges.
 1. Claim Scout invokes its permitted `find_similar_claims` capability and returns F-24 output.
 2. If direct IDs exist, Graph Detective examines at most three, queries their narrative paths, executes native BFS, and seeks an explicit bounded connection between candidates or a discovered neighbor.
 3. If no direct ID exists, record the Detective as skipped with `NO_CONFIDENT_CANDIDATE_MATCH`; do not invent graph relationships.
 4. Evidence & Response re-fetches sources for direct and contradictory candidates through its own evidence capability. Exclude mismatched original claim wording. Retain publisher ratings and exact provenance, and report missing dates.
 5. Choose a dossier-ready, human-review or insufficient-evidence action according to ADR-034. Include quality summary, graph findings, Scout handoff, explicit uncertainties, rule-based priority, specialist policies and real tool traces.
+6. Without a direct citation, Graph Detective widens through shared entities/frames, then the finding, review queue and drafted reply are set (F-35).
 
 **Outputs:** A structured source-backed dossier. This path does not persist a case; F-26 adds that action. This fixed specialist sequence remains available in explicit deterministic mode. F-32 is now the default application/CLI generative inference path. An unapproved specialist tool call is rejected. Exceptions propagate rather than being converted to a fabricated successful report.
 
 ## F-26 — Persist, retrieve and follow up a case
 
-**Entry:** CLI `investigate`, `cases`, `case`, `review`; [CaseStore](../src/pehchan/investigation.py). **Decisions:** ADR-035.
+**Entry:** CLI `investigate`, `cases`, `case`, `review`; [CaseStore](../src/pehchan/investigation.py). **Decisions:** ADR-035, ADR-046.
 
-**Create:** Validate or generate request identity → look for an existing investigation → return its immutable evidence snapshot for an identical retry, or reject a request ID belonging to another claim/review mode → run F-25 → write Investigation properties/report JSON and exact existing variant/review links in one query. The server's explicit review-case operation forces the human-review action.
+**Create:** Validate or generate request identity → look for an existing investigation → return its immutable evidence snapshot for an identical retry, or reject a request ID belonging to another claim/review mode → run F-25 → write Investigation properties (including `finding`)/report JSON and exact existing variant/review links in one query → write the submission back (F-36). The server's explicit review-case operation forces the human-review action.
 
 **No-match branch:** Save submitted claim, reason and insufficient-evidence decision with empty citations; create no synthetic variants, sources or evidence edges. A new Investigation is the graph-driven action.
 
@@ -451,9 +457,9 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 ## F-28 — Discover and invoke MCP tools over HTTP
 
-**Entry:** [MCP adapter](../src/pehchan/mcp_server.py), mounted `/mcp/`. **Decisions:** ADR-036, ADR-037.
+**Entry:** [MCP adapter](../src/pehchan/mcp_server.py), mounted `/mcp/`. **Decisions:** ADR-036, ADR-037, ADR-044.
 
-**Steps:** Compatible client connects using Streamable HTTP → official SDK session manager handles initialize/list/call messages → client discovers typed tools and read/write hints → tool invokes the same serialized service operation as HTTP → structured result returns. Transport is stateless with JSON responses; no handwritten JSON-RPC implementation is used.
+**Steps:** Compatible client connects using Streamable HTTP → official SDK session manager handles initialize/list/call messages → client discovers typed tools and read/write hints → tool invokes the same serialized service operation as HTTP → structured result returns. Parameterized return annotations give every tool an output schema and `structuredContent` (ADR-044). Transport is stateless with JSON responses; no handwritten JSON-RPC implementation is used.
 
 **Read tools:** `find_similar_claims`, `get_claim_evidence`, `explore_narrative_graph`, `find_evidence_path`, `assemble_evidence_dossier`.
 
@@ -467,7 +473,7 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Entry:** [Streamlit UI](../src/pehchan/ui.py), [API client/graph renderer](../src/pehchan/ui_support.py). **Decisions:** ADR-038.
 
-**Investigation:** Check backend readiness summary → submit nonempty claim → show a spinner while F-27/F-25/F-26 execute → retain returned report in session → display action, quality counts, publisher evidence, context, actual agent trace and uncertainty → allow JSON download. Empty input is rejected before submission. Request failures display an error without inventing results.
+**Investigation:** Check backend readiness summary → submit nonempty claim → show a spinner while F-27/F-25/F-26 execute → retain returned report in session → display the finding banner, graph-recall notice, drafted reply, action, quality counts, publisher evidence, widened context with edge provenance, context, a numbered agent timeline with each step's reason, and uncertainty → allow JSON download. Tool steps are shown after completion, not streamed. Empty input is rejected before submission. Request failures display an error without inventing results.
 
 **Narrative explorer:** Use recent candidates or collection overview → request bounded graph data → render draggable/zoomable PyVis nodes → distinguish dashed inferred edges from source/exact-grouping edges → inspect node text/type/incident relationships and original reviews. No UI-inferred edges are written back.
 
@@ -509,17 +515,63 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Outputs/effects:** Dossier with original citations, real trace and inference metadata. Selected claim/evidence/context data is transmitted to Google over HTTPS. Raw source markup and file provenance metadata remain local. Model output cannot modify graph records or decision fields. The UI renders the analyst note as plain text requiring review.
 
-**Failure branches:** Missing credentials, HTTP/network/quota failure, blocked/incomplete response, malformed/unknown tool, rewritten claim, invented ID/reference, missing mandatory reads or turn/call/context/time budget exhaustion → explicit RuntimeError (HTTP 503), no case created and no automatic fallback. Input length errors return validation failure. Read calls completed before failure have no graph-write effects. No background inference/retries are scheduled.
+**Failure branches:** Missing credentials, HTTP/network/quota failure, blocked/incomplete response, malformed/unknown tool, rewritten claim, invented ID/reference, missing mandatory reads or turn/call/context/time budget exhaustion → explicit RuntimeError (HTTP 503), no case created and no automatic fallback. (`auto` mode, ADR-043, chooses Gemma or offline specialists before a request starts; it never switches mid-request.) Input length errors return validation failure. Read calls completed before failure have no graph-write effects. No background inference/retries are scheduled.
 
 ## F-33 — Configure, test and recover hosted inference
 
-**Entry:** [environment example](../.env.example), [README setup](../README.md#configure-gemma-inference), [live smoke](../scripts/smoke_inference.py). **Decision:** ADR-041.
+**Entry:** [environment example](../.env.example), [README setup](../README.md#configure-gemma-inference), [live smoke](../scripts/smoke_inference.py). **Decisions:** ADR-041, ADR-043.
 
-**Trigger/inputs:** Operator exports `GEMINI_API_KEY` (alternative `GOOGLE_API_KEY`), optionally overrides `PEHCHAN_LLM_MODEL`, and starts/restarts the backend from that environment. Default mode is `gemini`; `PEHCHAN_INFERENCE=deterministic` explicitly chooses the original offline workflow. Python does not auto-load `.env`. A healthy preexisting service must be restarted separately because the launcher preserves it.
+**Trigger/inputs:** Operator exports `GEMINI_API_KEY` (alternative `GOOGLE_API_KEY`), optionally overrides `PEHCHAN_LLM_MODEL`, and starts/restarts the backend from that environment. Default mode is `auto` (ADR-043): Gemma when a key is present, otherwise the offline workflow; `/health` reports `requested` and resolved `mode`. `PEHCHAN_INFERENCE=gemini` requires a key and fails closed without one; `deterministic` explicitly chooses the original offline workflow. Python does not auto-load `.env`. A healthy preexisting service must be restarted separately because the launcher preserves it.
 
 **Steps:** `/health` and authenticated `/api/status` report mode/model/configured flag without secrets → missing key marks setup required and UI explains setup → run `python scripts/smoke_inference.py [--claim TEXT]` → execute an actual read-only dossier via the service → verify mode/tool activity/reference membership → write `artifacts/gemma-live-verification.json`. No case is created. Failed setup exits 2; operational inference failures exit 1. Key presence alone cannot validate quota, credentials or model access. Correct environment/access/quota and run again; use a new investigation request ID to obtain a fresh report instead of a historical snapshot.
 
 **Verification:** `tests/test_inference.py` uses scripted model turns and HTTPX mock transport to test actual local dispatch, source preservation, authoritative force-review, call/response IDs, privacy filtering, no-match behavior, unsupported IDs/references, malformed calls, missing keys, provider errors and budgets. `tests/test_investigation.py` additionally exercises real FalkorDB case persistence and failure without writes using scripted provider turns. Full suite: 54 passed with database/local-model checks enabled; Ruff passed. The restarted API returned HTTP 503 for missing credentials and the UI health returned 200. These are protocol/guard tests, not live Gemma quality evidence. Live Gemini verification is unavailable until a key is configured; the smoke script exited 2 and does not silently substitute a fake provider. See [inference snapshot](inference-validation.json).
+
+## F-34 — Annotate the whole collection with keyword rules
+
+**Entry:** [scripts/annotate_collection.py](../scripts/annotate_collection.py). **Decisions:** ADR-014, ADR-042.
+
+**Trigger/inputs:** `python scripts/annotate_collection.py data/processed/claims.jsonl [--curated data/samples/annotations.json] [--output data/annotations/collection.json]`, run after F-04 and before F-09.
+
+**Steps:** Validate the prepared feed through F-06 → deduplicate by variant ID → apply fixed frame, topic and entity rules to the original claim text → copy each entity's matched substring as its evidence span and keep it only if its normalized form occurs in the variant's normalized text → merge curated sample rows first for matching IDs → write the JSON array and print per-name counts. Then ingest with `python -m pehchan.cli --graph pehchan ingest data/processed/claims.jsonl --annotations data/annotations/collection.json`, which revalidates every row through F-07.
+
+**Outputs/effects:** Rewrites the output JSON only; no database operation until F-09. On 18 October 2026 the 248-variant snapshot produced 10 frames, 4 topics and 53 entities (203/252/356 links); `validate --require-narrative` passed and embeddings stayed fresh.
+
+**Branches/limits:** Invalid prepared rows fail before writing. Variants matching no rule are omitted. Rule edits do not remove previously ingested edges because F-09 only merges; reset the graph to drop them (F-21). Results are keyword inferences labelled for human review, not publisher evidence.
+
+## F-35 — Widen through shared entities/frames and classify the finding
+
+**Entry:** `Orchestrator._widen` and `decide` in [investigation.py](../src/pehchan/investigation.py); MCP/service `expand_narrative_context`. **Decisions:** ADR-045, ADR-046.
+
+**Trigger:** Any dossier or investigation whose citations contain no `SAME_PROPOSITION` review, in deterministic, Gemma or recall mode.
+
+**Steps:** Tag the submission with [rules.py](../src/pehchan/rules.py) → Graph Detective calls `expand_shared_context(entities, frames, exclude=cited variants)` → `SHARED_CONTEXT` Cypher returns fact-checked claims with shared nodes, edge provenance and `1/degree` score → drop hits scoring below 0.05 → record reached/kept counts in the trace → `decide` sets `finding` (recycled / narrative variant / new), upgrades an insufficient-evidence narrative variant to human review, marks the review queue and priority, and fills the reply template from direct citations, close semantic context and widened claims.
+
+**Outputs/effects:** `widening`, `finding`, `review_queue`, `draft_reply` in the report. No graph writes. Related reviews never become citations.
+
+**Branches/limits:** No tags → no widening hits; a claim with no strong context becomes `NEW_CLAIM`. Rule tagging is partial for some scripts. Force-review keeps human review and adds a note to the reply.
+
+## F-36 — Recall a prior submission and write a submission back
+
+**Entry:** `Orchestrator._recall`, `CaseStore.link_submission` in [investigation.py](../src/pehchan/investigation.py), [SubmissionIndex](../src/pehchan/semantic.py). **Decision:** ADR-046.
+
+**Trigger:** Start of every dossier/investigation (recall); end of every persisted investigation (write-back). Skipped when the scout has no `embed` capability.
+
+**Recall steps:** Embed the wording → ensure the `Submission` vector index → query the nearest submission with its investigation and MATCHES links → if similarity is at least 0.95 and a link is `SAME_PROPOSITION` (and review is not forced), build the Scout handoff from those edges, re-read publisher evidence and run Graph Detective and Evidence & Response; mode `graph_recall` → otherwise record the earlier case in `prior_submission` and investigate normally.
+
+**Write-back steps:** After the Investigation is saved, `MERGE` a Submission by normalized-wording ID (incrementing `times_seen`), set its embedding, link `SUBMITTED` from the Investigation, `MATCHES` to each direct Scout match with relation/similarity/assessment, and `MENTIONS`/`USES_FRAME` to existing rule-tagged Entity/NarrativeFrame nodes.
+
+**Failure branches:** Database errors propagate after the Investigation write; rerunning with a new request ID repeats the write idempotently by Submission ID. Read-only dossiers never write. Retried request IDs return their snapshot without writing again.
+
+## F-37 — Compare retrieval methods on held-out queries
+
+**Entry:** [scripts/evaluate_retrieval.py](../scripts/evaluate_retrieval.py). **Decision:** ADR-047.
+
+**Trigger/inputs:** `python scripts/evaluate_retrieval.py [--graph pehchan] [--cases data/evaluation/heldout_cases.json]` with embedded graph and local models.
+
+**Steps:** Resolve each case's accepted substrings to recorded variant IDs (abort if one resolves to nothing) → rank by token Jaccard, by vector index, and by vector index plus shared-context bonus (pool 20, weight 0.1, cosine computed from stored vectors for graph-only candidates) → score hit@1/hit@5 overall and by paraphrase/translation → write [retrieval-evaluation.json](retrieval-evaluation.json).
+
+**Outputs/limits:** Read-only. Smoke-scale, author-written queries; no tuning on these cases.
 
 ## Original blueprint flow status
 

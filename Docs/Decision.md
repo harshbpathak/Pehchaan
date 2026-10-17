@@ -494,7 +494,7 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 ## ADR-041 — Use hosted Gemma tool calling with authoritative evidence checks
 
-**Status:** Implemented; live provider verification requires a configured key. **Flows:** F-25, F-26, F-27, F-28, F-29, F-32, F-33. Extends ADR-033/ADR-034/ADR-036.
+**Status:** Implemented; live provider verification requires a configured key. Default-mode selection amended by ADR-043 (the default is now `auto`). **Flows:** F-25, F-26, F-27, F-28, F-29, F-32, F-33. Extends ADR-033/ADR-034/ADR-036.
 
 **Decision:** Default application/CLI investigations to Google AI Studio's Gemini API, model `gemma-4-26b-a4b-it`, configurable through `PEHCHAN_LLM_MODEL`. Use documented generateContent REST via the existing HTTPX dependency, with an explicit manual model→tool→model loop. Preserve complete model content, call IDs and opaque thought signatures. Send six function declarations: semantic Scout, publisher evidence, narrative exploration, bounded path, BFS and structured completion. Preserve `PEHCHAN_INFERENCE=deterministic` as an explicit offline mode. Direct library Orchestrator users may inject an inference implementation; without one they retain the original deterministic behavior.
 
@@ -506,6 +506,78 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [inference loop/REST adapter](../src/pehchan/inference.py), [service](../src/pehchan/service.py), [CLI](../src/pehchan/cli.py), [protocol/guard tests](../tests/test_inference.py), [live smoke](../scripts/smoke_inference.py), [setup](../README.md#configure-gemma-inference).
 
+## ADR-042 — Annotate the whole collection with explicit keyword rules
+
+**Status:** Implemented 18 October 2026. **Flows:** F-07, F-09, F-12, F-13, F-34. Extends ADR-014; the curated 12-claim sample is retained unchanged.
+
+**Decision:** Generate frame, topic and entity annotations for every prepared variant with [scripts/annotate_collection.py](../scripts/annotate_collection.py): fixed, reviewable regular-expression rules for 10 narrative frames, 4 topics and 53 named entities (people, organizations, places, technologies, events). Entity spans are copied from the matched claim text so ADR-014's span check still applies. Curated sample rows are merged first and keep their frames. Output goes to tracked `data/annotations/collection.json` and is ingested with the existing `--annotations` path.
+
+**Why:** Only 12 of 248 claims were annotated (2 entities, 5 frames), so narrative traversal and entity bridges barely existed in the main graph. Track 1 multi-hop reasoning needs shared entities across claim clusters. Explicit rules are reproducible and auditable, unlike unrecorded manual or LLM labelling, and need no network access.
+
+**Consequences:** The main graph now has 10 frames, 53 entities, 203 `USES_FRAME`, 252 `ABOUT_TOPIC` and 356 `MENTIONS` edges, enabling cross-topic bridges (for example a vaccine-microchip claim to a climate claim via `Bill Gates`). Rules are keyword matches, not disambiguation or proposition understanding: they can over- or under-assign, multilingual coverage is partial, and every edge is labelled `reviewed_by` the rule script with human review pending. Rule frames are thematic, not evidence of coordination. Ingestion merges, so removing a rule does not delete existing edges (ADR-014 limitation). Variant IDs depend on the local feed snapshot; a new download needs the script rerun.
+
+**Implementation:** [annotator](../scripts/annotate_collection.py), [output](../data/annotations/collection.json), [loader](../src/pehchan/annotations.py).
+
+## ADR-043 — Default to automatic inference-mode selection
+
+**Status:** Implemented 18 October 2026. **Flows:** F-01, F-29, F-32, F-33. Amends ADR-041's default; ADR-041's Gemma loop and guards are unchanged.
+
+**Decision:** `PEHCHAN_INFERENCE` accepts `auto` (new default), `gemini` and `deterministic`. `auto` resolves at configuration time: Gemma when `GEMINI_API_KEY`/`GOOGLE_API_KEY` is present, otherwise the offline specialist workflow. `configuration()` reports both `requested` and resolved `mode`; `/health` and the UI show which is active. Explicit `gemini` without a key still fails with HTTP 503.
+
+**Why:** With the previous `gemini` default, a fresh clone or a judge without credentials received 503 for every investigation even though the complete offline workflow exists.
+
+**Consequences:** Resolution happens per request at configuration time, never as a mid-request fallback: a provider/quota failure during a Gemma run still fails explicitly without a case (ADR-041). Operators who require hosted inference must set `gemini` explicitly to keep the fail-closed behavior.
+
+**Implementation:** [configuration](../src/pehchan/inference.py), [UI indicator](../src/pehchan/ui.py), [test](../tests/test_inference.py), [.env.example](../.env.example).
+
+## ADR-044 — Declare parameterized MCP return types
+
+**Status:** Implemented 18 October 2026. **Flows:** F-28. Extends ADR-037.
+
+**Decision:** Annotate MCP tool returns as `dict[str, Any]`, `list[dict[str, Any]]` or `list[Any]` instead of bare `dict`/`list`.
+
+**Why:** The SDK generates an output schema and `structuredContent` only for parameterized annotations; `find_similar_claims`, `find_evidence_path`, `assemble_evidence_dossier`, `create_review_case` and `investigate_claim` returned text-only content.
+
+**Consequences:** All seven tools now return structured content (verified by `scripts/smoke_mcp.py`). Schemas are generic objects/arrays, not field-level models.
+
+**Implementation:** [MCP adapter](../src/pehchan/mcp_server.py), [smoke check](../scripts/smoke_mcp.py).
+
+## ADR-045 — Widen through shared entities and frames when no direct match exists
+
+**Status:** Implemented 18 October 2026. **Flows:** F-25, F-28, F-32, F-35. Extends ADR-033/ADR-042.
+
+**Decision:** After Scout and Evidence & Response, if no `SAME_PROPOSITION` citation exists, Graph Detective calls a new permitted tool, `expand_shared_context`. It tags the submission with the same keyword rules used for the collection ([rules.py](../src/pehchan/rules.py)) and runs the fixed `SHARED_CONTEXT` Cypher: fact-checked claims connected to those Entity/NarrativeFrame nodes, scored by the sum of `1/degree` of shared nodes. Hits below 0.05 (only hub nodes such as `5G`, used by 111 claims, shared) are dropped. The step runs in deterministic, Gemma and recall modes. The same widening is exposed read-only as MCP tool `expand_narrative_context`.
+
+**Why:** Without it, a new wording of a known narrative ended as `INSUFFICIENT_EVIDENCE` even when the graph held reviews of closely related claims. Track 1 asks for agents that choose their next step from what the graph returned.
+
+**Consequences:** Widened results are reported under `widening.related` with every shared node's relation, basis and reviewer. They are never added to `citations` or `CITES` edges. Rule tags are partial for non-Latin scripts (for example a Devanagari "Putin" is not tagged). The 0.05 cut-off is a fixed engineering threshold, not a tuned value.
+
+**Implementation:** [Graph Detective / Orchestrator](../src/pehchan/investigation.py), [store method](../src/pehchan/graph.py), [query](../src/pehchan/queries.py), [service](../src/pehchan/service.py), [MCP tool](../src/pehchan/mcp_server.py), [tests](../tests/test_investigation.py).
+
+## ADR-046 — Classify findings, draft cited replies and write submissions back to the graph
+
+**Status:** Implemented 18 October 2026. **Flows:** F-25, F-26, F-29, F-35, F-36. Extends ADR-034/ADR-035; the three action statuses remain authoritative.
+
+**Decision:** Every report gains a `finding`: `KNOWN_RECYCLED_CLAIM` (a direct publisher review exists), `KNOWN_NARRATIVE_VARIANT` (widening hits, or semantic context at least 0.6 similar) or `NEW_CLAIM`. A narrative variant that would otherwise be `INSUFFICIENT_EVIDENCE` becomes `NEEDS_HUMAN_REVIEW` / `RELATED_NARRATIVE_CONTEXT_FOUND`. New claims and review cases are marked `review_queue.queued` with HIGH priority. A template `draft_reply` cites only graph records (direct reviews, then closest recorded wordings with their similarity and relevance label, then widened claims) and is labelled `DRAFT_REQUIRES_HUMAN_APPROVAL`. On persistence, the wording is written as a `Submission` node (own FalkorDB vector index) linked `(Investigation)-[:SUBMITTED]->`, `-[:MATCHES]->` its direct matches with the Scout assessment, and `-[:MENTIONS]->`/`-[:USES_FRAME]->` its rule tags. Before investigating, the orchestrator queries that index. A submission at least 0.95 similar to one with a direct match is answered by following its MATCHES edges (`inference.mode = graph_recall`) without rerunning retrieval, NLI or Gemma.
+
+**Why:** Track 1 rewards actions taken from graph findings and agents that change the graph. Repeated forwards are the common case for fact-checkers, and an LLM-written reply could invent sources.
+
+**Consequences:** A recalled answer reuses an earlier relevance assessment for a near-identical wording; this is disclosed in the Scout uncertainty, and `force_review` bypasses recall. Read-only dossiers recall but never write. Submissions add `Submission`, `SUBMITTED` and `MATCHES` to the schema; graph validation still passes. Recall depends on the scout exposing `embed`; test stubs without it skip memory. Old case snapshots lack the new fields, and the UI tolerates that. The reply is a template, not generated prose.
+
+**Implementation:** [decide/draft_reply/recall/link_submission](../src/pehchan/investigation.py), [SubmissionIndex](../src/pehchan/semantic.py), [queries](../src/pehchan/queries.py), [UI](../src/pehchan/ui.py), [tests](../tests/test_investigation.py), [schema](graph-schema.md#submission-write-back-and-recall).
+
+## ADR-047 — Report a held-out retrieval comparison without tuning
+
+**Status:** Implemented 18 October 2026. **Flows:** F-30, F-37.
+
+**Decision:** Add 30 author-written held-out queries (24 paraphrases, 6 translations) and [evaluate_retrieval.py](../scripts/evaluate_retrieval.py), which compares word overlap, the FalkorDB vector index, and vector index plus shared-context re-ranking (pool 20, weight 0.1, both fixed before running) by hit@1/hit@5 against accepted recorded wordings.
+
+**Why:** A reviewer asked for evidence that the graph does real work in retrieval.
+
+**Consequences:** Measured on 18 October 2026: word overlap 25/30, embeddings 30/30, embeddings plus graph 30/30 at both k. Embeddings saturate this set, so graph re-ranking shows no retrieval gain; that result is reported as is. The graph's demonstrated role is widening, recall and explanation, not top-5 retrieval. Queries were written with Claude Code assistance and are a smoke-scale check.
+
+**Implementation:** [cases](../data/evaluation/heldout_cases.json), [script](../scripts/evaluate_retrieval.py), [report](retrieval-evaluation.json).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
@@ -514,7 +586,7 @@ This table preserves the original intention IDs while making their current bound
 | --- | --- | --- |
 | P-001 | Sentence Transformers embeddings with separate relevance assessment | Implemented by ADR-030/ADR-031/ADR-032; local NLI provides an explicitly limited relevance assessment |
 | P-002 | Three specialists and lightweight orchestration | ADR-033 retains the offline specialist baseline; ADR-041 adds a default Gemma tool-calling investigator using local retrieval and the authoritative response policy |
-| P-003 | Explicit no-match and uncertainty branches | Implemented by ADR-034/ADR-035; decisions are workflow actions, not new truth verdicts |
+| P-003 | Explicit no-match and uncertainty branches | Implemented by ADR-034/ADR-035; ADR-045/ADR-046 add widening, the recycled/narrative/new finding, drafted replies and submission write-back; decisions are workflow actions, not new truth verdicts |
 | P-004 | Official SDK, Streamable HTTP, focused tools and top-level investigation | Seven tools implemented/tested locally by ADR-036/ADR-037; public HTTPS deployment and cloud connector verification remain external deployment work |
 | P-005 | Persistent Investigation, EXAMINES/CITES and case follow-up | Implemented by ADR-035; priority is rule-based and no case notification service exists |
 | P-006 | FastAPI, Streamlit and interactive graph exploration | Implemented by ADR-036/ADR-038; Pehchan is on 8501, the separate DB browser remains on 3000 |

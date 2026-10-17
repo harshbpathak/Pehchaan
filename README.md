@@ -2,9 +2,173 @@
 
 Graph-native misinformation investigation with local semantic retrieval, cooperating specialists, traceable publisher evidence and persistent review cases.
 
-The local MVP imports real ClaimReview records, embeds claims in FalkorDB, assesses textual relevance, traces connected narratives, assembles dossiers and records the recommended action. A FastAPI service, seven real Streamable HTTP MCP tools and a Streamlit interface use the same investigation logic.
+**WeMakeDevs × FalkorDB Graph Hacks — Track 1: Agents That Act on Connected Data**
 
-Investigation now defaults to Gemma tool-calling inference through Google AI Studio. Gemma selects local semantic retrieval, source evidence and graph tools; local embedding/NLI models still assess relevance. Application code validates citations and selects the final case status. Publisher ratings remain attached to their original reviewed claims. An explicit deterministic mode retains the earlier offline specialist workflow.
+> Demo video: _add link before submission_
+
+A journalist asks: *"I've seen a claim that vaccines contain tracking microchips. Has something like it been fact-checked? Which narratives connect to it, and should it be reviewed?"* Pehchan finds previously fact-checked wordings, traverses FalkorDB to the narratives, entities and publishers around them, and decides whether a source-backed dossier is ready or the case needs a human. It never invents a truth verdict: ratings always belong to the original publisher, and missing evidence is reported as missing.
+
+## How Pehchan meets Track 1
+
+| Track 1 focus | Implementation |
+| --- | --- |
+| Multi-hop reasoning | `ClaimVariant → Claim → NarrativeFrame/Entity → Claim → ClaimVariant ← FactCheck → Publisher`, returned with node IDs and relationship types |
+| Graph queries and algorithms as agent tools | Native FalkorDB vector index (`db.idx.vector.queryNodes`), parameterized narrative/evidence Cypher, bounded variable-length path search, native `algo.BFS` |
+| Tool selection through MCP | 8 typed tools with output schemas on an official-SDK Streamable HTTP MCP server; Gemma chooses tools in a function-calling loop; the orchestrator widens through shared entities/frames only when no direct match exists |
+| Actions based on graph findings | Classifies each message as a known recycled claim, a variant of a known narrative, or new; drafts a reply citing only graph records; queues new claims for review; persists an `Investigation` with exact `EXAMINES`/`CITES` edges; writes the message back as a `Submission` node linked by `MATCHES`/`MENTIONS`/`USES_FRAME`, so a repeat forward is answered through those edges |
+| Explainable results | Every citation carries the publisher URL, original rating and graph path; inferred links carry their basis and evidence span |
+
+FalkorDB is indispensable: retrieval, evidence, narratives, paths, BFS and case records all execute in the graph. There is no fallback store.
+
+```mermaid
+graph TD
+  U[Claude / MCP client · Streamlit UI · CLI] --> S[FastAPI + MCP server]
+  S --> O[Orchestrator]
+  O --> A[Claim Scout<br/>vector search + NLI relevance]
+  O --> B[Graph Detective<br/>narratives · paths · BFS · widening]
+  O --> C[Evidence & Response<br/>validate · decide · draft reply]
+  O --> M[Submission memory<br/>recall · write-back]
+  A & B & C & M --> F[(FalkorDB<br/>claims · fact-checks · frames · entities · investigations · submissions)]
+```
+
+The graph holds 250 real ClaimReview records (248 claim variants, 53 publishers) in 4 topics, linked to 10 narrative frames and 53 entities. Wordings are multilingual.
+
+## What the agent does with a new message
+
+```text
+recall  ── Submission vector index: has this wording been investigated before?
+  │          yes, with a direct match → follow its MATCHES edges (no model rerun)
+  ▼
+scout   ── ClaimVariant vector index + bidirectional NLI relevance
+  │
+  ├─ direct match ─► detective: narratives · BFS · connection path
+  │                  response: re-read publisher evidence → KNOWN_RECYCLED_CLAIM
+  │
+  └─ no direct match ─► detective widens: entities/frames tagged in the message
+                        → fact-checked claims sharing them (rarer nodes weigh more,
+                          hub-only hits dropped) → KNOWN_NARRATIVE_VARIANT or NEW_CLAIM
+  ▼
+act     ── Investigation (EXAMINES/CITES) · drafted reply · review queue
+           Submission -[:MATCHES]-> variant, -[:MENTIONS]-> entity, -[:USES_FRAME]-> frame
+```
+
+Every step appears in the report's `agent_trace` with its reason (for example *"No direct match; widened through 2 entities and 1 frames…"*). Shared frames and entities are rule-based inferences and are reported as context, never promoted to evidence.
+
+## Demonstrations
+
+Run with the services started (`scripts/run_local.py`) against the `pehchan` graph.
+
+**A — An older version of a claim.** A new paraphrase finds the recorded wording, its publisher and rating, and a ready dossier.
+
+```powershell
+python -m pehchan.cli dossier "Bill Gates wants to put microchips in people through the covid vaccine."
+# status: EVIDENCE_DOSSIER_READY, citations with publisher URLs and original ratings
+```
+
+**B — An entity bridge across topics.** A vaccine-microchip claim and a climate claim connect through the shared `Bill Gates` entity: a four-hop path that string similarity cannot find.
+
+```powershell
+python -m pehchan.cli path variant_d5c3859c252aebe9af62a470 variant_c9ce10f79c7b3a3a9a738cf3
+# variant -EXPRESSES-> claim -MENTIONS-> Entity(Bill Gates) <-MENTIONS- claim <-EXPRESSES- variant
+```
+
+**A2 — A Hindi forward matched to existing debunks.** The multilingual vector index places a Hindi message beside the Dutch, English and French wordings that dpa and PolitiFact reviewed. The English-only NLI model cannot confirm relevance across languages, so the case goes to human review with a reply citing those reviews.
+
+```powershell
+python -m pehchan.cli dossier "पुतिन ने रूस में 5G पर प्रतिबंध लगा दिया और सभी टावर नष्ट करवा दिए।"
+# finding: KNOWN_NARRATIVE_VARIANT, closest wording "Putin bans 5G across Russia…" (PolitiFact: False), similarity 0.90
+```
+
+**A3 — The agent changes the graph.** Investigate a claim, then a slightly reworded forward of it. The second run is recalled through the `Submission -[:MATCHES]->` edge written by the first, skipping retrieval and relevance models (about 4 s instead of about 30 s on a laptop CPU in our run).
+
+```powershell
+python -m pehchan.cli investigate "Bill Gates wants to put microchips in people through the covid vaccine." --request-id demo-a3-1
+python -m pehchan.cli investigate "Bill Gates wants to put microchips into people through the covid vaccine!" --request-id demo-a3-2
+# second report: inference.mode = graph_recall, prior_submission = the first case
+```
+
+**B2 — Widening when nothing matches directly.** A new wording of a known narrative has no direct match. The detective widens through the `Bill Gates` and `Microchip` entities and a shared frame, reaching FactCheck.org and BBC reviews of related claims.
+
+```powershell
+python -m pehchan.cli dossier "Bill Gates secretly funds a plan to track everyone with implanted chips."
+# finding: KNOWN_NARRATIVE_VARIANT, status: NEEDS_HUMAN_REVIEW, widening.related with shared nodes and edge provenance
+```
+
+**C — An autonomous decision not to guess.** An unfamiliar claim has no relevant fact-check, so the system records that instead of manufacturing a verdict.
+
+```powershell
+python -m pehchan.cli investigate "Underwater quartz clocks transmit encrypted rainfall forecasts." --request-id demo-c
+# finding: NEW_CLAIM, status: INSUFFICIENT_EVIDENCE, queued for review with no invented evidence links
+```
+
+## Held-out retrieval check
+
+[evaluate_retrieval.py](scripts/evaluate_retrieval.py) runs 30 author-written queries (24 paraphrases, 6 translations into Hindi, Spanish, German, French and Indonesian) that are not stored in the graph. A hit is any recorded wording of the same claim in the top k. Settings were fixed before the run. Results are in [retrieval-evaluation.json](Docs/retrieval-evaluation.json).
+
+| Method | hit@1 | hit@5 | Translations hit@5 |
+| --- | ---: | ---: | ---: |
+| Word overlap | 25/30 | 25/30 | 3/6 |
+| Embeddings (FalkorDB vector index) | 30/30 | 30/30 | 6/6 |
+| Embeddings + graph widening | 30/30 | 30/30 | 6/6 |
+
+On this set, embeddings already retrieve every case, so graph re-ranking adds nothing to top-5 retrieval. The graph's measured contribution is elsewhere: widening when no direct review exists (B2), recall through written-back edges (A3), and the evidence paths in every report. Thirty queries over 248 variants is a smoke-scale check, not a calibrated accuracy estimate.
+
+## Core Cypher
+
+All queries are fixed and parameterized ([queries.py](src/pehchan/queries.py), [semantic.py](src/pehchan/semantic.py)); no user input becomes a label or query fragment.
+
+Semantic candidates from the native vector index:
+
+```cypher
+CALL db.idx.vector.queryNodes('ClaimVariant', 'embedding', $limit, vecf32($vector))
+```
+
+Shared-narrative multi-hop traversal to related fact-checks and publishers:
+
+```cypher
+MATCH p = (v:ClaimVariant {id: $variant_id})-[:EXPRESSES]->(:Claim)
+          -[:USES_FRAME]->(frame:NarrativeFrame)<-[:USES_FRAME]-(:Claim)
+          <-[:EXPRESSES]-(related:ClaimVariant)
+WHERE related.id <> v.id
+MATCH (fc:FactCheck)-[:CHECKS]->(related)
+MATCH (fc)-[:PUBLISHED_BY]->(pub:Publisher)
+RETURN related.id, related.text, frame.name,
+       [n IN nodes(p) | n.id], [e IN relationships(p) | type(e)],
+       fc.url, fc.verdict_original, pub.name
+LIMIT $limit
+```
+
+Bounded connection path, including entity bridges:
+
+```cypher
+MATCH (a:ClaimVariant {id: $from_id}), (b:ClaimVariant {id: $to_id})
+MATCH p = (a)-[:EXPRESSES|USES_FRAME|MENTIONS*1..8]-(b)
+WITH p, length(p) AS hops ORDER BY hops LIMIT 1
+RETURN [n IN nodes(p) | n.id], [e IN relationships(p) | type(e)]
+```
+
+Native breadth-first exploration:
+
+```cypher
+MATCH (v:ClaimVariant {id: $variant_id})
+CALL algo.BFS(v, $depth, null) YIELD nodes, edges
+RETURN [n IN nodes | n.id], [e IN edges | type(e)]
+```
+
+Publisher evidence for a variant:
+
+```cypher
+MATCH (v:ClaimVariant {id: $variant_id})<-[:CHECKS]-(fc:FactCheck)-[:PUBLISHED_BY]->(pub:Publisher)
+RETURN fc.id, fc.url, fc.verdict_original, fc.review_date, pub.name
+```
+
+The full schema is in [graph-schema.md](Docs/graph-schema.md).
+
+## How it works
+
+The local MVP imports real ClaimReview records, embeds claims in FalkorDB, assesses textual relevance, traces connected narratives, assembles dossiers and records the recommended action. A FastAPI service, eight real Streamable HTTP MCP tools and a Streamlit interface use the same investigation logic.
+
+With a Google AI Studio key configured, investigation uses Gemma tool-calling inference (`PEHCHAN_INFERENCE=auto`, the default); without a key it runs the offline specialists, so a fresh clone works without credentials. Gemma selects local semantic retrieval, source evidence and graph tools; local embedding/NLI models still assess relevance. Application code validates citations and selects the final case status. Publisher ratings remain attached to their original reviewed claims. An explicit deterministic mode retains the earlier offline specialist workflow.
 
 ## Configure Gemma inference
 
@@ -114,11 +278,12 @@ The official Python MCP SDK exposes:
 | `get_claim_evidence` | Original publisher evidence and provenance |
 | `explore_narrative_graph` | Explicit shared-frame paths with inference origins |
 | `find_evidence_path` | One bounded graph connection, including entity bridges |
+| `expand_narrative_context` | Widen through entities/frames tagged in a claim to related fact-checked claims (context only) |
 | `assemble_evidence_dossier` | Read-only specialist workflow |
 | `create_review_case` | Persist an explicitly requested human-review case |
 | `investigate_claim` | Run the full workflow and persist its action |
 
-The local endpoint is Streamable HTTP, not legacy SSE. Compatible local clients can use `http://localhost:8000/mcp/`. All seven tools were discovered and called with the official HTTP client.
+The local endpoint is Streamable HTTP, not legacy SSE. Compatible local clients can use `http://localhost:8000/mcp/`. All eight tools were discovered and called with the official HTTP client, each returning structured content.
 
 Local listeners are loopback-only by default. Set `PEHCHAN_API_TOKEN` for read access and a distinct `PEHCHAN_WRITE_TOKEN` for case writes. The combined MCP endpoint requires the write credential when tokens are configured. `PEHCHAN_UI_TOKEN` supplies the UI's backend credential; otherwise the UI uses configured write/read token environment values. Public-host configuration requires distinct credentials. Host/Origin checks are enabled. There is no arbitrary-Cypher or ingestion HTTP tool.
 
@@ -155,11 +320,12 @@ On October 18, 2026 (IST), the official feed was downloaded and 250 records were
 | FactCheck | 250 |
 | ClaimVariant / Claim | 248 each |
 | Publisher domains | 53 |
-| NarrativeFrame | 5 |
+| NarrativeFrame | 10 |
 | Topic | 4 |
-| Entity | 2 |
+| Entity | 53 |
+| USES_FRAME / ABOUT_TOPIC / MENTIONS | 203 / 252 / 356 |
 
-Two pairs of fact-checks review identical claim wording, so 250 reviews produce 248 variants. Narrative, topic, and entity annotations cover only 12 inspected claims. The 250-record selection is an initial substring-filtered seed; it includes uncurated and multilingual records, not 250 validated narrative memberships.
+Two pairs of fact-checks review identical claim wording, so 250 reviews produce 248 variants. Twelve claims carry hand-inspected annotations ([sample](data/samples/annotations.json)); the whole collection is annotated by explicit keyword rules ([annotator](scripts/annotate_collection.py), [output](data/annotations/collection.json)) that keep those curated rows and add rule-assigned frames, topics and entities. Every entity carries a span quoted from the claim text. Rule annotations are inferences awaiting human review, not 248 validated narrative memberships. The 250-record selection is a substring-filtered seed that includes multilingual records.
 
 The live database tests and source-sample checks passed. See [the validation snapshot](Docs/validation.json), [graph design](Docs/graph-schema.md), and [data notes](data/samples/README.md). All source URLs and ratings in reports come from records; Pehchan does not assign a new truth verdict.
 
@@ -179,10 +345,11 @@ python -m pehchan.cli --graph pehchan ingest data/processed/claims.jsonl
 python -m pehchan.cli --graph pehchan validate data/processed/claims.jsonl --output artifacts/validation.json
 ```
 
-`--contains` performs OR substring selection, not topic classification. Omit it to import all records. `--limit` caps accepted unique reviews, and the report records how much input was scanned. The included annotations refer to exact variant IDs from this snapshot. Apply them to the full subset only if those IDs are present:
+`--contains` performs OR substring selection, not topic classification. Omit it to import all records. `--limit` caps accepted unique reviews, and the report records how much input was scanned. The included annotations refer to exact variant IDs from this snapshot. Regenerate the rule-based collection annotations for a new download, then ingest them:
 
 ```powershell
-python -m pehchan.cli --graph pehchan ingest data/processed/claims.jsonl --annotations data/samples/annotations.json
+python scripts/annotate_collection.py data/processed/claims.jsonl
+python -m pehchan.cli --graph pehchan ingest data/processed/claims.jsonl --annotations data/annotations/collection.json
 python -m pehchan.cli --graph pehchan validate data/processed/claims.jsonl --require-narrative --output artifacts/validation.json
 ```
 
@@ -199,7 +366,7 @@ python -m pehchan.cli --graph pehchan_demo bfs variant_700ff916add10df61b609425
 python -m pehchan.cli --graph pehchan_demo stats
 ```
 
-Search uses a transparent token Jaccard baseline over variants fetched from FalkorDB. Its scores represent lexical overlap and every result is an **unverified candidate**. Semantic matching and proposition verification remain future work. No matching record establishes neither truth nor falsity.
+Search uses a transparent token Jaccard baseline over variants fetched from FalkorDB. Its scores represent lexical overlap and every result is an **unverified candidate**. It is the explicit lexical comparison baseline; `semantic-search` and `scout` use the vector index and NLI relevance. No matching record establishes truth or falsity.
 
 ## Data guarantees and current limits
 
@@ -209,7 +376,7 @@ Search uses a transparent token Jaccard baseline over variants fetched from Falk
 - Invalid required fields are audited as rejections. Identical source reviews are deduplicated. Conflicting ratings for the same URL and claim abort preparation and preserve any previous output.
 - All prepared records and annotations are validated before graph writes. `MERGE` and ID indexes support sequential reruns. Each review is written atomically; the whole dataset is not a single transaction. A failed import can be rerun.
 - Run one ingestion process per graph. Concurrent ingestion, uniqueness constraints, dataset reconciliation, and annotation removal/version history are not implemented. Reingestion merges records; it does not clear existing data.
-- Narrative annotations are explicitly marked **AI-assisted inferences, human review pending**. They are not publisher verdicts or evidence of coordination. Entity annotations must include a text span actually present in the claim.
+- Narrative annotations are explicitly marked **AI-assisted or rule-based inferences, human review pending**. They are not publisher verdicts or evidence of coordination. Entity annotations must include a text span actually present in the claim.
 - Removing FalkorDB breaks evidence retrieval, relationships, path queries, and graph validation. There is no fallback graph or mocked query result.
 
 Connection settings are in [.env.example](.env.example). Set them as environment variables; `.env` is not automatically loaded. The default server is `127.0.0.1:16379` and default graph is `pehchan`. Compose binds the database to localhost. Port 16379 avoids the service already occupying 6379 on this machine.
@@ -231,7 +398,7 @@ On macOS/Linux run `PEHCHAN_INTEGRATION=1 python -m pytest -q`. Integration test
 
 ## Attribution
 
-The dataset compilation is credited to Data Commons / Google Fact Check Tools and the publishers identified in each record. Compilation licensing and publisher-content licensing are distinct; see [the source's licensing notes](https://datacommons.org/factcheck/download) and [sample manifest](data/samples/manifest.json). This repository contains selected structured markup, not downloaded article bodies. The implementation and sample annotations were produced with Codex AI coding assistance.
+The dataset compilation is credited to Data Commons / Google Fact Check Tools and the publishers identified in each record. Compilation licensing and publisher-content licensing are distinct; see [the source's licensing notes](https://datacommons.org/factcheck/download) and [sample manifest](data/samples/manifest.json). This repository contains selected structured markup, not downloaded article bodies. The implementation and sample annotations were produced with Codex AI coding assistance. Collection-wide rule annotations, the inference fallback, structured MCP results, graph widening, outcome classification and drafted replies, submission write-back and recall, the held-out evaluation queries and this README's hackathon sections were produced with Claude Code (Anthropic) assistance.
 
 ## Verify each milestone
 
