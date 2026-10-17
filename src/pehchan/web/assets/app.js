@@ -437,17 +437,81 @@
     }));
   }
 
+  // ---------- top bar status ----------
+  function setPill(tone, text) {
+    const pill = $("#status-pill");
+    pill.dataset.tone = tone;
+    $("#status-pill-text").textContent = text;
+  }
+
   async function loadStats() {
     try {
       const health = await api("GET", "/health");
       document.querySelector('[data-stat="claims"]').textContent = health.claims;
-    } catch { /* stats are decorative */ }
+      const ready = health.status === "ready";
+      setPill(ready ? "pass" : "fail", ready ? "FalkorDB ready" : "setup required");
+      const inference = health.inference || {};
+      const chain = (inference.chain || []).map((c) => `${MODEL_NAMES[c.model] || c.model} via ${PROVIDER_NAMES[c.provider] || c.provider}`);
+      $("#sp-graph").textContent = `graph: ${health.graph}`;
+      $("#sp-engine").textContent = "FalkorDB · vector index · algo.SPpaths · algo.BFS";
+      $("#sp-size").textContent = `${health.claims} claim wordings · ${health.embedded} embedded`;
+      $("#sp-agent").textContent = chain.length ? chain.join(" → ") : "offline specialists";
+      $("#sp-access").textContent = serverConfig.public_read ? "public read-only · writes need a token" : "local";
+    } catch {
+      setPill("fail", "API unreachable");
+    }
+  }
+
+  function setupStatusPanel() {
+    const pill = $("#status-pill");
+    const panel = $("#status-panel");
+    const close = () => { panel.hidden = true; pill.setAttribute("aria-expanded", "false"); };
+    pill.addEventListener("click", (e) => {
+      e.stopPropagation();
+      panel.hidden = !panel.hidden;
+      pill.setAttribute("aria-expanded", String(!panel.hidden));
+    });
+    document.addEventListener("click", (e) => { if (!panel.contains(e.target)) close(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  }
+
+  // ---------- decorative motion: the highlight sweep and the diagram captions ----------
+  function setupMotion() {
+    const marks = document.querySelectorAll(".hl");
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver((entries) => {
+        for (const entry of entries) if (entry.isIntersecting) { entry.target.setAttribute("data-in", ""); io.unobserve(entry.target); }
+      }, { rootMargin: "0px 0px -20% 0px" });
+      marks.forEach((m) => io.observe(m));
+    } else {
+      marks.forEach((m) => m.setAttribute("data-in", ""));
+    }
+    const caption = $("#diagram-caption");
+    const parts = document.querySelectorAll(".diagram .part");
+    if (!caption || !parts.length) return;
+    const idle = caption.innerHTML;
+    const show = (part) => {
+      parts.forEach((p) => p.removeAttribute("data-on"));
+      part.setAttribute("data-on", "");
+      // captions are authored in this file's markup, never from server or user data
+      const [title, ...rest] = part.dataset.caption.replace(/<\/?b>/g, "\u0000").split("\u0000").filter(Boolean);
+      caption.replaceChildren(el("b", { text: title }), rest.join(""));
+    };
+    const reset = () => { parts.forEach((p) => p.removeAttribute("data-on")); caption.innerHTML = idle; };
+    parts.forEach((part) => {
+      part.addEventListener("mouseenter", () => show(part));
+      part.addEventListener("focus", () => show(part));
+      part.addEventListener("click", () => show(part));
+      part.addEventListener("mouseleave", reset);
+      part.addEventListener("blur", reset);
+    });
   }
 
   document.addEventListener("DOMContentLoaded", () => {
     setupConnect();
-    loadStats();
-    api("GET", "/api/config").then((c) => { serverConfig = c; }).catch(() => { /* defaults */ });
+    setupStatusPanel();
+    setupMotion();
+    api("GET", "/api/config").then((c) => { serverConfig = c; }).catch(() => { /* defaults */ }).finally(loadStats);
     $("#graph-fit").addEventListener("click", () => network && network.fit({ animation: true }));
     $("#graph-overview").addEventListener("click", () => loadGraph(null, "Collection overview."));
     $("#graph-focus").addEventListener("click", () => lastFocus && loadGraph(lastFocus.id, "Back to the closest recorded claim from your investigation."));
