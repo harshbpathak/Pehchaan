@@ -13,3 +13,6 @@ artifacts/
 # Database backups (contain the full graph and saved cases)
 *.tgz
 *.pem
+
+# SSH keys
+*.pem
