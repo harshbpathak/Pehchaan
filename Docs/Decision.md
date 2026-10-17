@@ -662,6 +662,18 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [Space files](../deploy/huggingface/), [loader](../scripts/load_graph.py), [workflow](../.github/workflows/ci-cd.yml), [operator guide](Deployment.md#hugging-face-space--falkordb-cloud-recommended-permanent-hosting).
 
+## ADR-055 — Make AWS EC2 the permanent host with scripted setup and SSH deploys
+
+**Status:** Implemented as code 18 October 2026; the instance, secrets and first run are operator steps. **Flows:** F-41, F-42. Supersedes ADR-054's choice of host; the Space files remain as an alternative.
+
+**Decision:** [setup.sh](../deploy/ec2/setup.sh) provisions a fresh Ubuntu 24.04 instance in one command: packages, swap on small instances, the app and models, FalkorDB in Docker with the graph restored from a backup archive, `/etc/pehchan.env` with generated tokens, a systemd service, and Caddy for automatic HTTPS. The CI/CD workflow gains a `deploy-ec2` job that runs [update.sh](../deploy/ec2/update.sh) over SSH after tests pass on `main`: exact-commit checkout, dependency install, restart and health check.
+
+**Why:** The user found Hugging Face Spaces not free for this use and has AWS credits. Free tiers elsewhere cap memory at 512 MB, below what the local models need.
+
+**Consequences:** Hosting draws on AWS credits (roughly $25-35/month for a medium instance; check current prices). The server keeps its own FalkorDB, so saved cases persist across deploys; back it up with the archive command. `ssh-keyscan` trusts the host key on first use. Both deploy jobs skip with a warning until their secrets exist.
+
+**Implementation:** [EC2 scripts](../deploy/ec2/), [workflow](../.github/workflows/ci-cd.yml), [operator steps](Deployment.md#aws-ec2-with-one-command-setup-and-cicd-recommended-permanent-hosting).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
