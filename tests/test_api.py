@@ -88,3 +88,34 @@ def test_mcp_tool_registration_and_annotations():
         assert tool.annotations.readOnlyHint == (
             tool.name not in {"create_review_case", "investigate_claim"}
         )
+
+
+def test_public_read_mode_opens_reads_only_and_rate_limits(monkeypatch):
+    import asyncio
+
+    monkeypatch.setenv("PEHCHAN_PUBLIC_RATE_LIMIT", "2")
+    service = FakeService()
+    app = create_app(service, read_token="test-read", write_token="test-write", public_read=True)
+    with TestClient(app) as client:
+        assert client.get("/").status_code == 200
+        assert client.get("/api/config").json()["public_read"] is True
+        assert client.get("/api/graph").status_code == 200
+        assert client.post("/api/dossier", json={"claim": "a claim"}).status_code == 200
+        # Case history and writes still need credentials.
+        assert client.get("/api/investigations").status_code == 401
+        assert client.post("/api/investigations", json={"claim": "x"}).status_code == 401
+        assert client.post("/mcp/", json={}).status_code == 401
+        # Compute-heavy public calls are limited per visitor.
+        visitor = {"cf-connecting-ip": "203.0.113.9"}
+        assert client.post("/api/scout", json={"claim": "a"}, headers=visitor).status_code == 200
+        assert client.post("/api/scout", json={"claim": "a"}, headers=visitor).status_code == 200
+        assert client.post("/api/scout", json={"claim": "a"}, headers=visitor).status_code == 429
+    names = {t.name for t in asyncio.run(app.state.public_mcp.list_tools())}
+    assert names and not names & {"create_review_case", "investigate_claim"}
+    assert "assemble_evidence_dossier" in names
+
+
+def test_public_mcp_is_closed_when_public_read_is_off():
+    app = create_app(FakeService(), read_token="", write_token="", public_read=False)
+    with TestClient(app) as client:
+        assert client.post("/public/mcp/", json={}).status_code == 404

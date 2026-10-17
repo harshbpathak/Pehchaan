@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="only light">
+  <meta name="darkreader-lock">
+  <title>Pehchan AI · One false claim, a whole new story</title>
+  <meta name="description" content="One false claim about a war, a crisis or a protest can shift the whole narrative. Pehchan matches forwards to existing fact-checks through a FalkorDB graph and drafts a reply that cites only real records.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js" defer></script>
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#investigate">Skip to the investigation</a>
+
+  <header class="nav">
+    <a class="brand" href="#top" aria-label="Pehchan AI home">
+      <span class="brand-mark" aria-hidden="true">◈</span>
+      <span class="brand-name">PEHCHAN</span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#investigate">Investigate</a>
+      <a href="#how">How it works</a>
+      <a href="#graph">Graph</a>
+      <a href="#proof">Proof</a>
+      <a href="#connect">Connect your AI</a>
+    </nav>
+    <span class="chip chip-track">Graph Hacks · Track 1</span>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <p class="eyebrow">The world is moving fast</p>
+      <h1 class="display hero-title">One false claim.<br>A whole new <span class="mark">story.</span></h1>
+      <p class="lede">We have lived through a pandemic, wars and crises in a few short years. Every time, all it took to ignite anger and shift the narrative was one false claim, forwarded fast enough. Pehchan is how we change that.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#investigate">Check a forward now</a>
+        <a class="btn btn-ghost" href="#spark">See how a narrative ignites</a>
+      </div>
+      <dl class="stats" id="stats" aria-live="polite">
+        <div><dt>Fact-checks in the graph</dt><dd data-stat="claims">—</dd></div>
+        <div><dt>Entities</dt><dd data-stat="entities">69</dd></div>
+        <div><dt>Narrative frames</dt><dd data-stat="frames">14</dd></div>
+        <div><dt>MCP tools</dt><dd>8</dd></div>
+      </dl>
+    </section>
+
+    <div class="marquee-band" aria-hidden="true">
+      <div class="marquee"><div class="marquee-track">
+        <span>COVID-19</span><span class="star">✺</span>
+        <span>USA–Iran war</span><span class="star">✺</span>
+        <span>LPG crisis</span><span class="star">✺</span>
+        <span>Russia–Ukraine war</span><span class="star">✺</span>
+        <span>CJP protest</span><span class="star">✺</span>
+        <span>One forward is all it takes</span><span class="star">✺</span>
+        <span>COVID-19</span><span class="star">✺</span>
+        <span>USA–Iran war</span><span class="star">✺</span>
+        <span>LPG crisis</span><span class="star">✺</span>
+        <span>Russia–Ukraine war</span><span class="star">✺</span>
+        <span>CJP protest</span><span class="star">✺</span>
+        <span>One forward is all it takes</span><span class="star">✺</span>
+      </div></div>
+    </div>
+
+    <section class="section" id="spark" aria-labelledby="spark-title">
+      <p class="eyebrow">00 / The spark</p>
+      <h2 class="display section-title" id="spark-title">Big events.<br>Small lies. <span class="mark">Huge fires.</span></h2>
+      <p class="lede narrow">When the world is anxious, people forward first and check later. A single invented claim, about a cure, a shortage, an attack or a protest, can turn fear into anger before anyone asks where it came from.</p>
+      <ul class="events" aria-label="Recent world events">
+        <li class="event e-sun"><span class="event-kicker">Pandemic</span><h3>COVID-19</h3><p>Fake cures, microchip vaccines, 5G towers. Panic travelled faster than the virus.</p><span class="event-cover covered">In the graph today</span></li>
+        <li class="event e-sky"><span class="event-kicker">War</span><h3>USA–Iran war</h3><p>In conflict, a fabricated video or quote can harden public opinion overnight.</p><span class="event-cover covered">In the graph today</span></li>
+        <li class="event e-signal"><span class="event-kicker">Crisis</span><h3>LPG crisis</h3><p>A rumour about shortages or prices sends people queuing and fuels anger at the counter.</p><span class="event-cover covered">In the graph today</span></li>
+        <li class="event e-mint"><span class="event-kicker">War</span><h3>Russia–Ukraine war</h3><p>Old footage, invented bans and fake announcements recycled across languages.</p><span class="event-cover covered">In the graph today</span></li>
+        <li class="event e-lilac"><span class="event-kicker">Protest</span><h3>CJP protest</h3><p>A single misattributed photo or slogan can change how a whole movement is seen.</p><span class="event-cover covered">In the graph today</span></li>
+      </ul>
+
+      <ol class="ignite" aria-label="How a narrative ignites">
+        <li><span class="ignite-n">1</span><b>An event</b><span>Something real happens and people are worried.</span></li>
+        <li><span class="ignite-n">2</span><b>A false claim</b><span>Someone invents or recycles a claim that fits the fear.</span></li>
+        <li><span class="ignite-n">3</span><b>The forward</b><span>It is shared, translated and reworded faster than anyone checks it.</span></li>
+        <li><span class="ignite-n">4</span><b>The shift</b><span>The narrative changes, and the correction never catches up.</span></li>
+        <li class="ignite-stop"><span class="ignite-n">◈</span><b>Pehchan</b><span>Matches the forward to fact-checks that already exist and drafts a cited reply in seconds.</span></li>
+      </ol>
+      <p class="mission display">We want to <span class="mark">change that.</span></p>
+    </section>
+
+    <section class="section" id="investigate" aria-labelledby="investigate-title">
+      <p class="eyebrow">01 / Investigate</p>
+      <h2 class="display section-title" id="investigate-title">Paste the forward.</h2>
+      <form class="card claim-form" id="claim-form">
+        <label for="claim">What claim did you receive?</label>
+        <textarea id="claim" name="claim" maxlength="4000" rows="3" required
+          placeholder="Example: Bill Gates wants to put microchips in people through the covid vaccine."></textarea>
+        <div class="examples" role="group" aria-label="Example claims">
+          <span class="examples-label">Try:</span>
+          <button type="button" class="chip chip-example" data-claim="पुतिन ने रूस में 5G पर प्रतिबंध लगा दिया और सभी टावर नष्ट करवा दिए।" lang="hi">हिन्दी forward</button>
+          <button type="button" class="chip chip-example" data-claim="Bill Gates wants to put microchips in people through the covid vaccine.">Recycled hoax</button>
+          <button type="button" class="chip chip-example" data-claim="Bill Gates secretly funds a plan to track everyone with implanted chips.">Known narrative</button>
+          <button type="button" class="chip chip-example" data-claim="Underwater quartz clocks transmit encrypted rainfall forecasts.">Brand new claim</button>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="run">Run the agents</button>
+          <span class="hint" id="run-hint">Read-only. Nothing is saved unless you choose to.</span>
+        </div>
+      </form>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <div id="result" class="result" hidden></div>
+    </section>
+
+    <section class="section section-tint" id="how" aria-labelledby="how-title">
+      <p class="eyebrow">02 / How it works</p>
+      <h2 class="display section-title" id="how-title">Agents propose. The graph decides.</h2>
+      <ol class="steps">
+        <li><span class="step-n">1</span><div><h3>Recall</h3><p>Has this wording been seen before? A FalkorDB vector index over past submissions answers instantly through the edges the agent wrote last time.</p><span class="who">FalkorDB vector index</span></div></li>
+        <li><span class="step-n">2</span><div><h3>Scout</h3><p>Find recorded wordings by meaning, in many languages, then check both directions of entailment before calling anything a match.</p><span class="who">Multilingual embeddings · NLI</span></div></li>
+        <li><span class="step-n">3</span><div><h3>Trace</h3><p>Follow claim → narrative frame → related claim → fact-check → publisher, plus native BFS and bounded paths.</p><span class="who">Cypher · algo.BFS</span></div></li>
+        <li><span class="step-n">4</span><div><h3>Widen</h3><p>No direct match? Walk through the entities and frames the message shares with reviewed claims. Rare connections count more than hubs.</p><span class="who">Graph Detective</span></div></li>
+        <li><span class="step-n">5</span><div><h3>Decide</h3><p>Known recycled claim, variant of a known narrative, or new. Draft a reply from graph records only, or queue it for a fact-checker.</p><span class="who">Evidence &amp; Response</span></div></li>
+        <li><span class="step-n">6</span><div><h3>Remember</h3><p>Write the message back into the graph, linked to what it matched, so the next forward is answered by following an edge.</p><span class="who">Submission write-back</span></div></li>
+      </ol>
+    </section>
+
+    <section class="section" id="graph" aria-labelledby="graph-title">
+      <p class="eyebrow">03 / Graph</p>
+      <h2 class="display section-title" id="graph-title">See the connection.</h2>
+      <p class="lede narrow">Claims, fact-checks, publishers, frames and entities as they sit in FalkorDB. Dashed lines are inferences; solid lines come from source records. Run an investigation to focus this view on its closest match.</p>
+      <div class="graph-legend" aria-hidden="true">
+        <span><i class="dot" style="--c:var(--node-variant)"></i>Claim wording</span>
+        <span><i class="dot" style="--c:var(--node-claim)"></i>Claim</span>
+        <span><i class="dot" style="--c:var(--node-frame)"></i>Narrative frame</span>
+        <span><i class="dot" style="--c:var(--node-entity)"></i>Entity</span>
+        <span><i class="dot" style="--c:var(--node-fc)"></i>Fact-check</span>
+        <span><i class="dot" style="--c:var(--node-sub)"></i>Submission</span>
+      </div>
+      <div class="card graph-card">
+        <div class="graph-toolbar" role="toolbar" aria-label="Graph controls">
+          <span class="graph-mode" id="graph-mode">Collection overview</span>
+          <button type="button" class="btn btn-small" id="graph-focus" hidden>Back to your match</button>
+          <button type="button" class="btn btn-small" id="graph-overview">Whole collection</button>
+          <button type="button" class="btn btn-small" id="graph-fit">Fit to screen</button>
+        </div>
+        <div class="graph-body">
+          <div id="graph-canvas" class="graph-canvas" role="img" aria-label="Interactive graph of claims and their connections"></div>
+          <aside class="graph-panel" id="graph-panel" aria-live="polite">
+            <p class="graph-panel-hint">Click any dot to see what it is, how it connects, and the fact-checks behind it.</p>
+          </aside>
+        </div>
+        <p class="graph-caption" id="graph-caption">Loading the collection…</p>
+      </div>
+    </section>
+
+    <section class="section section-tint" id="proof" aria-labelledby="proof-title">
+      <p class="eyebrow">04 / Proof</p>
+      <h2 class="display section-title" id="proof-title">We measured it.</h2>
+      <div class="proof-grid">
+        <div class="card">
+          <h3>Held-out retrieval, 30 queries</h3>
+          <p class="muted">24 paraphrases and 6 translations (Hindi, Spanish, German, French, Indonesian) that are not in the graph. A hit is a recorded wording of the same claim in the top five.</p>
+          <table class="proof-table">
+            <thead><tr><th scope="col">Method</th><th scope="col">hit@5</th><th scope="col">Translations</th></tr></thead>
+            <tbody>
+              <tr><td>Word overlap</td><td>25/30</td><td>3/6</td></tr>
+              <tr><td>FalkorDB vector index</td><td>30/30</td><td>6/6</td></tr>
+              <tr><td>Vector index + graph</td><td>30/30</td><td>6/6</td></tr>
+            </tbody>
+          </table>
+          <p class="muted small">Embeddings already find every case here, so the graph adds no retrieval gain on this set. Its job is widening, recall and explanation.</p>
+        </div>
+        <div class="card">
+          <h3>What the graph does that search cannot</h3>
+          <ul class="ticks">
+            <li>Links a vaccine-microchip claim to a climate claim through <b>Bill Gates</b> in four hops.</li>
+            <li>Answers a repeated forward through a <b>MATCHES</b> edge the agent wrote, without rerunning models.</li>
+            <li>Finds reviewed claims for a new wording through shared <b>entities and frames</b>, weighted by rarity.</li>
+            <li>Shows every edge's basis: source record, rule inference or model assessment.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="connect" aria-labelledby="connect-title">
+      <p class="eyebrow">05 / Connect your AI</p>
+      <h2 class="display section-title" id="connect-title">Bring it into your chat.</h2>
+      <p class="lede narrow">Pehchan is an MCP server. The public endpoint is read-only: six tools for searching, tracing and assembling dossiers. Nothing is saved.</p>
+      <div class="card endpoint">
+        <span class="endpoint-label">MCP server URL</span>
+        <code id="mcp-url">…</code>
+        <button type="button" class="btn btn-small" data-copy="mcp-url">Copy</button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="AI clients">
+        <button role="tab" aria-selected="true" aria-controls="tab-claude" id="t-claude">Claude</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-chatgpt" id="t-chatgpt">ChatGPT</button>
+        <button role="tab" aria-selected="false" aria-controls="tab-gemini" id="t-gemini">Gemini</button>
+      </div>
+      <div class="card tabpanel" role="tabpanel" id="tab-claude" aria-labelledby="t-claude">
+        <ol class="howto">
+          <li><b>claude.ai or Claude Desktop:</b> Settings → Connectors → Add custom connector. Name it <i>Pehchan</i>, paste the URL above, leave authentication empty.</li>
+          <li><b>Claude Code:</b> run this in a terminal.</li>
+        </ol>
+        <pre><code id="cfg-claude"></code></pre>
+        <button type="button" class="btn btn-small" data-copy="cfg-claude">Copy command</button>
+      </div>
+      <div class="card tabpanel" role="tabpanel" id="tab-chatgpt" aria-labelledby="t-chatgpt" hidden>
+        <ol class="howto">
+          <li>Settings → Apps &amp; Connectors → Advanced settings → turn on <b>Developer mode</b>.</li>
+          <li>Create a connector: name <i>Pehchan</i>, MCP server URL as above, authentication <b>No authentication</b>.</li>
+          <li>In a chat, open the tools menu and enable Pehchan, then ask it to investigate a forward.</li>
+        </ol>
+      </div>
+      <div class="card tabpanel" role="tabpanel" id="tab-gemini" aria-labelledby="t-gemini" hidden>
+        <ol class="howto">
+          <li><b>Gemini CLI:</b> add this to <code>~/.gemini/settings.json</code>, then run <code>/mcp</code> to check the tools.</li>
+        </ol>
+        <pre><code id="cfg-gemini"></code></pre>
+        <button type="button" class="btn btn-small" data-copy="cfg-gemini">Copy settings</button>
+      </div>
+      <p class="muted small">Ask, for example: <i>"Use Pehchan to check this WhatsApp forward and draft a reply with sources."</i></p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="display footer-title">Pehchan <span class="mark">AI</span></p>
+    <p>Ratings belong to the publishers that wrote them and apply to the wording they reviewed. Pehchan does not decide what is true. Data: Google Fact Check Tools / Data Commons ClaimReview feed.</p>
+    <p class="small">Built on FalkorDB for WeMakeDevs Graph Hacks.</p>
+  </footer>
+</body>
+</html>

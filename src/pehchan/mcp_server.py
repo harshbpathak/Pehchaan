@@ -7,7 +7,8 @@ from mcp.server.transport_security import TransportSecuritySettings
 from mcp.types import ToolAnnotations
 
 
-def create_mcp(service, public_hosts: list[str] | None = None):
+def create_mcp(service, public_hosts: list[str] | None = None, *, include_write: bool = True):
+    """Build the MCP server; include_write=False gives the public read-only endpoint."""
     hosts = ["127.0.0.1:*", "localhost:*", "testserver", *(public_hosts or [])]
     mcp = FastMCP(
         "Pehchan AI",
@@ -15,7 +16,12 @@ def create_mcp(service, public_hosts: list[str] | None = None):
         json_response=True,
         streamable_http_path="/",
         instructions="Investigate recorded claims. Ratings belong to their original publishers. "
-        "Use investigate_claim to assemble and persist a case; use the read tools for exploration.",
+        + (
+            "Use investigate_claim to assemble and persist a case; use the read tools for exploration."
+            if include_write
+            else "Read-only public endpoint: use assemble_evidence_dossier for a full investigation "
+            "report; nothing is saved."
+        ),
         transport_security=TransportSecuritySettings(
             enable_dns_rebinding_protection=True,
             allowed_hosts=hosts,
@@ -62,6 +68,9 @@ def create_mcp(service, public_hosts: list[str] | None = None):
     def assemble_evidence_dossier(claim: str) -> dict[str, Any]:
         """Run specialist handoffs and assemble a dossier from graph evidence without saving a case."""
         return service.call("assemble_evidence_dossier", claim)
+
+    if not include_write:
+        return mcp
 
     @mcp.tool(annotations=write)
     def create_review_case(claim: str, request_id: str | None = None) -> dict[str, Any]:

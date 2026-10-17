@@ -4,11 +4,15 @@ from __future__ import annotations
 
 import hmac
 import os
-from contextlib import asynccontextmanager
+import time
+from collections import defaultdict, deque
+from contextlib import AsyncExitStack, asynccontextmanager
+from pathlib import Path
 from urllib.parse import urlsplit
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from redis.exceptions import RedisError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
@@ -27,8 +31,54 @@ class ReviewRequest(BaseModel):
     note: str = Field(default="", max_length=4000)
 
 
-def create_app(service=None, read_token: str | None = None, write_token: str | None = None):
+WEB_ROOT = Path(__file__).parent / "web"
+# Routes anyone may call in public read mode: read-only, no case lists or claim history.
+PUBLIC_READ_PREFIXES = (
+    "/api/config",
+    "/api/graph",
+    "/api/evidence/",
+    "/api/narratives/",
+    "/api/path",
+)
+PUBLIC_COMPUTE_PATHS = ("/api/scout", "/api/dossier", "/public/mcp")
+
+
+class RateLimiter:
+    """In-memory sliding window per visitor for model-heavy public requests."""
+
+    def __init__(self, limit: int, window_seconds: int):
+        self.limit, self.window = limit, window_seconds
+        self.hits: dict[str, deque] = defaultdict(deque)
+
+    def allow(self, key: str) -> bool:
+        now = time.monotonic()
+        hits = self.hits[key]
+        while hits and now - hits[0] > self.window:
+            hits.popleft()
+        if len(hits) >= self.limit:
+            return False
+        hits.append(now)
+        return True
+
+
+def visitor(request: Request) -> str:
+    # Behind a tunnel every request arrives from loopback; use the forwarded client address.
+    forwarded = request.headers.get("cf-connecting-ip") or request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+def create_app(
+    service=None,
+    read_token: str | None = None,
+    write_token: str | None = None,
+    public_read: bool | None = None,
+):
     service = service or ApplicationService()
+    if public_read is None:
+        public_read = os.getenv("PEHCHAN_PUBLIC_READ", "") == "1"
+    limiter = RateLimiter(int(os.getenv("PEHCHAN_PUBLIC_RATE_LIMIT", "30")), 600)
     read_token = read_token if read_token is not None else os.getenv("PEHCHAN_API_TOKEN", "")
     write_token = write_token if write_token is not None else os.getenv("PEHCHAN_WRITE_TOKEN", "")
     public_hosts = [
@@ -38,10 +88,14 @@ def create_app(service=None, read_token: str | None = None, write_token: str | N
         raise RuntimeError("Public hosting requires distinct read and write tokens.")
     mcp = create_mcp(service, public_hosts)
     mcp_app = mcp.streamable_http_app()
+    public_mcp = create_mcp(service, public_hosts, include_write=False)
+    public_mcp_app = public_mcp.streamable_http_app()
 
     @asynccontextmanager
     async def lifespan(app):
-        async with mcp.session_manager.run():
+        async with AsyncExitStack() as stack:
+            await stack.enter_async_context(mcp.session_manager.run())
+            await stack.enter_async_context(public_mcp.session_manager.run())
             yield
         service.close()
 
@@ -51,7 +105,7 @@ def create_app(service=None, read_token: str | None = None, write_token: str | N
         lifespan=lifespan,
         description="Graph-native investigation; source ratings are not new claim verdicts.",
     )
-    app.state.service, app.state.mcp = service, mcp
+    app.state.service, app.state.mcp, app.state.public_mcp = service, mcp, public_mcp
     app.add_middleware(
         TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1", "testserver", *public_hosts]
     )
@@ -61,9 +115,22 @@ def create_app(service=None, read_token: str | None = None, write_token: str | N
         origin = request.headers.get("origin")
         if origin and urlsplit(origin).hostname not in {"localhost", "127.0.0.1", *public_hosts}:
             return JSONResponse({"detail": "Origin not permitted"}, status_code=403)
-        if request.url.path == "/health":
-            return await call_next(request)
         path = request.url.path
+        if path == "/health" or path == "/" or path.startswith("/assets/"):
+            return await call_next(request)  # static page and readiness carry no case data
+        if public_read and (
+            path.startswith(PUBLIC_COMPUTE_PATHS)
+            or (request.method in {"GET", "HEAD"} and path.startswith(PUBLIC_READ_PREFIXES))
+        ):
+            heavy = request.method == "POST" and path.startswith(PUBLIC_COMPUTE_PATHS)
+            if heavy and not limiter.allow(visitor(request)):
+                return JSONResponse(
+                    {"detail": "Public rate limit reached; try again in a few minutes."},
+                    status_code=429,
+                )
+            return await call_next(request)
+        if path.startswith("/public/mcp"):
+            return JSONResponse({"detail": "Public read mode is not enabled."}, status_code=404)
         write = path.startswith("/mcp") or (
             request.method not in {"GET", "HEAD", "OPTIONS"}
             and path not in {"/api/scout", "/api/dossier"}
@@ -156,7 +223,21 @@ def create_app(service=None, read_token: str | None = None, write_token: str | N
     def graph(variant_id: str | None = None, limit: int = 80):
         return service.call("graph", variant_id, limit)
 
+    @app.get("/api/config")
+    def config():
+        return {"public_read": public_read, "write_protected": bool(write_token or read_token)}
+
+    app.mount("/public/mcp", public_mcp_app)
     app.mount("/mcp", mcp_app)
+    if WEB_ROOT.is_dir():
+        app.mount("/assets", StaticFiles(directory=WEB_ROOT / "assets"), name="assets")
+
+        @app.get("/", include_in_schema=False)
+        def index():
+            from fastapi.responses import FileResponse
+
+            return FileResponse(WEB_ROOT / "index.html")
+
     return app
 
 
