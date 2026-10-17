@@ -6,9 +6,11 @@ The local MVP is implemented and tested. This document separates its complete lo
 
 | Service | Local address | Purpose |
 | --- | --- | --- |
+| Web app | `http://127.0.0.1:8000/` | Investigation desk, graph explorer, MCP connection guide |
 | Streamlit | `http://127.0.0.1:8501` | Investigation, graph explorer, dossiers and case follow-up |
 | FastAPI | `http://127.0.0.1:8000` | Application API; interactive schema at `/docs` |
-| MCP | `http://127.0.0.1:8000/mcp/` | Seven real Streamable HTTP tools |
+| MCP | `http://127.0.0.1:8000/mcp/` | Eight Streamable HTTP tools (writes need the write token when tokens are set) |
+| Public MCP | `/public/mcp/` with `PEHCHAN_PUBLIC_READ=1` | Six read-only tools, no credentials |
 | FalkorDB browser | `http://127.0.0.1:3000` | Direct database inspection |
 | FalkorDB protocol | `127.0.0.1:16379` | Python/database clients; not an HTTP page |
 
@@ -69,6 +71,12 @@ PEHCHAN_UI_TOKEN=<credential the private UI should use>
 Requests use `Authorization: Bearer <credential>`. Read access can inspect cases and run Scout/read-only dossier operations. Case creation/follow-up needs write access. The combined MCP endpoint requires the write credential because it includes action tools. Tool annotations also identify read/write effects but are not an access-control substitute.
 
 There are no user accounts, tenant-specific case ownership, OAuth implementation, quotas or multi-worker locking. The deployed credential grants access to the configured collection. Run one API worker; the shared local service serializes model/graph operations.
+
+## Quick public demo through a Cloudflare tunnel
+
+Implemented in [scripts/run_public.py](../scripts/run_public.py) (ADR-049, F-39). It downloads `cloudflared` into ignored `.tools/` if missing, opens a quick tunnel to `127.0.0.1:8100`, reads the generated `*.trycloudflare.com` hostname, generates distinct read/write tokens into ignored `artifacts/public-tokens.json`, and starts a separate single-worker API with `PEHCHAN_PUBLIC_HOSTS=<that host>` and `PEHCHAN_PUBLIC_READ=1`. The local API on 8000 is untouched. The web page, `/health`, read-only graph routes, `/api/dossier`, `/api/scout` and `/public/mcp/` work without credentials; case history, writes and `/mcp/` require tokens. Rate limiting applies per `CF-Connecting-IP`.
+
+Limits: the hostname changes every run; the service stops when the laptop sleeps or the script ends; quick tunnels have no uptime guarantee; there is one in-memory rate limiter per process. For a permanent address, follow the procedure below with a named tunnel or reverse proxy.
 
 ## Public HTTPS MCP hosting — operator procedure
 
