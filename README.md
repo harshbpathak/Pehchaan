@@ -8,6 +8,29 @@ Graph-native misinformation investigation with local semantic retrieval, coopera
 
 A journalist asks: *"I've seen a claim that vaccines contain tracking microchips. Has something like it been fact-checked? Which narratives connect to it, and should it be reviewed?"* Pehchan finds previously fact-checked wordings, traverses FalkorDB to the narratives, entities and publishers around them, and decides whether a source-backed dossier is ready or the case needs a human. It never invents a truth verdict: ratings always belong to the original publisher, and missing evidence is reported as missing.
 
+## Use it from Claude, ChatGPT or Gemini
+
+Pehchan is an MCP server. Its public endpoint, `/public/mcp/`, is read-only, needs no account, and offers six tools: search, evidence, narrative paths, connection paths, widening and full dossiers. Nothing is saved through it. Writes (`investigate_claim`, `create_review_case`) live on `/mcp/` behind a bearer write token.
+
+Publish this laptop's instance through a Cloudflare quick tunnel (no Cloudflare account needed; cloudflared is downloaded on first run):
+
+```powershell
+.\.tools\python\python.exe scripts/run_public.py
+```
+
+It prints the public web page and MCP URL, starts a separate API on port 8100 in public read mode with generated tokens, and stops everything on Ctrl+C. The URL changes on every run and works only while the laptop is on. Then:
+
+| Client | How to add Pehchan |
+| --- | --- |
+| claude.ai / Claude Desktop | Settings → Connectors → Add custom connector → paste `https://<tunnel>/public/mcp/`, no authentication |
+| Claude Code | `claude mcp add --transport http pehchan https://<tunnel>/public/mcp/` |
+| ChatGPT | Settings → Apps & Connectors → Advanced → Developer mode → Create connector → same URL, no authentication |
+| Gemini CLI | `~/.gemini/settings.json`: `{"mcpServers": {"pehchan": {"httpUrl": "https://<tunnel>/public/mcp/"}}}` |
+
+The web page at the same address has the investigation desk, the graph explorer, and copy-ready connection snippets for its own URL. Public dossier calls are rate-limited (30 per visitor per 10 minutes by default, `PEHCHAN_PUBLIC_RATE_LIMIT`). If a Gemini key is configured, public dossiers use it, so leave the key unset for a public demo or accept the quota use.
+
+Verified on the live tunnel with the official MCP Python client: tool discovery returned the six read-only tools, and a dossier call matched "Putin has banned 5G in Russia…" to PolitiFact's review. Connecting from the claude.ai, ChatGPT and Gemini apps themselves has not been tested here.
+
 ## How Pehchan meets Track 1
 
 | Track 1 focus | Implementation |
@@ -31,7 +54,7 @@ graph TD
   A & B & C & M --> F[(FalkorDB<br/>claims · fact-checks · frames · entities · investigations · submissions)]
 ```
 
-The graph holds 250 real ClaimReview records (248 claim variants, 53 publishers) in 4 topics, linked to 10 narrative frames and 53 entities. Wordings are multilingual.
+The graph holds 645 real ClaimReview records (641 claim variants, 64 publishers) in 8 topics, linked to 14 narrative frames and 69 entities. Beyond the original COVID-19/5G, vaccine-microchip, climate and moon-landing seed, it covers the 2026 events on the landing page: the LPG crisis (48 reviews), the CJP protest (48), the Iran war (150) and the Russia-Ukraine war (150), imported from the same feed. Wordings are multilingual.
 
 ## What the agent does with a new message
 
@@ -57,6 +80,8 @@ Every step appears in the report's `agent_trace` with its reason (for example *"
 ## Demonstrations
 
 Run with the services started (`scripts/run_local.py`) against the `pehchan` graph.
+
+**A0 — A 2026 rumour.** "The LPG crisis in India hikes the prices by 100%." has no review of its exact wording. The agent widens through the shared LPG entity and the fuel-price frame and replies with The Quint and Fact Crescendo reviews of related LPG-price claims, sent for human review. A claim with nothing related gets the new-claim reply: treat it as unverified, do not forward it until confirmed.
 
 **A — An older version of a claim.** A new paraphrase finds the recorded wording, its publisher and rating, and a ready dossier.
 
@@ -172,28 +197,37 @@ With a Google AI Studio key configured, investigation uses Gemma tool-calling in
 
 ## Configure Gemma inference
 
-The default model is `gemma-4-26b-a4b-it`; Google's [Gemma API guide](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api) documents hosted Gemma 4 and native function calling. Set `GEMINI_API_KEY` (or `GOOGLE_API_KEY`) in the backend process environment using your Google AI Studio key. Do not put it in chat or tracked files. Python does not implicitly load `.env`.
+Pehchan's agent loop runs on **Gemma 4 31B**, Google's open-weights model, through a provider chain that spends as little as possible:
+
+1. **Google AI Studio** (`GEMINI_API_KEY`): free tier, tight per-minute limits.
+2. **OpenRouter** (`OPENROUTER_API_KEY`): open-weights **GPT-OSS 120B** by default, paid per token ($0.15 per million input, $0.60 per million output; an investigation uses 3-5 tool calls, roughly ₹0.2-0.4).
+3. **Offline specialists**: free, local, used and disclosed when every hosted provider fails.
+
+With `PEHCHAN_INFERENCE=auto` (default) every provider that has a key joins the chain in that order. When a provider fails or is rate-limited mid-investigation, the rest of that investigation continues on the next one; the report records which provider answered (`inference.provider`) and every failure (`inference.provider_failures`). If all fail, the offline specialists answer and the report says `deterministic_fallback` with the error (`PEHCHAN_HOSTED_FALLBACK=0` turns that off). Models are set with `PEHCHAN_GEMINI_MODEL` (default `gemma-4-31b-it`) and `PEHCHAN_OPENROUTER_MODEL` (default `openai/gpt-oss-120b`; `google/gemma-4-31b-it` also works). Keys belong in the backend process environment, never in chat or tracked files; Python does not load `.env`.
 
 ```powershell
-$env:PEHCHAN_INFERENCE = "gemini"
-$env:PEHCHAN_LLM_MODEL = "gemma-4-26b-a4b-it"
-# Read the key without displaying it or recording it as a command literal.
-$taskKey = Read-Host "Google AI Studio API key" -AsSecureString
-$env:GEMINI_API_KEY = [System.Net.NetworkCredential]::new('', $taskKey).Password
-Remove-Variable taskKey
+# Read keys without displaying them or recording them as command literals.
+$k = Read-Host "Google AI Studio key" -AsSecureString
+$env:GEMINI_API_KEY = [System.Net.NetworkCredential]::new('', $k).Password
+$k = Read-Host "OpenRouter key (optional)" -AsSecureString
+$env:OPENROUTER_API_KEY = [System.Net.NetworkCredential]::new('', $k).Password
+Remove-Variable k
 .\.tools\python\python.exe scripts/run_local.py
-.\.tools\python\python.exe scripts/smoke_inference.py
+.\.tools\python\python.exe scripts/smoke_inference.py --claim "A claim you have not submitted before"
 ```
 
-Restart an already running backend from that configured environment: the launcher leaves healthy processes running, so it cannot update their environment. `/health` reports inference mode/model and whether a key is present; presence does not establish valid credentials or model access. Missing keys, quota/authentication failures, malformed calls and exhausted budgets return explicit errors and do not create a case. The live smoke command makes actual API calls, saves an ignored local report, and creates no Investigation.
+Restart a running backend from that environment; the launcher leaves healthy processes alone. `/health` shows the chain and whether keys are present (presence is not proof of access).
 
-Gemma receives submitted claim text and selected retrieved evidence/context over HTTPS. Raw ClaimReview markup and file provenance metadata remain local. No arbitrary Cypher or write function is offered to the model. It must retrieve relevant sources and bounded narrative context before completing; application checks remain authoritative. Generated analyst notes are labeled commentary requiring review, not independently verified findings.
+Live runs on 18 October 2026: AI Studio's Gemma 4 31B returned HTTP 500 (even for a one-line prompt) and then 429 after our tests used the free per-minute quota, while Gemma 4 26B answered. OpenRouter's Gemma 4 31B completed the Hindi Putin-5G forward and a vaccine-microchip claim; the 26B model there ran out of turns on a many-candidate 5G claim. Expect the free tier to be intermittent; the chain and the disclosed fallback keep investigations answering.
+
+Model behaviour is constrained in code: the search tool takes no arguments (the application always searches the exact submitted wording, after models degenerated retyping Devanagari text); out-of-scope reads are refused back to the model with what is still required; references the application cannot confirm are dropped and listed. Gemma receives the submitted claim and selected retrieved evidence over HTTPS; raw ClaimReview markup and file provenance stay local. Analyst notes are labelled model commentary.
 
 To run the original offline workflow, explicitly set `$env:PEHCHAN_INFERENCE = "deterministic"` before starting the backend/CLI. Local models and graph setup are still required. Install `.[llm]` for CLI-only LLM use; the server extra already includes its HTTP dependency. The tool loop uses the documented `generateContent` REST API with no additional SDK dependency.
 
 ## Open the running MVP
 
-- Product interface: [http://localhost:8501](http://localhost:8501)
+- Web app: [http://localhost:8000](http://localhost:8000) (investigation desk, graph explorer, MCP connection guide)
+- Streamlit case desk: [http://localhost:8501](http://localhost:8501) (saved cases and follow-up)
 - API documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
 - MCP transport: `http://localhost:8000/mcp/`
 - Database browser: [http://localhost:3000](http://localhost:3000)
@@ -283,11 +317,11 @@ The official Python MCP SDK exposes:
 | `create_review_case` | Persist an explicitly requested human-review case |
 | `investigate_claim` | Run the full workflow and persist its action |
 
-The local endpoint is Streamable HTTP, not legacy SSE. Compatible local clients can use `http://localhost:8000/mcp/`. All eight tools were discovered and called with the official HTTP client, each returning structured content.
+The local endpoint is Streamable HTTP, not legacy SSE. Compatible local clients can use `http://localhost:8000/mcp/`. With `PEHCHAN_PUBLIC_READ=1`, `/public/mcp/` also serves the six read-only tools without credentials. All eight tools were discovered and called with the official HTTP client, each returning structured content.
 
 Local listeners are loopback-only by default. Set `PEHCHAN_API_TOKEN` for read access and a distinct `PEHCHAN_WRITE_TOKEN` for case writes. The combined MCP endpoint requires the write credential when tokens are configured. `PEHCHAN_UI_TOKEN` supplies the UI's backend credential; otherwise the UI uses configured write/read token environment values. Public-host configuration requires distinct credentials. Host/Origin checks are enabled. There is no arbitrary-Cypher or ingestion HTTP tool.
 
-A cloud MCP connector cannot reach localhost. Public deployment requires an HTTPS reverse proxy/reachable host, `PEHCHAN_PUBLIC_HOSTS`, persistent database/model storage, and a client that supports the configured bearer authorization. OAuth and a public deployment/Claude cloud connector have not been verified. See [deployment notes](Docs/Deployment.md).
+A cloud MCP connector cannot reach localhost. Public deployment requires an HTTPS reverse proxy/reachable host, `PEHCHAN_PUBLIC_HOSTS`, persistent database/model storage, and a client that supports the configured bearer authorization. OAuth is not implemented; cloud chat apps use the unauthenticated read-only `/public/mcp/` endpoint instead. See [deployment notes](Docs/Deployment.md).
 
 ## Run the verified sample
 
@@ -332,6 +366,18 @@ The live database tests and source-sample checks passed. See [the validation sna
 The [architectural decision register](Docs/Decision.md) records what we chose, why, and the consequences. The [flow register](Docs/Flow.md) describes every implemented command, data path, operational workflow, and failure branch. Update these registers alongside architectural or workflow changes.
 
 ## Import the larger feed
+
+The 2026 event reviews were added with the same commands, one subset per topic, then merged, tagged and embedded:
+
+```powershell
+python -m pehchan.cli prepare data/raw/claimreview-latest.json --output data/processed/events-lpg.jsonl --report data/processed/events-lpg-report.json --source <feed URL> --contains lpg --contains "cooking gas" --contains "gas cylinder" --contains "एलपीजी" --contains "सिलेंडर"
+# likewise: --contains cjp --contains "cockroach jan"; --contains iran --limit 150; --contains ukrain --limit 150
+# merge the four files into data/processed/events.jsonl (deduplicated by factcheck_id), then:
+python scripts/annotate_collection.py data/processed/events.jsonl --output data/annotations/events.json
+python -m pehchan.cli --graph pehchan ingest data/processed/events.jsonl --annotations data/annotations/events.json
+python -m pehchan.cli --graph pehchan embed
+```
+
 
 The [Data Commons download page](https://datacommons.org/factcheck/download) links the official current ClaimReview feed. Its historical research download returned HTML during setup, so this milestone uses the current feed. The full downloaded file and prepared 250-record subset are already present locally under ignored `data/raw/` and `data/processed/` directories.
 

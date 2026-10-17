@@ -94,6 +94,8 @@ The diagram shows the retained deterministic baseline. Default CLI/API/MCP inves
 | F-35 | Widen through shared entities/frames and classify the finding | Every dossier/investigation without a direct match; MCP `expand_narrative_context` | None |
 | F-36 | Recall a prior submission and write a submission back | Start of every dossier/investigation; end of persisted investigations | Submission node and SUBMITTED/MATCHES/MENTIONS/USES_FRAME edges (investigations only) |
 | F-37 | Compare retrieval methods on held-out queries | `scripts/evaluate_retrieval.py` | `Docs/retrieval-evaluation.json` |
+| F-38 | Use the web app | Browser at `/` | Only through the write route when saving a case |
+| F-39 | Publish a public read-only endpoint | `scripts/run_public.py` | Tunnel, public API process, token and endpoint files |
 
 ## F-01 — Prepare runtime and configuration
 
@@ -515,7 +517,7 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Outputs/effects:** Dossier with original citations, real trace and inference metadata. Selected claim/evidence/context data is transmitted to Google over HTTPS. Raw source markup and file provenance metadata remain local. Model output cannot modify graph records or decision fields. The UI renders the analyst note as plain text requiring review.
 
-**Failure branches:** Missing credentials, HTTP/network/quota failure, blocked/incomplete response, malformed/unknown tool, rewritten claim, invented ID/reference, missing mandatory reads or turn/call/context/time budget exhaustion → explicit RuntimeError (HTTP 503), no case created and no automatic fallback. (`auto` mode, ADR-043, chooses Gemma or offline specialists before a request starts; it never switches mid-request.) Input length errors return validation failure. Read calls completed before failure have no graph-write effects. No background inference/retries are scheduled.
+**Failure branches:** Missing credentials, HTTP/network/quota failure, blocked/incomplete response, malformed/unknown tool, rewritten claim, invented ID/reference, missing mandatory reads or turn/call/context/time budget exhaustion → explicit RuntimeError, no case created, and no automatic fallback (original behaviour). Superseded by ADR-050: providers are chained (AI Studio, then OpenRouter), out-of-scope calls are refused back to the model, unconfirmed references are dropped and listed, and when every provider fails the offline specialists answer with `inference.mode = deterministic_fallback` and a `hosted_model_fallback` trace step unless `PEHCHAN_HOSTED_FALLBACK=0`. Input length errors return validation failure. Read calls completed before failure have no graph-write effects. No background inference/retries are scheduled.
 
 ## F-33 — Configure, test and recover hosted inference
 
@@ -545,7 +547,7 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Trigger:** Any dossier or investigation whose citations contain no `SAME_PROPOSITION` review, in deterministic, Gemma or recall mode.
 
-**Steps:** Tag the submission with [rules.py](../src/pehchan/rules.py) → Graph Detective calls `expand_shared_context(entities, frames, exclude=cited variants)` → `SHARED_CONTEXT` Cypher returns fact-checked claims with shared nodes, edge provenance and `1/degree` score → drop hits scoring below 0.05 → record reached/kept counts in the trace → `decide` sets `finding` (recycled / narrative variant / new), upgrades an insufficient-evidence narrative variant to human review, marks the review queue and priority, and fills the reply template from direct citations, close semantic context and widened claims.
+**Steps:** Tag the submission with [rules.py](../src/pehchan/rules.py) → Graph Detective calls `expand_shared_context(entities, frames, exclude=cited variants)` → `SHARED_CONTEXT` Cypher returns fact-checked claims with shared nodes, edge provenance and `1/degree` score → drop hits scoring below 0.05 and hits that share only places (ADR-052) → record reached/kept counts in the trace → `decide` sets `finding` (recycled / narrative variant / new), upgrades an insufficient-evidence narrative variant to human review, marks the review queue and priority, and fills the reply template from direct citations, close semantic context and widened claims.
 
 **Outputs/effects:** `widening`, `finding`, `review_queue`, `draft_reply` in the report. No graph writes. Related reviews never become citations.
 
@@ -572,6 +574,22 @@ python -m pip install -c requirements.lock -e ".[dev]"
 **Steps:** Resolve each case's accepted substrings to recorded variant IDs (abort if one resolves to nothing) → rank by token Jaccard, by vector index, and by vector index plus shared-context bonus (pool 20, weight 0.1, cosine computed from stored vectors for graph-only candidates) → score hit@1/hit@5 overall and by paraphrase/translation → write [retrieval-evaluation.json](retrieval-evaluation.json).
 
 **Outputs/limits:** Read-only. Smoke-scale, author-written queries; no tuning on these cases.
+
+## F-38 — Use the web app
+
+**Entry:** `/` served by [api.py](../src/pehchan/api.py); [app.js](../src/pehchan/web/assets/app.js). **Decision:** ADR-048.
+
+**Steps:** Load the page → fetch `/health` for counts, `/api/config` for write protection and `/api/graph` for the overview (settles, then freezes; click a node for its connections and reviews) → user picks or types a claim (or `/?claim=` supplies one) → POST `/api/dossier` with a busy status → render the finding banner, drafted reply (copyable), direct and close evidence, widened context with shared nodes, the numbered agent timeline and uncertainties → refocus the graph on the closest variant, or say that nothing connects to a new claim → optional "Save as case" POSTs `/api/investigations` with a fresh request ID; on write-protected servers without a stored token it first shows an inline team-only panel with a token field; a rejected token is cleared → optional JSON download. The connect section fills the public MCP URL and client snippets from `location.origin`.
+
+**Failure branches:** API errors show their `detail` in the status line; graph failures show in the caption; a missing graph library leaves a message instead of a canvas. No invented results are shown.
+
+## F-39 — Publish a public read-only endpoint
+
+**Entry:** [scripts/run_public.py](../scripts/run_public.py). **Decision:** ADR-049.
+
+**Steps:** Locate or download `cloudflared` → start a quick tunnel to `127.0.0.1:8100`, logging to `artifacts/tunnel.log` → read the `trycloudflare.com` hostname → load or create distinct tokens in `artifacts/public-tokens.json` → start uvicorn on 8100 with the public host, public read mode and tokens → wait for local then public `/health` → write `artifacts/public-endpoint.json` and print web/MCP URLs and client instructions → run until Ctrl+C or a child exits, then terminate both.
+
+**Failure branches:** No hostname within 60 s → stop the tunnel and exit; API not healthy within 90 s → exit with the log path; tunnel slow to answer → warning, continue. Rate-limited visitors receive 429. Unauthenticated write, case-list and `/mcp/` requests receive 401/403.
 
 ## Original blueprint flow status
 

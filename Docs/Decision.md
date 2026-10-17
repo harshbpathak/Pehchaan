@@ -578,6 +578,78 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [cases](../data/evaluation/heldout_cases.json), [script](../scripts/evaluate_retrieval.py), [report](retrieval-evaluation.json).
 
+## ADR-048 — Serve a static web app from the API
+
+**Status:** Implemented 18 October 2026. **Flows:** F-38. Complements ADR-038; Streamlit remains for case follow-up.
+
+**Decision:** Serve a single static page ([index.html](../src/pehchan/web/index.html), [site.css](../src/pehchan/web/assets/site.css), [app.js](../src/pehchan/web/assets/app.js)) at `/` from FastAPI. Light poster-style design (cream paper, Anton display type, marquee band, numbered steps), inspired by the reference site the user chose. Vanilla JS calls the existing API; vis-network (pinned 9.1.9 from unpkg) draws the graph; Google Fonts supplies Anton, Inter and Noto Sans Devanagari. `color-scheme: only light` keeps it light even where browsers force dark rendering.
+
+**Why:** One origin for the page, API and MCP makes a single public URL possible, and the user asked for this look.
+
+**Consequences:** Investigations from the page are read-only dossiers. "Save as case" calls the write route and prompts for the write token when tokens are set; the token stays in session storage. All record and user text is inserted with `textContent`. Tool steps appear after the request completes; they are not streamed. `/?claim=…` runs a claim on load for shareable demo links. External CDN and font requests are made by the visitor's browser.
+
+**Implementation:** [web files](../src/pehchan/web/), [routes](../src/pehchan/api.py), [package data](../pyproject.toml).
+
+## ADR-049 — Public read-only MCP endpoint and quick-tunnel hosting
+
+**Status:** Implemented and verified on a live quick tunnel 18 October 2026. **Flows:** F-27, F-28, F-39. Extends ADR-036/ADR-037.
+
+**Decision:** Mount a second MCP server at `/public/mcp/` built with `include_write=False` (six read tools; no `investigate_claim`/`create_review_case`). With `PEHCHAN_PUBLIC_READ=1`, the page, `/health`, `/api/config`, read-only graph/evidence/path routes, `/api/scout`, `/api/dossier` and `/public/mcp/` need no credentials; compute calls are limited per visitor (`CF-Connecting-IP`/`X-Forwarded-For`, default 30 per 10 minutes). Case history, writes and `/mcp/` keep token checks. `scripts/run_public.py` publishes this through a Cloudflare quick tunnel.
+
+**Why:** claude.ai and ChatGPT custom connectors accept URLs with no auth or OAuth, not static bearer tokens, and Gemini CLI takes a plain `httpUrl`. A read-only public endpoint makes "paste one URL" work in all three without exposing write actions or case history. The SDK's Host check matches exact names only, so the launcher learns the tunnel hostname before starting the API.
+
+**Consequences:** Anyone with the URL can run dossiers (CPU time and, if configured, Gemma quota) within the rate limit. Rate limits are per process and in memory. The quick-tunnel URL is ephemeral and depends on the laptop. Client-app connection was not tested from claude.ai, ChatGPT or Gemini themselves; the official MCP client over the public URL was. OAuth remains unimplemented.
+
+**Implementation:** [API](../src/pehchan/api.py), [MCP](../src/pehchan/mcp_server.py), [launcher](../scripts/run_public.py), [tests](../tests/test_api.py), [deployment](Deployment.md#quick-public-demo-through-a-cloudflare-tunnel).
+
+## ADR-050 — Chain hosted Gemma providers and disclose the offline fallback
+
+**Status:** Implemented and live-tested 18 October 2026. **Flows:** F-25, F-32, F-33. Amends ADR-041 (no automatic fallback) and ADR-043 (auto selection).
+
+**Decision:** Add an OpenRouter provider (OpenAI-compatible chat completions with tools) behind the same content format, so every loop validation applies unchanged. `auto` builds a chain of providers with keys, cheapest first: AI Studio (free tier) then OpenRouter, both on Gemma 4 31B by default (`PEHCHAN_GEMINI_MODEL`, `PEHCHAN_OPENROUTER_MODEL`). A failed or rate-limited provider hands the rest of the investigation to the next. If all fail, the orchestrator answers with the offline specialists and reports `deterministic_fallback` with the error and a trace step (`PEHCHAN_HOSTED_FALLBACK=0` restores fail-closed). In the loop, `find_similar_claims` takes no arguments; out-of-scope reads and premature finishes are refused back to the model with what is still required instead of aborting; references outside validated citations are dropped and listed in warnings and `inference.dropped_references`.
+
+**Why:** The user wanted an open model with minimal credit use. Live runs showed AI Studio's 31B returning HTTP 500/503 and then 429, Gemma degenerating while retyping a Hindi claim, and models asking for out-of-scope records or citing narrative-only IDs. Aborting the whole investigation on any of these made the hosted path unusable in a demo.
+
+**Consequences:** ADR-041's statement that no fallback hides provider failure is superseded: the fallback is automatic but always disclosed in the report, trace and UI. Citations and status still come only from application code; refusing a read reads nothing; dropping a reference never adds one. Mixed-provider runs are possible within one investigation and are recorded. OpenRouter use costs money per token; the free tier is intermittent.
+
+**Implementation:** [providers, chain and loop](../src/pehchan/inference.py), [disclosed fallback](../src/pehchan/investigation.py), [tests](../tests/test_inference.py), [setup](../README.md#configure-gemma-inference).
+
+## ADR-051 — Graph explorer and save flow driven by user feedback
+
+**Status:** Implemented 18 October 2026. **Flows:** F-38. Extends ADR-048.
+
+**Decision:** The web graph settles once and then freezes, shows labels for frames, entities and the focused claim, keeps labels readable when zoomed out, and has Fit / Whole collection / Back to your match controls and a click-for-details panel (connections with their basis, publisher reviews, focus here). After an investigation it focuses on the closest claim, or states that nothing in the graph connects to a new claim. On write-protected servers, saving shows an inline team-only panel instead of a browser prompt. The page declares `color-scheme: only light` and `darkreader-lock` because it is designed light.
+
+**Why:** A tester found the graph impressive but hard to use, read the token prompt as an error, and thought the graph ignored new claims when it silently stayed on the overview.
+
+**Consequences:** Public visitors still cannot save; the panel explains why. Browser extensions that respect neither signal may still restyle the page.
+
+**Implementation:** [app.js](../src/pehchan/web/assets/app.js), [site.css](../src/pehchan/web/assets/site.css), [index.html](../src/pehchan/web/index.html).
+
+## ADR-052 — Cover the 2026 events and stop places from bridging narratives
+
+**Status:** Implemented 18 October 2026. **Flows:** F-04, F-09, F-23, F-34, F-35. Extends ADR-042/ADR-045.
+
+**Decision:** Import every LPG and CJP review and the first 150 Iran and Ukraine reviews from the existing feed snapshot (395 unique reviews), with keyword rules for four new frames (fuel prices and shortages, recycled or fabricated war footage, protest crackdown and smear, leaders reported killed or disgraced), four topics and sixteen entities. A widened hit now needs a shared narrative frame or a shared non-place entity; shared places alone (India, China, Iran) no longer qualify. The reply for a claim with nothing related advises treating it as unverified and not forwarding it until confirmed.
+
+**Why:** The landing page names these events, and a tester's LPG claim was matched to unrelated 5G fact-checks only because both mentioned India.
+
+**Consequences:** The graph grows to 645 reviews, 641 variants, 69 entities and 14 frames; both datasets validate. Iran and Ukraine are sampled, not complete. The held-out retrieval evaluation (ADR-047) was measured on the earlier 248-variant graph and was not rerun. Rules are keyword inferences and miss some languages.
+
+**Implementation:** [rules](../src/pehchan/rules.py), [widening filter and reply](../src/pehchan/investigation.py), [query](../src/pehchan/queries.py), [event annotations](../data/annotations/events.json), [README import steps](../README.md#import-the-larger-feed).
+
+## ADR-053 — Default OpenRouter to GPT-OSS 120B and label the engine in plain words
+
+**Status:** Implemented 18 October 2026. **Flows:** F-32, F-33, F-38. Amends ADR-050's OpenRouter default.
+
+**Decision:** OpenRouter's default model is `openai/gpt-oss-120b` (open weights). Both the local and public instances run OpenRouter only, because AI Studio's Gemma 4 31B kept returning HTTP 500. The web page names the engine in plain words ("AI agent: GPT-OSS 120B via OpenRouter", "Answered from graph memory", "Offline agents (AI model busy)") instead of internal mode names, and shows the model's note in a box labelled as not verified.
+
+**Why:** The user asked for the least credit use on OpenRouter. GPT-OSS 120B costs $0.15/$0.60 per million tokens versus $0.20/$0.40 for Gemma 4 31B, and in live runs finished in 3-5 tool calls on the LPG, Hindi Putin-5G and vaccine-microchip claims.
+
+**Consequences:** Public dossier calls now spend OpenRouter credits, bounded by the per-visitor rate limit. The model's analyst note can still be wrong; citations and status remain application decisions.
+
+**Implementation:** [default](../src/pehchan/inference.py), [labels and note](../src/pehchan/web/assets/app.js), [setup](../README.md#configure-gemma-inference).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
