@@ -1,0 +1,520 @@
+{
+  "graph": "pehchan",
+  "cases": 30,
+  "metric": "hit@k: an accepted recorded wording of the same claim appears in the top k",
+  "settings": {
+    "pool": 20,
+    "graph_weight": 0.1
+  },
+  "summary": {
+    "word_overlap": {
+      "hit@1": "25/30 (83%)",
+      "hit@5": "25/30 (83%)"
+    },
+    "embeddings": {
+      "hit@1": "30/30 (100%)",
+      "hit@5": "30/30 (100%)"
+    },
+    "embeddings_plus_graph": {
+      "hit@1": "30/30 (100%)",
+      "hit@5": "30/30 (100%)"
+    }
+  },
+  "hit@5_by_kind": {
+    "paraphrase": {
+      "word_overlap": 22,
+      "embeddings": 24,
+      "embeddings_plus_graph": 24,
+      "cases": 24
+    },
+    "translation": {
+      "word_overlap": 3,
+      "embeddings": 6,
+      "embeddings_plus_graph": 6,
+      "cases": 6
+    }
+  },
+  "results": [
+    {
+      "query": "Vladimir Putin has outlawed 5G in Russia and ordered every tower torn down.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "पुतिन ने रूस में 5G पर प्रतिबंध लगा दिया और सभी टावर नष्ट करवा दिए।",
+      "kind": "translation:hi",
+      "word_overlap": {
+        "hit@1": false,
+        "hit@5": false
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Buzz Aldrin confessed that humans never really landed on the Moon.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Buzz Aldrin admitió que la llegada a la Luna fue falsa.",
+      "kind": "translation:es",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "WikiLeaks leaked outtakes of the Apollo landing shot in a Nevada desert.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "The World Economic Forum wants people to kill their cats and dogs to save the climate.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Das Weltwirtschaftsforum will alle Haustiere töten lassen, um den Klimawandel zu bekämpfen.",
+      "kind": "translation:de",
+      "word_overlap": {
+        "hit@1": false,
+        "hit@5": false
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "A pet microchip scanner picked up a chip in a woman's arm after her Covid shot.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Magnets sticking to people's arms prove the Covid jabs contain microchips.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "The AstraZeneca shot has a Bluetooth chip inside it.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Birds are dropping dead in India because Jio is testing 5G, not because of bird flu.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "भारत में पक्षी बर्ड फ्लू से नहीं, बल्कि जियो के 5G परीक्षण की वजह से मर रहे हैं।",
+      "kind": "translation:hi",
+      "word_overlap": {
+        "hit@1": false,
+        "hit@5": false
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Hundreds of birds died in Croatia right after a 5G mast was switched on.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": false,
+        "hit@5": false
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Trials of 5G towers caused India's second wave of coronavirus.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Peru is removing its 5G antennas after nearby residents developed Covid symptoms.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": false,
+        "hit@5": false
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "NASA has confessed that human-caused global warming is a hoax.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Ted Cruz once tweeted that he would believe in global warming when Texas freezes over.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Greta Thunberg predicted humanity would be wiped out by June 2023.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Arsonists, not a changing climate, started most of Canada's huge 2023 wildfires.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Pope Francis wants disabled people and alcoholics euthanized to fight climate change.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Kamala Harris said having children is a bad idea because of climate anxiety.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Bill Gates plans to wipe out 75 million acres of forest in the name of climate change.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "An Italian autopsy showed the coronavirus is really a bacterium amplified by 5G radiation.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Le coronavirus se propage à cause des antennes 5G.",
+      "kind": "translation:fr",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "The WEF unveiled a digital-currency chip that would end gun ownership in America.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Everyone in the UK will be forced to have a microchip from January 2021.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Vaksin Covid buatan Bill Gates berisi microchip.",
+      "kind": "translation:id",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Greenland's temperature hasn't changed in 160 years, so global warming is a swindle.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "Milankovitch cycles, not humans, are the real driver of climate change.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    },
+    {
+      "query": "A shift in Earth's magnetic poles is what is driving climate change.",
+      "kind": "paraphrase",
+      "word_overlap": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings": {
+        "hit@1": true,
+        "hit@5": true
+      },
+      "embeddings_plus_graph": {
+        "hit@1": true,
+        "hit@5": true
+      }
+    }
+  ],
+  "limits": "30 author-written queries over a 248-variant graph; a smoke-scale comparison, not a calibrated accuracy estimate."
+}
