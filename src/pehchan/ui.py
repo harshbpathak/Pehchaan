@@ -68,8 +68,8 @@ def show_dossier(report):
             st.markdown("**Drafted reply** · requires human approval")
             st.text(report["draft_reply"]["text"])
     inference = report.get("inference", {})
-    if inference.get("mode") == "gemini":
-        st.caption("Tool-calling inference: Google AI Studio · " + inference["model"])
+    if inference.get("mode") in {"gemini", "openrouter"}:
+        st.caption(f"Tool-calling inference: {inference['provider']} · {inference['model']}")
         with st.expander("Model analyst note · requires review"):
             st.text(inference["analyst_note"])
             st.caption("Model commentary; citations and case status are validated separately.")
@@ -159,13 +159,13 @@ with st.sidebar:
     health = api("GET", "/health")
     if health:
         inference = health.get("inference", {})
-        if inference.get("mode") == "gemini" and not inference.get("configured"):
+        if inference.get("provider") and not inference.get("configured"):
             st.warning(
-                "Set GEMINI_API_KEY in the backend environment and restart the API to enable Gemma inference."
+                "Set the hosted model key (OPENROUTER_API_KEY or GEMINI_API_KEY) in the backend environment and restart the API."
             )
         st.caption(
-            f"Inference: Gemma ({inference.get('model')})"
-            if inference.get("mode") == "gemini"
+            f"Inference: {inference.get('provider')} · {inference.get('model')}"
+            if inference.get("provider")
             else "Inference: offline specialists"
         )
         st.caption(f"Collection: {health['claims']} claim variants")

@@ -13,12 +13,12 @@ def main():
     parser.add_argument("--claim", default="Coronavirus is being spread by 5G technology.")
     args = parser.parse_args()
     config = configuration()
-    if config["mode"] != "gemini" or not config["configured"]:
-        parser.exit(2, "Set GEMINI_API_KEY and PEHCHAN_INFERENCE=gemini before this live check.\n")
+    if config["mode"] not in {"gemini", "openrouter"} or not config["configured"]:
+        parser.exit(2, "Set OPENROUTER_API_KEY or GEMINI_API_KEY before this live check.\n")
     service = ApplicationService()
     try:
         report = service.assemble_evidence_dossier(args.claim)
-        assert report["inference"]["mode"] == "gemini"
+        assert report["inference"]["mode"] == config["mode"]
         assert report["inference"]["tool_calls"] >= 2
         assert set(report["inference"]["factcheck_ids"]) <= {
             c["factcheck_id"] for c in report["citations"]

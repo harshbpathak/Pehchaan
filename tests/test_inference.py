@@ -7,6 +7,8 @@ import pytest
 from pehchan.inference import (
     GeminiInference,
     GeminiProvider,
+    OpenRouterProvider,
+    ProviderChain,
     configuration,
     configured_inference,
 )
@@ -26,7 +28,10 @@ class ScriptedProvider:
 
     def generate(self, contents):
         self.histories.append(json.loads(json.dumps(contents)))
-        return {"role": "model", "parts": next(self.turns)}
+        parts = next(self.turns, None)
+        if parts is None:
+            raise RuntimeError("Scripted provider has no more turns.")
+        return {"role": "model", "parts": parts}
 
 
 @pytest.fixture
@@ -70,7 +75,7 @@ def setup():
 
 def successful_provider():
     return ScriptedProvider(
-        [call("find_similar_claims", claim="Original claim")],
+        [call("find_similar_claims")],
         [
             call("get_claim_evidence", variant_id="v1"),
             call("explore_narrative_graph", variant_id="v1"),
@@ -130,17 +135,21 @@ def test_forbidden_or_malformed_first_call_fails_closed(setup, bad_call):
     ],
 )
 def test_unknown_ids_and_incomplete_retrieval_are_rejected(setup, final):
-    store, agent, _ = setup
-    provider = ScriptedProvider([call("find_similar_claims", claim="Original claim")], [final])
+    store, agent, counts = setup
+    provider = ScriptedProvider([call("find_similar_claims")], [final])
     with pytest.raises(RuntimeError):
         GeminiInference(provider).assemble(store, agent, "Original claim")
+    # Out-of-scope calls are refused back to the model; nothing is read for them.
+    assert counts["evidence"] == 0
+    last = provider.histories[-1][-1]["parts"][0]["functionResponse"]["response"]["result"]
+    assert "error" in last
 
 
-def test_fabricated_citation_is_rejected(setup):
+def test_fabricated_citation_is_dropped_and_disclosed(setup):
     provider = successful_provider()
     provider.turns = iter(
         [
-            [call("find_similar_claims", claim="Original claim")],
+            [call("find_similar_claims")],
             [
                 call("get_claim_evidence", variant_id="v1"),
                 call("explore_narrative_graph", variant_id="v1"),
@@ -148,8 +157,11 @@ def test_fabricated_citation_is_rejected(setup):
             [call("finish_investigation", analyst_note="Done", factcheck_ids=["fabricated"])],
         ]
     )
-    with pytest.raises(RuntimeError, match="unsupported evidence"):
-        GeminiInference(provider).assemble(*setup[:2], "Original claim")
+    report = GeminiInference(provider).assemble(*setup[:2], "Original claim")
+    assert report["inference"]["factcheck_ids"] == []
+    assert report["inference"]["dropped_references"] == ["fabricated"]
+    assert "fabricated" not in {c["factcheck_id"] for c in report["citations"]}
+    assert any("dropped" in w for w in report["quality"]["warnings"])
 
 
 def test_no_match_can_finish_without_fabricating_sources():
@@ -162,7 +174,7 @@ def test_no_match_can_finish_without_fabricating_sources():
         }
     )
     provider = ScriptedProvider(
-        [call("find_similar_claims", claim="Unknown")],
+        [call("find_similar_claims")],
         [call("finish_investigation", analyst_note="No recorded match.", factcheck_ids=[])],
     )
     report = GeminiInference(provider).assemble(SimpleNamespace(), scout, "Unknown")
@@ -175,7 +187,7 @@ def test_turn_budget_exhaustion_and_plain_text_fail(setup):
     for provider in (
         ScriptedProvider([{"text": "Trust me, it is true"}]),
         ScriptedProvider(
-            [call("find_similar_claims", claim="Original claim")],
+            [call("find_similar_claims")],
             *[[call("breadth_first_search", variant_id="v1")]] * 7,
         ),
     ):
@@ -184,6 +196,7 @@ def test_turn_budget_exhaustion_and_plain_text_fail(setup):
 
 
 def test_missing_key_and_explicit_baseline(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     monkeypatch.delenv("PEHCHAN_INFERENCE", raising=False)
@@ -211,7 +224,7 @@ def test_rest_protocol_and_secret_safe_errors():
 
     def handle(request):
         assert request.headers["x-goog-api-key"] == "test-secret"
-        assert str(request.url).endswith("/gemma-4-26b-a4b-it:generateContent")
+        assert str(request.url).endswith("/gemma-4-31b-it:generateContent")
         assert "test-secret" not in str(request.url)
         body = json.loads(request.content)
         assert body["toolConfig"]["functionCallingConfig"]["mode"] == "ANY"
@@ -225,7 +238,7 @@ def test_rest_protocol_and_secret_safe_errors():
                         "finishReason": "STOP",
                         "content": {
                             "role": "model",
-                            "parts": [call("find_similar_claims", claim="Original claim")],
+                            "parts": [call("find_similar_claims")],
                         },
                     }
                 ]
@@ -244,3 +257,129 @@ def test_rest_protocol_and_secret_safe_errors():
         with pytest.raises(RuntimeError) as error:
             provider.generate([])
         assert "test-secret" not in str(error.value)
+
+
+def test_auto_chains_free_ai_studio_before_openrouter(monkeypatch):
+    for name in ("OPENROUTER_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY", "PEHCHAN_INFERENCE"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("GEMINI_API_KEY", "gemini-test")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "or-test")
+    config = configuration()
+    assert (config["mode"], config["provider"], config["model"]) == (
+        "gemini",
+        "google_ai_studio",
+        "gemma-4-31b-it",
+    )
+    assert [c["provider"] for c in config["chain"]] == ["google_ai_studio", "openrouter"]
+    chain = configured_inference().provider
+    assert isinstance(chain, ProviderChain)
+    monkeypatch.delenv("GEMINI_API_KEY")
+    assert isinstance(configured_inference().provider, OpenRouterProvider)
+    monkeypatch.delenv("OPENROUTER_API_KEY")
+    monkeypatch.setenv("PEHCHAN_INFERENCE", "openrouter")
+    assert not configuration()["configured"]
+    with pytest.raises(RuntimeError, match="requires OPENROUTER_API_KEY"):
+        OpenRouterProvider().generate([])
+
+
+def test_chain_hands_over_after_failure_and_records_it():
+    class Failing:
+        mode, provider_name, model = "gemini", "google_ai_studio", "free-model"
+
+        def generate(self, contents):
+            raise RuntimeError("HTTP 429")
+
+    class Working(Failing):
+        mode, provider_name, model = "openrouter", "openrouter", "paid-model"
+        calls = 0
+
+        def generate(self, contents):
+            Working.calls += 1
+            return {"role": "model", "parts": []}
+
+    chain = ProviderChain([Failing(), Working()])
+    assert chain.generate([]) == {"role": "model", "parts": []}
+    assert chain.generate([]) == {"role": "model", "parts": []}
+    assert Working.calls == 2 and chain.provider_name == "openrouter"
+    assert chain.failures == ["google_ai_studio (free-model): HTTP 429"]
+    with pytest.raises(RuntimeError, match="All hosted providers failed"):
+        ProviderChain([Failing()]).generate([])
+
+
+def test_openrouter_translates_tools_both_ways_without_leaking_key():
+    seen = []
+
+    def handle(request):
+        assert request.headers["authorization"] == "Bearer or-secret"
+        body = json.loads(request.content)
+        seen.append(body)
+        return httpx.Response(
+            200,
+            json={
+                "choices": [
+                    {
+                        "finish_reason": "tool_calls",
+                        "message": {
+                            "role": "assistant",
+                            "tool_calls": [
+                                {
+                                    "id": "call_1",
+                                    "type": "function",
+                                    "function": {
+                                        "name": "get_claim_evidence",
+                                        "arguments": json.dumps({"variant_id": "v1"}),
+                                    },
+                                }
+                            ],
+                        },
+                    }
+                ]
+            },
+        )
+
+    provider = OpenRouterProvider(key="or-secret", transport=httpx.MockTransport(handle))
+    history = [
+        {"role": "user", "parts": [{"text": '{"submitted_claim": "x"}'}]},
+        {"role": "model", "parts": [call("find_similar_claims")]},
+        {
+            "role": "user",
+            "parts": [
+                {
+                    "functionResponse": {
+                        "name": "find_similar_claims",
+                        "id": "find_similar_claims-id",
+                        "response": {"result": {"matches": []}},
+                    }
+                }
+            ],
+        },
+    ]
+    content = provider.generate(history)
+    assert content == {
+        "role": "model",
+        "parts": [
+            {
+                "functionCall": {
+                    "id": "call_1",
+                    "name": "get_claim_evidence",
+                    "args": {"variant_id": "v1"},
+                }
+            }
+        ],
+    }
+    body = seen[0]
+    assert body["model"] == "openai/gpt-oss-120b" and body["tool_choice"] == "required"
+    assert len(body["tools"]) == 6
+    roles = [m["role"] for m in body["messages"]]
+    assert roles == ["system", "user", "assistant", "tool"]
+    assert body["messages"][2]["tool_calls"][0]["id"] == "find_similar_claims-id"
+    assert body["messages"][3]["tool_call_id"] == "find_similar_claims-id"
+    for response in (
+        httpx.Response(402, text="or-secret"),
+        httpx.Response(200, json={"choices": []}),
+        httpx.Response(200, json={"choices": [{"finish_reason": "length", "message": {}}]}),
+    ):
+        provider.transport = httpx.MockTransport(lambda request, response=response: response)
+        with pytest.raises(RuntimeError) as error:
+            provider.generate([])
+        assert "or-secret" not in str(error.value)
