@@ -56,10 +56,16 @@ TOOLS = [
 
 
 def configuration():
-    mode = os.getenv("PEHCHAN_INFERENCE", "gemini").lower()
-    if mode not in {"gemini", "deterministic"}:
-        raise RuntimeError("PEHCHAN_INFERENCE must be gemini or deterministic.")
+    requested = os.getenv("PEHCHAN_INFERENCE", "auto").lower()
+    if requested not in {"auto", "gemini", "deterministic"}:
+        raise RuntimeError("PEHCHAN_INFERENCE must be auto, gemini or deterministic.")
+    # auto uses Gemma when a key is present and the offline specialists otherwise;
+    # an explicit gemini request still fails loudly without a key.
+    mode = requested
+    if requested == "auto":
+        mode = "gemini" if api_key() else "deterministic"
     return {
+        "requested": requested,
         "mode": mode,
         "provider": "google_ai_studio" if mode == "gemini" else None,
         "model": os.getenv("PEHCHAN_LLM_MODEL", DEFAULT_MODEL) if mode == "gemini" else None,

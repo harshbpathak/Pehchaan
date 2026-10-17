@@ -187,6 +187,14 @@ def test_missing_key_and_explicit_baseline(monkeypatch):
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     monkeypatch.delenv("PEHCHAN_INFERENCE", raising=False)
+    assert configuration()["requested"] == "auto"
+    assert configuration()["mode"] == "deterministic"
+    assert configuration()["configured"]
+    assert configured_inference() is None
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    assert configuration()["mode"] == "gemini"
+    monkeypatch.delenv("GEMINI_API_KEY")
+    monkeypatch.setenv("PEHCHAN_INFERENCE", "gemini")
     assert configuration()["mode"] == "gemini"
     assert not configuration()["configured"]
     with pytest.raises(RuntimeError, match="requires GEMINI_API_KEY"):
