@@ -8,6 +8,11 @@ Graph-native misinformation investigation with local semantic retrieval, coopera
 
 A journalist asks: *"I've seen a claim that vaccines contain tracking microchips. Has something like it been fact-checked? Which narratives connect to it, and should it be reviewed?"* Pehchan finds previously fact-checked wordings, traverses FalkorDB to the narratives, entities and publishers around them, and decides whether a source-backed dossier is ready or the case needs a human. It never invents a truth verdict: ratings always belong to the original publisher, and missing evidence is reported as missing.
 
+## Hosting
+
+- **Permanent (recommended):** AWS EC2 set up by one script (`deploy/ec2/setup.sh`) and updated by GitHub Actions on every tested push to `main`. Steps: [Docs/Deployment.md](Docs/Deployment.md#aws-ec2-with-one-command-setup-and-cicd-recommended-permanent-hosting). A Hugging Face Space + FalkorDB Cloud setup is also included.
+- **Quick demo from a laptop:** `scripts/run_public.py` (Cloudflare quick tunnel), below.
+
 ## Use it from Claude, ChatGPT or Gemini
 
 Pehchan is an MCP server. Its public endpoint, `/public/mcp/`, is read-only, needs no account, and offers six tools: search, evidence, narrative paths, connection paths, widening and full dossiers. Nothing is saved through it. Writes (`investigate_claim`, `create_review_case`) live on `/mcp/` behind a bearer write token.
@@ -167,10 +172,14 @@ Bounded connection path, including entity bridges:
 
 ```cypher
 MATCH (a:ClaimVariant {id: $from_id}), (b:ClaimVariant {id: $to_id})
-MATCH p = (a)-[:EXPRESSES|USES_FRAME|MENTIONS*1..8]-(b)
-WITH p, length(p) AS hops ORDER BY hops LIMIT 1
-RETURN [n IN nodes(p) | n.id], [e IN relationships(p) | type(e)]
+CALL algo.SPpaths({sourceNode: a, targetNode: b,
+                   relTypes: ['EXPRESSES', 'USES_FRAME', 'MENTIONS'],
+                   relDirection: 'both', maxLen: 8, pathCount: 1})
+YIELD path
+RETURN [n IN nodes(path) | n.id], [e IN relationships(path) | type(e)]
 ```
+
+`algo.SPpaths` replaced an enumerate-and-sort variable-length match: the same path in 0.01 s instead of 2.1 s on the 641-variant graph.
 
 Native breadth-first exploration:
 
