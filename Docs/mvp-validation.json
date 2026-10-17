@@ -1,0 +1,284 @@
+{
+  "verified_at": "2026-10-18T02:29:15.808151+05:30",
+  "scope": "Complete local MVP. Public hosting and cloud connector deployment are not performed.",
+  "package_version": "0.2.0",
+  "environment": {
+    "python": "3.12.10",
+    "FalkorDB": "1.8.0",
+    "torch": "2.14.1+cpu",
+    "sentence-transformers": "5.7.0",
+    "transformers": "4.57.6",
+    "fastapi": "0.143.3",
+    "mcp": "1.30.0",
+    "streamlit": "1.66.0"
+  },
+  "milestones": {
+    "ingestion_and_graph": {
+      "ok": true,
+      "checked_source_records": 250
+    },
+    "semantic_retrieval": {
+      "ok": true,
+      "coverage": {
+        "total": 248,
+        "ready": 248,
+        "stale_ids": [],
+        "index_operational": true,
+        "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+        "dimension": 384
+      }
+    },
+    "specialist_workflow_and_case_actions": {
+      "ok": true,
+      "checks": {
+        "ready": true,
+        "source_backed_case": true,
+        "dossier_ready_action": true,
+        "idempotency": true,
+        "persisted_case": true,
+        "no_match_safety": true,
+        "follow_up_persisted": true,
+        "graph_connections": true,
+        "evidence": true,
+        "narratives": true
+      }
+    },
+    "mcp_http": {
+      "transport": "Streamable HTTP",
+      "url": "http://127.0.0.1:8000/mcp/",
+      "calls": [
+        {
+          "tool": "get_claim_evidence",
+          "ok": true,
+          "structured_result": true
+        },
+        {
+          "tool": "explore_narrative_graph",
+          "ok": true,
+          "structured_result": true
+        },
+        {
+          "tool": "find_evidence_path",
+          "ok": true,
+          "structured_result": false
+        },
+        {
+          "tool": "find_similar_claims",
+          "ok": true,
+          "structured_result": false
+        },
+        {
+          "tool": "assemble_evidence_dossier",
+          "ok": true,
+          "structured_result": false
+        },
+        {
+          "tool": "create_review_case",
+          "ok": true,
+          "structured_result": false
+        },
+        {
+          "tool": "investigate_claim",
+          "ok": true,
+          "structured_result": false
+        }
+      ],
+      "tools": [
+        "find_similar_claims",
+        "get_claim_evidence",
+        "explore_narrative_graph",
+        "find_evidence_path",
+        "assemble_evidence_dossier",
+        "create_review_case",
+        "investigate_claim"
+      ],
+      "ok": true
+    },
+    "ui": {
+      "health_http_status": 200,
+      "app_test_flows": [
+        "empty-input validation",
+        "claim submission and dossier",
+        "case library and follow-up",
+        "safe graph text rendering"
+      ]
+    }
+  },
+  "pytest": {
+    "passed": 38,
+    "failed": 0,
+    "live_falkordb": true,
+    "local_model_inference": true,
+    "ui_apptest": true,
+    "command": "PEHCHAN_INTEGRATION=1 PEHCHAN_MODELS=1 python -m pytest -q",
+    "warnings": [
+      "Starlette HTTPX TestClient deprecation",
+      "PyTorch torch.jit.script deprecation from model inference"
+    ]
+  },
+  "static_checks": {
+    "ruff": "passed",
+    "pip_check": "no broken requirements"
+  },
+  "semantic_evaluation": {
+    "strict_cases_passed": 10,
+    "total_cases": 11,
+    "paraphrase_direct_recall": 0.6666666666666666,
+    "release_gate": "All safety/abstention cases pass; at least 2/3 fixed paraphrases directly matched.",
+    "known_false_negatives": [
+      "paraphrase-5g"
+    ],
+    "scope": "Fixed smoke evaluation, not calibrated misinformation accuracy."
+  },
+  "semantic_cases": [
+    {
+      "id": "paraphrase-chip",
+      "kind": "paraphrase",
+      "claim": "A pet microchip scanner detected a chip in a woman's arm after a COVID-19 vaccination.",
+      "expected": "SAME_PROPOSITION",
+      "actual": "SAME_PROPOSITION",
+      "passed": true
+    },
+    {
+      "id": "paraphrase-5g",
+      "kind": "paraphrase",
+      "claim": "5G mobile technology spreads the coronavirus.",
+      "expected": "SAME_PROPOSITION",
+      "actual": "RELATED_CONTEXT",
+      "passed": false
+    },
+    {
+      "id": "paraphrase-5g-passive",
+      "kind": "paraphrase",
+      "claim": "Coronavirus is being spread by 5G technology.",
+      "expected": "SAME_PROPOSITION",
+      "actual": "SAME_PROPOSITION",
+      "passed": true
+    },
+    {
+      "id": "negation-5g",
+      "kind": "contradiction",
+      "claim": "5G technology does not spread coronavirus.",
+      "expected": "CONTRADICTION",
+      "actual": "CONTRADICTION",
+      "passed": true
+    },
+    {
+      "id": "negation-chip",
+      "kind": "contradiction",
+      "claim": "A microchip reader for pets did not detect a chip in the arm of a woman vaccinated against COVID-19.",
+      "expected": "CONTRADICTION",
+      "actual": "CONTRADICTION",
+      "passed": true
+    },
+    {
+      "id": "topic-distractor",
+      "kind": "distractor",
+      "claim": "5G networks provide high speed internet access.",
+      "expected": "NO_CONFIDENT_MATCH",
+      "actual": "NO_CONFIDENT_MATCH",
+      "passed": true
+    },
+    {
+      "id": "vaccine-distractor",
+      "kind": "distractor",
+      "claim": "COVID-19 vaccines reduce the risk of severe illness.",
+      "expected": "NO_CONFIDENT_MATCH",
+      "actual": "NO_CONFIDENT_MATCH",
+      "passed": true
+    },
+    {
+      "id": "entity-distractor",
+      "kind": "distractor",
+      "claim": "Bill Gates founded a software company.",
+      "expected": "NO_CONFIDENT_MATCH",
+      "actual": "NO_CONFIDENT_MATCH",
+      "passed": true
+    },
+    {
+      "id": "unfamiliar-clock",
+      "kind": "unfamiliar",
+      "claim": "Underwater quartz clocks transmit encrypted rainfall forecasts.",
+      "expected": "NO_CONFIDENT_MATCH",
+      "actual": "NO_CONFIDENT_MATCH",
+      "passed": true
+    },
+    {
+      "id": "unfamiliar-agriculture",
+      "kind": "unfamiliar",
+      "claim": "Purple carrots generate satellite navigation signals.",
+      "expected": "NO_CONFIDENT_MATCH",
+      "actual": "NO_CONFIDENT_MATCH",
+      "passed": true
+    },
+    {
+      "id": "unsupported-hindi",
+      "kind": "language-abstention",
+      "claim": "टीकों में लोगों को ट्रैक करने वाली माइक्रोचिप होती है।",
+      "expected": "NO_CONFIDENT_MATCH",
+      "actual": "NO_CONFIDENT_MATCH",
+      "passed": true
+    }
+  ],
+  "models": {
+    "embedding": {
+      "id": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42"
+    },
+    "nli": {
+      "id": "cross-encoder/nli-deberta-v3-small",
+      "revision": "fa2804872c3b4bd748f38c0185cc85775361e735"
+    }
+  },
+  "statistics": {
+    "nodes": {
+      "Publisher": 53,
+      "FactCheck": 250,
+      "Investigation": 8,
+      "Topic": 4,
+      "NarrativeFrame": 5,
+      "Claim": 248,
+      "Entity": 2,
+      "ClaimVariant": 248
+    },
+    "relationships": {
+      "PUBLISHED_BY": 250,
+      "EXPRESSES": 248,
+      "CHECKS": 250,
+      "MENTIONS": 7,
+      "CITES": 10,
+      "EXAMINES": 10,
+      "USES_FRAME": 12,
+      "ABOUT_TOPIC": 12
+    }
+  },
+  "api_live_cases": {
+    "ready_case": {
+      "id": "INV-248219eb2453f1c1d4693c01",
+      "status": "EVIDENCE_DOSSIER_READY"
+    },
+    "known_case": {
+      "id": "INV-bcfb60177b43d76507763eff",
+      "status": "NEEDS_HUMAN_REVIEW"
+    },
+    "unresolved_case": {
+      "id": "INV-a546048c6ae4761c33c6759c",
+      "status": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "service_health": {
+    "status": "ready",
+    "graph": "pehchan",
+    "claims": 248,
+    "embedded": 248
+  },
+  "limitations": [
+    "English-only relevance model with explicit language/length abstention.",
+    "One conservative direct-paraphrase false negative retained; small smoke set is not calibrated real-world accuracy.",
+    "NLI can falsely infer contradiction; such cases route to human review.",
+    "Specialists are model-assisted/deterministic workflows, not autonomous generative chat LLMs.",
+    "Single-worker local service; no tenant isolation, OAuth, public deployment or cloud connector verification.",
+    "Publisher article bodies are not independently retrieved or verified. No new truth verdict is assigned."
+  ]
+}

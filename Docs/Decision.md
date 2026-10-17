@@ -1,0 +1,522 @@
+# Architectural decision register
+
+Last reviewed: **18 October 2026 (Asia/Calcutta)**.
+
+This register catalogues the architectural choices made for the implemented local MVP: ingestion, vector retrieval, specialist handoffs, case management, HTTP/MCP access, and the interface. Earlier milestone decisions are retained as history and explicitly qualified where later decisions extend them. The source code is the reference for current behavior.
+
+Related documents: [flows](Flow.md), [graph schema and queries](graph-schema.md), [validation snapshot](validation.json), and [setup](../README.md).
+
+## Maintaining this register
+
+For every new architectural choice, append the next `ADR-NNN` entry with its status, decision, reason, consequences, source links, and affected flow IDs. Update the corresponding entry in [Flow.md](Flow.md) in the same change. When replacing a decision, retain the old reasoning and mark it superseded; reference the replacement. Do not describe a planned capability as implemented. Record the actual implementation date independently of Git commit timestamps.
+
+**Status meanings:** implemented = present in current code/configuration; corrected = implemented replacement of an earlier faulty choice; deferred = proposed but not built. Known limitations are recorded here, not treated as future capabilities that already exist.
+
+## ADR-001 — Deliver the graph foundation first
+
+**Status:** Implemented. **Flows:** F-01 through F-21.
+
+**Decision:** Limit this milestone to source ingestion, evidence retrieval, explicit graph relationships, algorithms, and validation. Build the foundation before adding LLMs, embeddings, MCP, case management, or a product frontend.
+
+**Why:** The user selected ingestion and schema validation as the first milestone. A real record and a working multi-hop query establish that the graph is useful before agent output obscures data or query errors.
+
+**Consequences at the first milestone:** This delivered a working foundation before vectorization, specialist decisions or review cases. Those capabilities are now implemented by ADR-030 through ADR-039. Public hosting, a demo recording and hackathon submission are not implied by the local MVP.
+
+**Implementation:** [CLI](../src/pehchan/cli.py), [demo](../scripts/validate_demo.py).
+
+## ADR-002 — Use a modular Python package and a CLI
+
+**Status:** Implemented. **Flows:** F-01, F-20.
+
+**Decision:** Use Python 3.11+, a `src/pehchan` package, and `argparse` entry points (`pehchan` and `python -m pehchan.cli`). Separate normalization, ingestion, annotations, fixed queries, and graph access into modules. Emit JSON results.
+
+**Why:** One language and direct function calls keep the initial pipeline inspectable and easy to test. The modules can later sit behind an API or MCP server without requiring those services now.
+
+**Consequences:** Commands remain synchronous local processes and the CLI emits UTF-8 JSON. The initial CLI-only boundary was subsequently extended by ADR-033/ADR-036/ADR-037: FastAPI, Streamable HTTP MCP and Streamlit now serve the same application workflow.
+
+**Implementation:** [package metadata](../pyproject.toml), [CLI](../src/pehchan/cli.py).
+
+## ADR-003 — Make FalkorDB the relationship system of record
+
+**Status:** Implemented. **Flows:** F-08 through F-16.
+
+**Decision:** Store claim/source/entity/narrative relationships in FalkorDB and execute relationship queries there. Use its official synchronous Python SDK. Do not implement an in-memory substitute graph.
+
+**Why:** Connected investigation must depend on real graph operations. A visualization over independently computed relationships would not establish that foundation.
+
+**Consequences:** Source preparation can run offline, but evidence reads, graph exploration, graph algorithms and validation require a reachable FalkorDB instance. Lexical scores are computed in Python over variants read from the database.
+
+**Implementation:** [GraphStore](../src/pehchan/graph.py).
+
+## ADR-004 — Use the official current ClaimReview feed
+
+**Status:** Implemented; replaces the initial historical-download choice. **Flows:** F-03, F-04.
+
+**Decision:** Import the current Google Data Commons / Fact Check Markup Tool DataFeed. Retain its origin and the downloaded file's SHA-256.
+
+**Why:** The historical research download returned HTML during setup. The current feed supplied real ClaimReview records and required no API key for this milestone.
+
+**Consequences:** Future downloads can change. Reproducible demonstrations use a saved sample, not an assumption that the latest feed remains identical. There is no Google Fact Check Tools API integration or automatic online enrichment.
+
+**Implementation:** [sample manifest](../data/samples/manifest.json), [download commands](../README.md#import-the-larger-feed).
+
+## ADR-005 — Retain structured markup and attribute its sources
+
+**Status:** Implemented. **Flows:** F-03 through F-05, F-17.
+
+**Decision:** Preserve ClaimReview markup and available licensing fields. Include source attribution and a separate sample manifest. Do not download article bodies.
+
+**Why:** The investigation needs source URLs, publisher ratings and traceability. The dataset's structured markup does not provide full article contents, and compilation licensing does not replace publisher-content terms.
+
+**Consequences:** Retrieval returns recorded metadata, not an assertion that the full article has been read or its evidence independently verified. Missing license fields stay missing.
+
+**Implementation:** [normalization](../src/pehchan/records.py), [sample notes](../data/samples/README.md).
+
+## ADR-006 — Use a small seed and a stable genuine sample
+
+**Status:** Implemented. **Flows:** F-04, F-17, F-18.
+
+**Decision:** Prepare 250 accepted unique reviews using OR substring filters for `microchip`, `5g`, `climate change`, and `moon landing`. Keep 12 explicitly selected source records and their separate annotations in the repository.
+
+**Why:** A bounded seed makes initial inspection and graph validation practical. The small checked-in sample makes demonstrations independent of a large changing feed.
+
+**Consequences:** Substring filters are selection aids, not semantic topic labels; they can include irrelevant matches and multilingual content. Only the 12 selected claims have narrative/entity annotations. Current counts are a snapshot, not fixed system guarantees.
+
+**Implementation:** [prepare](../src/pehchan/ingestion.py), [sample selection](../scripts/build_sample.py).
+
+## ADR-007 — Stream source containers and use JSONL between stages
+
+**Status:** Implemented. **Flows:** F-04, F-06.
+
+**Decision:** Use `ijson` to iterate JSON container items, recursively unwrap supported ClaimReview envelopes, and support JSONL/NDJSON plus gzip variants. Write one normalized record per JSONL line.
+
+**Why:** The downloaded feed is large. A line-oriented intermediate artifact is easy to inspect, audit and rerun without embedding the source acquisition step in graph ingestion.
+
+**Consequences:** This is not a constant-memory pipeline: preparation retains accepted records in its deduplication map, and `load_prepared` loads the prepared subset into a list. Readers expect the supported JSON structure and appropriate JSONL/NDJSON filename suffixes, not arbitrary text or HTML.
+
+**Implementation:** [ingestion readers](../src/pehchan/ingestion.py).
+
+## ADR-008 — Assign deterministic identities conservatively
+
+**Status:** Implemented. **Flows:** F-05, F-09.
+
+**Decision:** Prefix IDs by kind and derive their suffix from the first 24 hex characters of SHA-256 over JSON-encoded identity values. Variant identity uses NFC wording and language. Canonical claim identity uses NFKC, case folding, whitespace normalization and language. Review identity uses canonical URL, normalized claim and language. Publisher identity uses its domain; entity identity also includes type.
+
+**Why:** Stable identities make sequential imports repeatable without merging claims just because they sound similar. Punctuation, numbers and negation must survive normalization.
+
+**Consequences:** Wording variants can remain separate even if humans would call them paraphrases. Language defaults to `und`; language detection is absent. Changing identity rules requires an explicit migration decision. These IDs are deterministic identifiers, not evidence that a claim is true or equivalent to a paraphrase.
+
+**Implementation:** [stable_id and normalize_review](../src/pehchan/records.py).
+
+## ADR-009 — Canonicalize URLs but retain their original form
+
+**Status:** Implemented. **Flows:** F-05.
+
+**Decision:** Accept absolute HTTP(S) URLs, reject embedded credentials, normalize host/default ports, remove fragments and known tracking parameters, and sort remaining query parameters. Keep `url_original` alongside `url`.
+
+**Why:** Tracking links should not create duplicate review identities; the source's submitted URL must still be available for audit.
+
+**Consequences:** URL normalization is deterministic, not a redirect resolver or availability check. Query-order and fragment-based distinctions are not preserved in the canonical identity, though they remain in the original URL.
+
+**Implementation:** [canonical_url](../src/pehchan/records.py).
+
+## ADR-010 — Keep publisher ratings and dates source-derived
+
+**Status:** Implemented. **Flows:** F-05, F-11.
+
+**Decision:** Obtain the displayed original rating from `reviewRating.alternateName`, then `ratingValue`; retain the whole rating object including numeric scales. Parse review date from the review's `datePublished` and claim date only from `itemReviewed.datePublished`. Leave unavailable dates empty and record applicable warnings.
+
+**Why:** Pehchan must not invent a verdict, reinterpret an unfamiliar numeric scale as a truth label, or confuse the date of an article with the date of a claim.
+
+**Consequences:** No common true/false scale is synthesized. Original dates remain in raw markup; normalized dates have day precision. Missing or malformed dates do not automatically reject an otherwise usable record.
+
+**Implementation:** [normalization](../src/pehchan/records.py), [evidence](../src/pehchan/graph.py).
+
+## ADR-011 — Separate fact-check publisher from claim originator
+
+**Status:** Implemented. **Flows:** F-05.
+
+**Decision:** Prefer a suitable named organization in `publisher`, then review-level `author`; otherwise fall back to the review URL's domain. Exclude entries explicitly typed `Person`. Do not use `itemReviewed.author` or `sdPublisher` as the reviewing publisher.
+
+**Why:** The person making a claim and the service distributing its markup are different from the organization reviewing it.
+
+**Consequences:** Publisher naming follows the available markup and its types; it is not an independently verified publisher directory. A shared domain groups publisher records. When organization data is unavailable, the fallback basis and missing-name warning remain explicit.
+
+**Implementation:** [organization and normalize_review](../src/pehchan/records.py).
+
+## ADR-012 — Preserve provenance and check prepared-record consistency
+
+**Status:** Implemented. **Flows:** F-05, F-06, F-11, F-16.
+
+**Decision:** Keep the complete parsed source record, original rating, source label, file hash, one-based review index and license data. Before ingesting, recompute normalization from each prepared row's raw record and compare the entire normalized row.
+
+**Why:** Readers need to trace reported values back to a particular source record and detect accidental edits to derived fields.
+
+**Consequences:** This is a consistency check, not cryptographic authenticity verification: someone editing both raw and derived fields could pass it, and loading prepared data does not rehash the original downloaded file. Reingestion can replace stored source provenance for the same review ID; version history is not implemented.
+
+**Implementation:** [load_prepared](../src/pehchan/ingestion.py), [UPSERT_REVIEW](../src/pehchan/queries.py).
+
+## ADR-013 — Audit invalid records and abort rating conflicts
+
+**Status:** Implemented. **Flows:** F-04, F-06.
+
+**Decision:** Skip and report records missing required claim, source URL or rating data. Treat a repeated review ID with an equal rating object as a duplicate. Abort preparation if the same review identity has a different rating object. Write normalized output through a temporary sibling file, replacing the destination only after successful iteration.
+
+**Why:** A broken record should be visible without stopping all usable records, but contradictory source ratings must not be resolved arbitrarily. An interrupted parse must not overwrite a previous normalized dataset with partial output.
+
+**Consequences:** Duplicate detection is by review identity and rating, not byte-for-byte raw-record equality; other metadata differences do not create a second accepted row. Conflict reports are written before aborting. A parser/I/O failure does not guarantee a fresh report, and replacing output plus writing its report is not one atomic transaction. A limit only examines the scanned prefix of the feed.
+
+**Implementation:** [prepare](../src/pehchan/ingestion.py), [ingestion tests](../tests/test_ingestion.py).
+
+## ADR-014 — Separate curated relationships from source records
+
+**Status:** Implemented. **Flows:** F-07, F-09, F-12.
+
+**Decision:** Store frame, topic and entity annotations in a separate JSON array, referencing existing variant IDs. Require `reviewed_by` and `rationale`; require entity type and a normalized evidence span occurring in the claim. Store annotation origin on graph edges.
+
+**Why:** ClaimReview markup does not itself supply the proposed narrative taxonomy. Text extraction and thematic interpretation must not be passed off as publisher evidence.
+
+**Consequences:** The sample annotations disclose Codex assistance and pending human review. The span check establishes text presence, not correct entity disambiguation. Annotations attach to canonical claims, are merged in place, and do not have full version/removal history.
+
+**Implementation:** [annotation validation](../src/pehchan/annotations.py), [sample annotations](../data/samples/annotations.json).
+
+## ADR-015 — Separate claims, wordings, sources and context nodes
+
+**Status:** Implemented; Investigation reservation activated by ADR-035. **Flows:** F-08, F-09, F-26.
+
+**Decision:** Use `ClaimVariant`, `Claim`, `FactCheck`, `Publisher`, `Entity`, `NarrativeFrame`, and `Topic`. Reserve an ID index for `Investigation`. Link fact-checks to variants; link frames, topics and entities to canonical claims.
+
+**Why:** Multiple publishers can review the same wording, and different claims can share context without becoming the same factual proposition. Investigation state should eventually remain distinct from the knowledge being examined.
+
+**Consequences:** No placeholder investigation nodes are inserted. ADR-035 now creates real Investigation records with `EXAMINES` and `CITES`. Shared variant/publisher properties reflect the latest write; per-review raw markup remains the source for historical details.
+
+**Implementation:** [schema](graph-schema.md), [query definitions](../src/pehchan/queries.py).
+
+## ADR-016 — Use sequential, repeatable graph writes
+
+**Status:** Implemented. **Flows:** F-08, F-09, F-21.
+
+**Decision:** Create ID range indexes, tolerate only the known already-indexed response, and use parameterized `MERGE`. Write each source review in one query, then apply annotations in separate queries. Validate input before initiating writes. Operate with one ingestion process per graph.
+
+**Why:** This keeps the milestone simple and supports safe sequential retries without requiring a whole-dataset transaction or concurrency system.
+
+**Consequences:** An interrupted ingestion can leave a valid partial dataset; rerun to finish. Range indexes do not enforce uniqueness. Concurrent writers, stale-edge reconciliation, migrations, and dataset-wide rollback are not implemented. No deletion is implied by removing a row from an input file.
+
+**Implementation:** [GraphStore.init_schema and ingest](../src/pehchan/graph.py).
+
+## ADR-017 — Bound queries and separate graph reads from writes
+
+**Status:** Implemented. **Flows:** F-08 through F-16, F-20.
+
+**Decision:** Keep query templates in code and pass values as SDK parameters. Generate annotation labels/relationships only from a fixed allowlist. Use `ro_query` for exploration, a 10,000 ms read-query timeout, 5-second connection timeout and 30-second socket timeout. Validate graph names and expose bounded result/depth limits.
+
+**Why:** User claim text and IDs should be data rather than executable Cypher. Expensive exploration needs limits and failures must surface without echoing credentials.
+
+**Consequences:** These are application boundaries, not separate database-user permissions or remote authentication. Database/server limits may also apply. No general-purpose Cypher execution tool is exposed.
+
+**Implementation:** [GraphStore](../src/pehchan/graph.py), [queries](../src/pehchan/queries.py), [CLI errors](../src/pehchan/cli.py).
+
+## ADR-018 — Use a lexical retrieval baseline until semantic verification exists
+
+**Status:** Retained as an explicit lexical baseline; semantic retrieval added by ADR-030/ADR-031. **Flows:** F-10, F-24.
+
+**Decision:** Tokenize normalized claim text with `\w+`, use Counter-based Jaccard overlap, discard zero scores, and sort by descending rounded score with variant-ID tie breaking. Label results `unverified_candidate` and `token_jaccard_baseline`.
+
+**Why:** A transparent baseline proves the source-to-graph retrieval flow without a model download, provider key, or unsupported semantic-equivalence claim.
+
+**Consequences:** Counts of repeated tokens influence the baseline score. Its `search` command has no stopword removal, translation or confidence calibration. Nonzero overlap is a candidate, not proof of relevance; missing matches establish no truth verdict. This baseline reads all variants into Python. New `semantic-search`/`scout` commands use the separate indexed workflow rather than silently changing this command's meaning.
+
+**Implementation:** [GraphStore.candidates](../src/pehchan/graph.py).
+
+## ADR-019 — Return explicit narrative paths and uncertainty
+
+**Status:** Implemented. **Flows:** F-11, F-12.
+
+**Decision:** Traverse variant → claim → frame ← claim ← related variant, retrieve that related variant's review and publisher, and return ordered node IDs, relationship types, source URLs/ratings, and edge provenance. Mark every result `narrative_context_only`.
+
+**Why:** The relationship supporting a finding should be inspectable, and a thematic neighbor's verdict must not become a verdict on the submitted claim.
+
+**Consequences:** Only existing annotated connections can be returned. Shared frames or entities do not establish factual equivalence or coordinated activity. An absent path is an empty result, not a generated explanation.
+
+**Implementation:** [NARRATIVE_PATHS](../src/pehchan/queries.py), [narrative_paths](../src/pehchan/graph.py).
+
+## ADR-020 — Use a bounded undirected path query
+
+**Status:** Corrected. **Flows:** F-13.
+
+**Decision:** Enumerate undirected paths of one to eight relationships across `EXPRESSES`, `USES_FRAME`, and `MENTIONS`; return one minimum-length path within that bound.
+
+**Why:** Live testing showed that this FalkorDB server rejects the attempted native undirected `shortestPath` form. A bounded Cypher path query supports the required mixed-direction narrative and entity connections. Excluding topic/publisher edges avoids weak shortcuts through broad subjects or reviewing organizations.
+
+**Consequences:** The method name `shortest_path` describes a bounded result, not a native shortest-path algorithm or a guarantee about paths beyond eight hops. Dense annotated graphs can still make enumeration expensive. Native BFS is separately tested as the database algorithm.
+
+**Implementation:** [SHORTEST_PATH](../src/pehchan/queries.py), [integration tests](../tests/test_graph_integration.py).
+
+## ADR-021 — Execute native BFS with explicit traversal limits
+
+**Status:** Implemented. **Flows:** F-14, F-16.
+
+**Decision:** Call FalkorDB `algo.BFS` on a matched variant, passing depth and a null relationship filter. Default depth is 3; the application accepts 1–6.
+
+**Why:** The milestone needs a genuinely executed graph algorithm, not a Python traversal over copied data.
+
+**Consequences:** On the tested server BFS follows outgoing edges and returns reachable nodes after the starting node. It does not provide the mixed-direction narrative traversal. Its returned edge collection is not one evidence path. Missing start nodes return no matching query row.
+
+**Implementation:** [BFS](../src/pehchan/queries.py), [bfs](../src/pehchan/graph.py).
+
+## ADR-022 — Use environment-based connection configuration
+
+**Status:** Implemented. **Flows:** F-01, F-20.
+
+**Decision:** Read `FALKORDB_HOST`, `PORT`, `GRAPH`, `PASSWORD`, `USERNAME`, and `SSL` directly from process environment. Let `--graph` override the graph variable. Supply `.env.example`, but do not automatically load `.env` in Python.
+
+**Why:** Connection behavior remains explicit and suitable for later deployment without requiring another configuration dependency.
+
+**Consequences:** Copying `.env.example` alone does not configure the Python process. SSL is enabled by the literal case-insensitive value `true`. Defaults target the local development service, not a public deployment.
+
+**Implementation:** [.env.example](../.env.example), [GraphStore constructor](../src/pehchan/graph.py).
+
+## ADR-023 — Pin the database image and tested dependencies
+
+**Status:** Implemented. **Flows:** F-01, F-02, F-19.
+
+**Decision:** Use Docker Compose with the combined FalkorDB/server-browser image pinned by digest. Keep supported dependency ranges in `pyproject.toml` and the tested dependency versions in `requirements.lock`, used as pip constraints. Use pytest and Ruff for checks.
+
+**Why:** Graph query compatibility and bundled browser behavior should be repeatable. Pinning the tested environment limits accidental changes during a short milestone.
+
+**Consequences:** Image/dependency upgrades require fresh validation. The lock file is a version constraints list, not a hash-verified installer lock. The project remains installable as an editable package. The portable `.tools` runtime was a local workaround for missing Python on PATH, not a deployment requirement.
+
+**Implementation:** [Compose](../compose.yaml), [metadata](../pyproject.toml), [constraints](../requirements.lock).
+
+## ADR-024 — Expose separate local database and browser ports
+
+**Status:** Corrected. **Flows:** F-02.
+
+**Decision:** Bind host `127.0.0.1:16379` to container database port `6379`, and host `127.0.0.1:3000` to browser port `3000`.
+
+**Why:** Host port 6379 was already occupied. The initial Compose file exposed only the database, so the browser running inside the container could not be reached from the laptop. Adding its mapping resolved the user's port-3000 issue.
+
+**Consequences:** Laptop Python clients use port 16379. The bundled browser's server-side connection uses container-local port 6379. This is a localhost-only, passwordless development setup, not an authenticated remote service.
+
+**Implementation:** [Compose](../compose.yaml), [browser instructions](../README.md).
+
+## ADR-025 — Persist the actual database directory and enable AOF
+
+**Status:** Corrected; supersedes the original `/data` mount and command-only flag configuration. **Flows:** F-02, F-21.
+
+**Decision:** Mount the named volume at `/var/lib/falkordb/data` and pass `--appendonly yes --appendfsync everysec` through `REDIS_ARGS`.
+
+**Why:** Inspecting the running image showed its data directory is `/var/lib/falkordb/data` and its startup script reads `REDIS_ARGS`, not the supplied command arguments. The first container recreation therefore cleared the unpersisted graphs. Both graphs were rebuilt from saved input, the configuration was corrected, and another recreation confirmed retention.
+
+**Consequences:** The named volume retains the database through ordinary container recreation. AOF syncs every second, so this is not a promise of zero loss after an abrupt host failure. A volume is not an independent backup; deleting the volume still deletes its data. Source snapshots remain necessary for reproducibility and recovery.
+
+**Implementation:** [Compose](../compose.yaml); observed `CONFIG GET dir appendonly` and post-recreation graph/statistics checks on 18 October 2026.
+
+## ADR-026 — Separate main, demo and test graphs
+
+**Status:** Implemented. **Flows:** F-09, F-18, F-19.
+
+**Decision:** Use `pehchan` for the larger dataset, `pehchan_demo` for the stable sample, and unique `pehchan_test_*` names for integration tests. Delete only the test-owned graphs in test cleanup.
+
+**Why:** Demo preparation hashes a different file from the original feed; importing its records into the main graph would replace provenance for shared review IDs. Test cleanup must not remove development data.
+
+**Consequences:** Graph choice is part of every reproducible command. These are logical namespaces in one database, not separate credentials or access controls. The demo graph persists; tests clean up their temporary graphs.
+
+**Implementation:** [demo runner](../scripts/validate_demo.py), [integration tests](../tests/test_graph_integration.py).
+
+## ADR-027 — Validate source fidelity and real graph execution
+
+**Status:** Implemented. **Flows:** F-16, F-18, F-19.
+
+**Decision:** Compare retrieved review IDs, URLs, ratings, raw markup, file hashes and source indices against prepared input. Check duplicate node IDs, orphaned reviews and variant-to-claim cardinality. Execute BFS and look for a narrative path; require one with `--require-narrative`. Reproduce the connected pair with the bounded path query.
+
+**Why:** Successful insertion alone does not prove that evidence can be recovered unchanged or that the connected workflow actually works.
+
+**Consequences:** Validation returns structured failures and a nonzero exit code. It is a defined set of integrity checks, not a complete schema constraint system, complete source verification, or test of every edge. Snapshot reports are evidence of a past run, not live monitoring.
+
+**Implementation:** [validate](../src/pehchan/graph.py), [snapshot](validation.json).
+
+## ADR-028 — Keep source data, generated artifacts and fixtures distinct
+
+**Status:** Implemented. **Flows:** F-03, F-17 through F-19, F-21.
+
+**Decision:** Ignore large raw downloads, processed datasets, runtime environments, caches, `.env` and generated artifacts. Keep the small genuine sample, manifest, annotations, source code, tests, and reviewed validation snapshot in the repository. Restrict fabricated fixture records to tests with `.example` URLs.
+
+**Why:** The repository should remain practical to clone and should distinguish genuine evidence records from synthetic tests and regenerable local output.
+
+**Consequences:** A fresh clone can run the sample but must download or otherwise obtain the full feed to reproduce the larger dataset. Reports under `artifacts/` are local. No automated backup or report publication pipeline exists.
+
+**Implementation:** [.gitignore](../.gitignore), [sample directory](../data/samples/), [test fixtures](../tests/conftest.py).
+
+## ADR-029 — Maintain decision and flow registers together
+
+**Status:** Implemented by this documentation change. **Flows:** F-22.
+
+**Decision:** Use one capitalized `Docs` directory containing `Decision.md`, `Flow.md`, the graph reference, and the validation snapshot. Preserve historical decisions and give decisions/flows stable IDs. Link both registers from the README.
+
+**Why:** The user requested a continuing catalogue of architecture and project flows. Consolidating the existing lowercase directory also avoids case-dependent links breaking on GitHub or Linux.
+
+**Consequences:** Every future architectural or flow change should update the registers with its implementation. Root agent instructions reinforce this convention; no automated freshness enforcement exists.
+
+**Implementation:** [this register](Decision.md), [flow register](Flow.md), [agent instructions](../AGENTS.md), [README](../README.md).
+
+## ADR-030 — Run pinned local embedding and relevance models
+
+**Status:** Implemented. **Flows:** F-23, F-24. **Replaces:** the embedding deferral in ADR-018/P-001.
+
+**Decision:** Use Sentence Transformers `paraphrase-multilingual-MiniLM-L12-v2` (384 dimensions) for retrieval and `cross-encoder/nli-deberta-v3-small` for relevance. Pin repository revisions, download safetensors/configuration files explicitly into ignored `.models`, and load with CPU inference, local-only files and no remote code. Keep model installation in the `semantic` extra.
+
+**Why:** The mixed-language collection benefits from multilingual retrieval. A separate NLI model can test textual entailment and contradiction without an external LLM key or sending submitted claims to a provider.
+
+**Consequences:** Setup needs model downloads and disk/RAM, but investigation inference is local afterward. Model-directory markers check expected identity; they are not signed authenticity attestations for a manually altered cache. English-only NLI is a separate limitation from multilingual retrieval. Embedding models truncate to their own sequence limit; retrieved candidates still need the relevance checks in ADR-032. Model scores are never publisher verdicts.
+
+**Implementation:** [models](../src/pehchan/models.py), [model cards](https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2), [NLI model card](https://huggingface.co/cross-encoder/nli-deberta-v3-small).
+
+## ADR-031 — Keep vectors, index and freshness metadata in FalkorDB
+
+**Status:** Implemented. **Flows:** F-23, F-24.
+
+**Decision:** Store normalized float32 embeddings on ClaimVariant, with model ID, pinned revision and source-text SHA-256. Use a 384-dimensional cosine vector index and native `db.idx.vector.queryNodes`. Incrementally encode only missing/stale variants; reject semantic reads when the graph has incomplete/stale vector coverage or an incompatible index.
+
+**Why:** Retrieval and connected reasoning should share one database. Explicit provenance prevents vectors from different model versions or changed text being silently mixed.
+
+**Consequences:** The tested server returns cosine distance, verified with identical and orthogonal vectors. Convert distance to similarity with `1 - distance`; sort distance ascending. ANN retrieval is approximate. Freshness checks currently scan variant metadata and index status on each request, appropriate for this seed but not optimized for a large corpus. Indexing is single-writer and per-row; interrupted work is rerunnable. Dataset expansion requires another `embed` pass.
+
+**Implementation:** [VectorIndex](../src/pehchan/semantic.py), [distance/staleness regression test](../tests/test_semantic.py), [FalkorDB vector reference](https://docs.falkordb.com/cypher/indexing/vector-index).
+
+## ADR-032 — Require two-direction relevance and allow abstention
+
+**Status:** Implemented. **Flows:** F-24.
+
+**Decision:** Retrieve up to 20 neighbors; default 10. Below cosine similarity 0.45, label irrelevant. For remaining pairs, require both language detections to be English with score at least 0.9 and the full pair to fit the 512-token NLI budget. Both directional entailment scores must reach 0.8 for `SAME_PROPOSITION`; both contradiction scores must reach 0.8 for `CONTRADICTION`. A one-direction contradiction is uncertain. Remaining pairs are related context at similarity >=0.5, otherwise irrelevant. Unsupported language/length produces `UNCERTAIN` rather than a fabricated classification.
+
+**Why:** Similar words, negation, shared entities or one-way entailment must not automatically become equivalent claims. Conservative misses are preferable to silently reassigning an unrelated review's verdict.
+
+**Consequences:** These are explicit engineering thresholds, not calibrated correctness probabilities. NLI can still err, including false contradiction assessments, so its output remains labeled model inference. The fixed smoke evaluation has one known missed direct paraphrase, preserved in the report. Only same-proposition candidates go to Graph Detective; other context remains visible for human review. No learned model assigns factual truth.
+
+**Implementation:** [ClaimScout/classify](../src/pehchan/semantic.py), [fixed evaluation cases](../data/evaluation/semantic_cases.json).
+
+## ADR-033 — Use constrained specialist workflows and capability sets
+
+**Status:** Implemented. **Flows:** F-25.
+
+**Decision:** Claim Scout uses embedding/NLI models; Graph Detective invokes existing path/BFS tools; Evidence & Response re-fetches sources and applies an explicit decision policy. Each has its own instruction, allowed tool names, structured handoff and actual tool trace. A lightweight orchestrator conditionally delegates. Skip graph exploration when Scout has no direct candidate.
+
+**Why:** The MVP needs collaborating specializations and traceable tool use without an external chat-model dependency or unconstrained generated decisions.
+
+**Consequences:** This remains the explicit deterministic baseline. ADR-041 adds the default generative tool-calling investigator over the same local retrieval and evidence policy. Baseline specialist instructions remain code contracts. The capability wrapper rejects unapproved tool names; it is an application boundary, not an OS sandbox. Traces report real completed/skipped operations. The UI shows actual traces after execution, with a spinner while the synchronous workflow runs.
+
+**Implementation:** [policies, specialists and Orchestrator](../src/pehchan/investigation.py).
+
+## ADR-034 — Assemble evidence before selecting an action
+
+**Status:** Implemented. **Flows:** F-25.
+
+**Decision:** Evidence & Response independently retrieves candidate sources again, excludes sources whose original reviewed wording mismatches the candidate, and keeps every citation's original rating/URL/provenance. Direct reviews with one normalized original rating and no contradictory candidate yield `EVIDENCE_DOSSIER_READY`. Direct disagreements, contrary propositions or uncertain relevance yield `NEEDS_HUMAN_REVIEW`. Otherwise yield `INSUFFICIENT_EVIDENCE` / `NO_RELEVANT_FACT_CHECK_FOUND`. Explicit review requests force human review.
+
+**Why:** A dossier must be assembled from records, not persuasive generated prose. A graph-driven action can be useful without pronouncing a new truth verdict.
+
+**Consequences:** Different rating strings are conservatively sent for reconciliation even when a researcher might treat them as equivalent. Model false contradictions can also route otherwise usable evidence to review. Missing review dates remain quality warnings. Review priority is a simple explicit rule (human-review cases HIGH, others NORMAL), not a learned risk score. Source bodies are not fetched or independently verified.
+
+**Implementation:** [EvidenceResponse](../src/pehchan/investigation.py), [integrity/decision tests](../tests/test_investigation.py).
+
+## ADR-035 — Persist investigation snapshots and exact graph citations
+
+**Status:** Implemented. **Flows:** F-26.
+
+**Decision:** Store Investigation ID, submitted claim, action status, UTC creation timestamp, priority, JSON dossier snapshot and follow-up state. Link exactly cited variants/reviews through `EXAMINES` and `CITES`. Use random IDs by default or a hash of an explicit request ID for retry deduplication. Reject reuse for a different claim/review mode. Follow-up state (`OPEN`, `IN_PROGRESS`, `RESOLVED`) and notes can change separately from the evidence decision.
+
+**Why:** The workflow must take a persistent action based on graph findings, including recording unresolved claims without inventing evidence edges.
+
+**Consequences:** Saving a case and its links is one graph query. Empty-evidence cases remain valid and have no fabricated links. A repeated request returns the stored snapshot; it does not silently re-run changed models/data. Use a new request ID for a fresh investigation. Main/dossier source snapshots are retained in report JSON while underlying source nodes can evolve. Multi-process request races and globally enforced uniqueness remain outside this single-worker MVP.
+
+**Implementation:** [CaseStore](../src/pehchan/investigation.py).
+
+## ADR-036 — Share one service across HTTP and MCP, serialize local inference
+
+**Status:** Implemented. **Flows:** F-27, F-28.
+
+**Decision:** Use one ApplicationService, an RLock, lazy database/model initialization and cached model objects within the process. Provide FastAPI routes and an official Python MCP SDK 1.x maintenance-line server with stateless Streamable HTTP. Register six focused blueprint tools plus `investigate_claim`, with read/write annotations. Keep SDK `<2` because the implemented adapter uses the maintained FastMCP API.
+
+**Why:** Both clients should invoke identical evidence and case logic. Local CPU models and single-writer case persistence need controlled concurrency. The SDK implements protocol lifecycle/transport rather than a handwritten MCP imitation.
+
+**Consequences:** Use one API worker. Requests can wait behind model work; this is not a queue/multi-user scaling design. MCP annotations communicate behavior, while middleware enforces access. The service exposes no arbitrary Cypher, generic method-call endpoint, ingestion endpoint, or embedding-write tool. Public MCP hosting and an actual Claude cloud connector connection are not completed merely by serving localhost.
+
+**Implementation:** [service](../src/pehchan/service.py), [API](../src/pehchan/api.py), [MCP](../src/pehchan/mcp_server.py).
+
+## ADR-037 — Separate local access from authenticated public access
+
+**Status:** Implemented. **Flows:** F-27, F-28.
+
+**Decision:** Default to loopback listeners. Optional bearer read and write tokens are separate; read tokens cannot create/update cases. The combined MCP endpoint requires the write credential because it exposes action tools. Protect allowed Host/Origin values. Configuring public hosts requires distinct nonempty tokens; TLS is supplied by a deployment reverse proxy, not the localhost dev server.
+
+**Why:** Read-only exploration and graph write actions need distinct capabilities before exposing the service beyond the laptop.
+
+**Consequences:** This MVP has bearer-token access control, not OAuth, user accounts or tenant isolation. Health exposes only readiness/graph/coverage summary. The Streamlit UI reads its backend credential from environment; it does not publish the token as a widget. Dataset secrets/credentials are not embedded in source. Remote clients must support the configured authorization method; no unsupported cloud-client compatibility is claimed.
+
+**Implementation:** [authorize middleware](../src/pehchan/api.py), [access tests](../tests/test_api.py), [.env.example](../.env.example).
+
+## ADR-038 — Keep the product UI separate from database administration
+
+**Status:** Implemented. **Flows:** F-29.
+
+**Decision:** Use Streamlit on port 8501 for investigation, narrative exploration, dossiers and case follow-up. Fetch all application data/actions from the API. Render bounded interactive graphs with PyVis; distinguish curated edges with dashed styling. Allow node inspection, original source links and JSON dossier download. Keep the bundled FalkorDB browser on 3000 for direct database inspection.
+
+**Why:** Users need a focused evidence workflow, not raw database configuration or a graph screenshot. One API also prevents the UI from duplicating decision logic.
+
+**Consequences:** The UI has no direct graph/LLM write access. Source HTML is escaped/JSON-serialized, and only static CSS uses unsafe HTML rendering. Long source ratings are shortened only in headings; the original rating remains in the dossier body/export. The graph is a limited view, not the entire collection. UI workflow tests use Streamlit AppTest; live HTTP health/API tests complement them.
+
+**Implementation:** [UI](../src/pehchan/ui.py), [dark theme with readable contrast](../.streamlit/config.toml), [adapter/rendering](../src/pehchan/ui_support.py), [UI tests](../tests/test_ui.py).
+
+## ADR-039 — Test every milestone and report model limitations honestly
+
+**Status:** Implemented. **Flows:** F-19, F-30.
+
+**Decision:** Keep unit, live graph, local-model, API authorization, UI interaction, real MCP HTTP and real API smoke checks. Store fixed semantic examples and evaluation output. The semantic smoke gate requires all contradiction/distractor/unfamiliar/language-abstention cases and at least two of three illustrative paraphrases; report strict outcomes separately, including the known false negative.
+
+**Why:** Data fidelity, model relevance, graph writes, protocol integration and interface behavior fail in different ways. A passing infrastructure suite must not be confused with perfect semantic accuracy.
+
+**Consequences:** The current run has 38 passing pytest tests. Fixed semantic cases pass 10/11 strictly (2/3 direct paraphrases, all eight safety cases), not 100% model accuracy. The small examples are smoke checks, not a held-out calibration study. The official client discovered and called all seven MCP tools; the live API checks exercise all three action statuses. Results are recorded in a new MVP snapshot, preserving the earlier foundation snapshot.
+
+**Implementation:** [MVP validation](mvp-validation.json), [semantic evaluation](../scripts/evaluate_semantic.py), [MCP smoke](../scripts/smoke_mcp.py), [API smoke](../scripts/verify_mvp.py).
+
+## ADR-040 — Launch local services without weakening shell policy
+
+**Status:** Implemented. **Flows:** F-31.
+
+**Decision:** Provide a Python launcher that starts API/UI only when their health endpoints are unavailable and ports are free. Use the invoking Python environment, loopback listeners, hidden Windows processes, local logs and process-ID records. Keep foreground commands documented for other environments.
+
+**Why:** This machine disallows PowerShell script execution. A Python launcher avoids modifying or bypassing that policy while keeping setup convenient.
+
+**Consequences:** Startup is asynchronous; read logs/health after launch. The launcher does not install dependencies, ingest data, embed claims, or automatically restart an occupied unhealthy service. It is not a production process supervisor, TLS terminator or deployment platform.
+
+**Implementation:** [run_local.py](../scripts/run_local.py).
+
+## ADR-041 — Use hosted Gemma tool calling with authoritative evidence checks
+
+**Status:** Implemented; live provider verification requires a configured key. **Flows:** F-25, F-26, F-27, F-28, F-29, F-32, F-33. Extends ADR-033/ADR-034/ADR-036.
+
+**Decision:** Default application/CLI investigations to Google AI Studio's Gemini API, model `gemma-4-26b-a4b-it`, configurable through `PEHCHAN_LLM_MODEL`. Use documented generateContent REST via the existing HTTPX dependency, with an explicit manual model→tool→model loop. Preserve complete model content, call IDs and opaque thought signatures. Send six function declarations: semantic Scout, publisher evidence, narrative exploration, bounded path, BFS and structured completion. Preserve `PEHCHAN_INFERENCE=deterministic` as an explicit offline mode. Direct library Orchestrator users may inject an inference implementation; without one they retain the original deterministic behavior.
+
+**Why:** The user selected Gemma 4 with AI Studio keys and requested actual tool-calling inference. Google documents this model and native function calling in its [Gemma API guide](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api). The small REST adapter avoids a new SDK/version dependency while retaining provider-injected protocol tests. Local embedding/NLI relevance assessment and source policy already exist and should remain auditable.
+
+**Consequences:** Gemma chooses the tool sequence; it must search the exact original claim once, fetch every direct/contradictory candidate's evidence and explore the first three direct handoffs before finishing. IDs and arguments are validated in code. Graph IDs are bounded to Scout handoffs; paths may also use returned narrative neighbors. No model write/Cypher/web-fetch capability exists. EvidenceResponse checks reviewed wording, preserves publisher records and decides case status; successful assembly precedes existing persistence. Analyst notes are unverified model commentary with validated reference IDs, not factual verdicts. The model cannot override statuses, URLs or ratings through its completion schema. The UI renders its note as plain text.
+
+**Operational limits:** Eight model turns, 24 calls, 180,000 serialized context characters, 2,048 output tokens per response, 45-second HTTP timeouts and a 120-second elapsed check between turns. A running HTTP/tool call may overrun that between-turn threshold. No automatic retry or fallback hides provider failure; requests fail without creating a case. Existing request IDs still return historical snapshots. Keys stay in process environment/header, never in report, URL or error bodies. Submitted claims and selected source/context data leave the laptop; raw markup and file provenance metadata are removed recursively from provider results. Key presence is exposed as readiness configuration, not a successful credential/access check. The existing lock serializes this synchronous workflow; it is not a concurrent agent service.
+
+**Implementation:** [inference loop/REST adapter](../src/pehchan/inference.py), [service](../src/pehchan/service.py), [CLI](../src/pehchan/cli.py), [protocol/guard tests](../tests/test_inference.py), [live smoke](../scripts/smoke_inference.py), [setup](../README.md#configure-gemma-inference).
+
+## Blueprint status after the local MVP
+
+This table preserves the original intention IDs while making their current boundary explicit.
+
+| ID | Proposed choice and why | Current boundary / affected proposed flows |
+| --- | --- | --- |
+| P-001 | Sentence Transformers embeddings with separate relevance assessment | Implemented by ADR-030/ADR-031/ADR-032; local NLI provides an explicitly limited relevance assessment |
+| P-002 | Three specialists and lightweight orchestration | ADR-033 retains the offline specialist baseline; ADR-041 adds a default Gemma tool-calling investigator using local retrieval and the authoritative response policy |
+| P-003 | Explicit no-match and uncertainty branches | Implemented by ADR-034/ADR-035; decisions are workflow actions, not new truth verdicts |
+| P-004 | Official SDK, Streamable HTTP, focused tools and top-level investigation | Seven tools implemented/tested locally by ADR-036/ADR-037; public HTTPS deployment and cloud connector verification remain external deployment work |
+| P-005 | Persistent Investigation, EXAMINES/CITES and case follow-up | Implemented by ADR-035; priority is rule-based and no case notification service exists |
+| P-006 | FastAPI, Streamlit and interactive graph exploration | Implemented by ADR-036/ADR-038; Pehchan is on 8501, the separate DB browser remains on 3000 |
+| P-007 | A generative LLM provider and optional online enrichment | Gemma/AI Studio integration implemented by ADR-041; live verification needs a key. Online enrichment remains deferred |
+| P-008 | Keep real-time social monitoring, unrestricted crawling, deepfake analysis and model training outside MVP scope | No implementation of these capabilities; revisit only by explicit scope change |

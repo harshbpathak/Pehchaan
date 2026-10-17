@@ -1,0 +1,37 @@
+{
+  "review_date": "2026-10-18",
+  "scope": "Gemma tool-calling integration; extends the earlier local MVP snapshot",
+  "default_provider": "Google AI Studio Gemini API",
+  "default_model": "gemma-4-26b-a4b-it",
+  "pytest": {
+    "passed": 54,
+    "integration_enabled": true,
+    "local_models_enabled": true,
+    "new_inference_tests": 16,
+    "provider_protocol": "HTTPX mock transport",
+    "tool_selection": "scripted provider turns, including real FalkorDB persistence",
+    "live_gemma_inference_tested": false,
+    "warnings": ["Starlette TestClient HTTPX deprecation", "torch.jit.script deprecation"]
+  },
+  "ruff": "passed",
+  "running_api_checks": {
+    "health_http": 200,
+    "mode": "gemini",
+    "key_configured": false,
+    "claim_variants": 248,
+    "embedded_variants": 248,
+    "missing_key_dossier_http": 503,
+    "missing_key_error": "Gemma inference requires GEMINI_API_KEY (or GOOGLE_API_KEY).",
+    "ui_health_http": 200
+  },
+  "live_smoke": {
+    "command": "python scripts/smoke_inference.py",
+    "observed_exit_code": 2,
+    "status": "requires configured AI Studio key; no live provider call made"
+  },
+  "limits": [
+    "Mocked protocol tests do not establish live model availability, quota or response quality.",
+    "Generated analyst notes are unverified commentary; reference membership is checked, prose correctness is not guaranteed.",
+    "Local NLI limitations recorded in mvp-validation.json still apply."
+  ]
+}
