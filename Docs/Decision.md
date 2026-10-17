@@ -650,6 +650,18 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [default](../src/pehchan/inference.py), [labels and note](../src/pehchan/web/assets/app.js), [setup](../README.md#configure-gemma-inference).
 
+## ADR-054 — Host on a Hugging Face Space with FalkorDB Cloud, deployed by CI/CD
+
+**Status:** Implemented as code 18 October 2026; accounts and first deployment are operator steps. **Flows:** F-40, F-41. Complements ADR-049 (tunnel) as the permanent option.
+
+**Decision:** A Docker Space ([Dockerfile](../deploy/huggingface/Dockerfile)) clones the public GitHub repository at a pinned ref, installs CPU PyTorch and the server extras, downloads both local models at build time, and runs one uvicorn worker on port 7860 behind the Spaces proxy. The graph lives in FalkorDB Cloud, reached through the existing `FALKORDB_*` variables (TLS included). [load_graph.py](../scripts/load_graph.py) fills any FalkorDB from the prepared datasets through the validated ingest path, then embeds. A GitHub Actions workflow lints and tests against a real FalkorDB service container on every push and pull request, and on `main` uploads the Space files with `PEHCHAN_REF` set to the tested commit.
+
+**Why:** A permanent HTTPS address that works with the laptop off, at no cost, without server administration; a managed FalkorDB keeps the graph central and durable; CI/CD makes every deploy a tested commit.
+
+**Consequences:** Cold starts after sleep are slow; real-model tests (1 GB download) stay local, so CI does not exercise NLI quality; deployment is skipped with a warning until `HF_TOKEN` and `HF_SPACE` exist. The image build was tested locally on 18 October 2026; the Space and FalkorDB Cloud have not been created from here.
+
+**Implementation:** [Space files](../deploy/huggingface/), [loader](../scripts/load_graph.py), [workflow](../.github/workflows/ci-cd.yml), [operator guide](Deployment.md#hugging-face-space--falkordb-cloud-recommended-permanent-hosting).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
