@@ -150,6 +150,70 @@ ENTITIES = (
 )
 
 
+# ---------- 2026 events: LPG crisis, Iran war, CJP protest, Russia-Ukraine war ----------
+LPG = re.compile(r"\bLPG\b|cooking gas|gas cylinder|एलपीजी|सिलेंडर|ujjwala|సిలిండర్", I)
+IRAN_WAR = re.compile(r"\biran|ईरान|tehran|mossad|khamenei|israel|netanyahu", I)
+CJP = re.compile(r"\bCJP\b|cockroach jan|jantar mantar|gyanesh", I)
+UKRAINE_WAR = re.compile(r"ukrain|zelensk|zełensk|kyiv|kiev|kursk|crimea", I)
+FOOTAGE = re.compile(
+    r"video|visuals|images?|footage|photo|shows|missile|strike|attack|explosion|bomb", I
+)
+
+FRAMES = FRAMES + (
+    (
+        "Fuel prices and shortages as political weapons",
+        lambda t: (
+            LPG.search(t)
+            and re.search(r"price|cost|shortage|free|cheap|tax|महंगाई|कीमत|धर|subsid|ujjwala", t, I)
+        ),
+    ),
+    (
+        "Recycled or fabricated war footage",
+        lambda t: (IRAN_WAR.search(t) or UKRAINE_WAR.search(t)) and FOOTAGE.search(t),
+    ),
+    (
+        "Protest crackdown and smear",
+        lambda t: (
+            CJP.search(t)
+            and re.search(r"police|assault|beat|crowd|criticis|remark|resign|lie|tear gas", t, I)
+        ),
+    ),
+    (
+        "Leaders reported killed or disgraced",
+        lambda t: (
+            re.search(r"zelensk|zełensk|khamenei|netanyahu|putin|modi", t, I)
+            and re.search(r"killed|dead|death|funeral|addicted|drugs|arrested|heckled|fled", t, I)
+        ),
+    ),
+)
+
+TOPICS = TOPICS + (
+    ("LPG crisis", LPG),
+    ("Iran war", IRAN_WAR),
+    ("CJP protest", CJP),
+    ("Russia-Ukraine war", UKRAINE_WAR),
+)
+
+ENTITIES = ENTITIES + (
+    ("LPG", "Commodity", LPG),
+    ("Ujjwala scheme", "Program", re.compile(r"ujjwala", I)),
+    ("Narendra Modi", "Person", re.compile(r"\bmodi\b|मोदी", I)),
+    ("Iran", "Place", re.compile(r"\biran|ईरान|tehran", I)),
+    ("Israel", "Place", re.compile(r"\bisrael", I)),
+    ("Mossad", "Organization", re.compile(r"mossad", I)),
+    ("Ali Khamenei", "Person", re.compile(r"khamenei", I)),
+    ("Benjamin Netanyahu", "Person", re.compile(r"netanyahu", I)),
+    ("Cockroach Janta Party (CJP)", "Organization", CJP),
+    ("Gyanesh Kumar", "Person", re.compile(r"gyanesh", I)),
+    ("Election Commission", "Organization", re.compile(r"election commission|\bCEC\b")),
+    ("Abhijeet Dipke", "Person", re.compile(r"dipke", I)),
+    ("Kangana Ranaut", "Person", re.compile(r"kangana", I)),
+    ("Ukraine", "Place", re.compile(r"ukrain", I)),
+    ("Volodymyr Zelensky", "Person", re.compile(r"zelensk|zełensk", I)),
+    ("NATO", "Organization", re.compile(r"\bNATO\b")),
+)
+
+
 def tag(text: str) -> dict:
     """Return rule-matched frames, topics and entities (with spans copied from the text)."""
     normalized = normalize_text(text)
