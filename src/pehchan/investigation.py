@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
 import time
 import uuid
@@ -24,6 +25,8 @@ from .semantic import ClaimScout, SubmissionIndex
 RECALL_SIMILARITY = 0.95
 # Semantic context strong enough to call a submission a variant of a known narrative.
 NARRATIVE_CONTEXT_SIMILARITY = 0.6
+# When a hosted model fails, answer with the offline specialists and disclose it (ADR-050).
+HOSTED_FALLBACK = os.getenv("PEHCHAN_HOSTED_FALLBACK", "1") != "0"
 # Minimum widening score (sum of 1/degree of shared nodes). 0.05 means a hit must share at
 # least one node used by 20 or fewer claims; hubs such as "5G" alone do not qualify.
 MIN_SHARED_CONTEXT_SCORE = 0.05
@@ -114,7 +117,7 @@ class GraphDetective(Specialist):
             tags["frames"],
             exclude,
         )
-        related = [r for r in reached if r["score"] >= MIN_SHARED_CONTEXT_SCORE]
+        related = [r for r in reached if r["score"] >= MIN_SHARED_CONTEXT_SCORE and qualifies(r)]
         self.trace[-1]["reason"] = (
             f"No direct match; widened through {len(tags['entities'])} entities and "
             f"{len(tags['frames'])} frames tagged in the submission, reaching {len(reached)} "
@@ -356,16 +359,44 @@ class Orchestrator:
         if prior and prior["reusable"] and not force_review:
             report = self._specialists(self._recalled_scout(claim, prior), trace, force_review)
             report["inference"] = {"mode": "graph_recall"}
-        elif self.inference is not None:
-            report = self.inference.assemble(
-                self.store, self.scout, claim, force_review=force_review
-            )
-            trace = trace + report.get("agent_trace", [])
         else:
-            scout_agent = Specialist(SCOUT_POLICY, {"find_similar_claims": self.scout.scout}, trace)
-            scout = scout_agent.call("find_similar_claims", claim)
-            report = self._specialists(scout, trace, force_review)
-            report["inference"] = {"mode": "deterministic"}
+            report = None
+            if self.inference is not None:
+                try:
+                    report = self.inference.assemble(
+                        self.store, self.scout, claim, force_review=force_review
+                    )
+                    trace = trace + report.get("agent_trace", [])
+                except RuntimeError as error:
+                    if not HOSTED_FALLBACK:
+                        raise
+                    # Disclosed fallback: the offline specialists answer, and the report says so.
+                    provider = getattr(self.inference, "provider", None)
+                    hosted = {
+                        "provider": getattr(provider, "provider_name", None),
+                        "model": getattr(provider, "model", None),
+                        "hosted_error": str(error),
+                    }
+                    trace.append(
+                        {
+                            "agent": "Orchestrator",
+                            "tool": "hosted_model_fallback",
+                            "status": "completed",
+                            "reason": f"Hosted model failed ({error}); the offline specialists "
+                            "answered this request instead.",
+                        }
+                    )
+            if report is None:
+                scout_agent = Specialist(
+                    SCOUT_POLICY, {"find_similar_claims": self.scout.scout}, trace
+                )
+                scout = scout_agent.call("find_similar_claims", claim)
+                report = self._specialists(scout, trace, force_review)
+                report["inference"] = (
+                    {"mode": "deterministic_fallback", **hosted}
+                    if self.inference is not None
+                    else {"mode": "deterministic"}
+                )
         report["widening"] = self._widen(report, trace)
         report["prior_submission"] = prior
         decide(report, force_review=force_review)
@@ -611,12 +642,26 @@ def draft_reply(finding: str, direct: list, close: list, related: list, force_re
         )
     else:
         lines.append(
-            "We could not find a published fact-check for this claim. It has been queued for "
-            "review by a fact-checker."
+            "We could not find a published fact-check for this claim, and nothing in our "
+            "graph connects to it yet. Treat it as unverified: please do not forward it until "
+            "an official source or a fact-checker confirms it. It has been queued for review "
+            "by a fact-checker."
         )
     if force_review:
         lines.append("A human review was explicitly requested.")
     return {"text": "\n".join(lines), "cites": cites, "status": "DRAFT_REQUIRES_HUMAN_APPROVAL"}
+
+
+# Shared places (India, China) are too broad to tie two claims to one narrative.
+WEAK_ENTITY_TYPES = {"Place"}
+
+
+def qualifies(hit: dict) -> bool:
+    """A widened hit needs a shared frame or a specific (non-place) entity."""
+    return any(
+        s["label"] == "NarrativeFrame" or s.get("type") not in WEAK_ENTITY_TYPES
+        for s in hit["shared"]
+    )
 
 
 def unquote(text: str) -> str:

@@ -85,7 +85,7 @@ MATCH (n)<-[:MENTIONS|USES_FRAME]-(:Claim)
 WITH n, count(*) AS degree
 MATCH (n)<-[r:MENTIONS|USES_FRAME]-(c:Claim)<-[:EXPRESSES]-(v:ClaimVariant)
 WHERE NOT v.id IN $exclude
-WITH v, c, collect({label: labels(n)[0], name: n.name, relation: type(r), basis: r.basis,
+WITH v, c, collect({label: labels(n)[0], name: n.name, type: n.type, relation: type(r), basis: r.basis,
                     reviewed_by: r.reviewed_by, evidence_span: r.evidence_span,
                     degree: degree}) AS shared,
      sum(1.0 / degree) AS score

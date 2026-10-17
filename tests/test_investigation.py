@@ -41,7 +41,7 @@ def test_tool_calling_case_persists_only_after_validated_completion(case_graph):
             if self.fail:
                 raise RuntimeError("Simulated provider failure")
             turns = [
-                [("find_similar_claims", {"claim": "Synthetic query"})],
+                [("find_similar_claims", {})],
                 [
                     ("get_claim_evidence", {"variant_id": record["variant_id"]}),
                     ("explore_narrative_graph", {"variant_id": record["variant_id"]}),
@@ -65,10 +65,23 @@ def test_tool_calling_case_persists_only_after_validated_completion(case_graph):
             }
 
     failed = Orchestrator(store, StubScout(record), inference=GeminiInference(Provider(fail=True)))
-    with pytest.raises(RuntimeError, match="provider failure"):
-        failed.investigate("Synthetic query", "failed-llm-request")
+    from pehchan import investigation
+
+    # With the fallback switched off, a provider failure aborts and nothing is saved.
+    investigation.HOSTED_FALLBACK = False
+    try:
+        with pytest.raises(RuntimeError, match="provider failure"):
+            failed.investigate("Synthetic query", "failed-llm-request")
+    finally:
+        investigation.HOSTED_FALLBACK = True
     cases = CaseStore(store)
     assert cases.get(cases.identity("failed-llm-request")) is None
+    # By default the offline specialists answer, and the report discloses the failure.
+    fallback = failed.investigate("Synthetic query", "fallback-llm-request")
+    assert fallback["inference"]["mode"] == "deterministic_fallback"
+    assert "provider failure" in fallback["inference"]["hosted_error"]
+    assert fallback["status"] == "EVIDENCE_DOSSIER_READY"
+    assert any(t.get("tool") == "hosted_model_fallback" for t in fallback["agent_trace"])
     engine = Orchestrator(store, StubScout(record), inference=GeminiInference(Provider()))
     report = engine.investigate("Synthetic query", "llm-request")
     assert report["status"] == "EVIDENCE_DOSSIER_READY"
@@ -77,7 +90,9 @@ def test_tool_calling_case_persists_only_after_validated_completion(case_graph):
     assert engine.investigate("Synthetic query", "llm-request") == cases.get(
         report["investigation_id"]
     )
-    assert store.stats()["relationships"]["CITES"] == 1
+    assert (
+        store.stats()["relationships"]["CITES"] == 2
+    )  # the disclosed fallback case and the model case
 
 
 def test_response_excludes_mismatched_source_wording(review):
