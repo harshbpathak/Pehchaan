@@ -61,11 +61,15 @@ ORDER BY related.id, fc.id
 LIMIT $limit
 """
 
+# Native shortest-path algorithm, both directions, at most 8 hops. Enumerating every
+# variable-length path instead took seconds once hub entities linked 150 claims.
 SHORTEST_PATH = """
 MATCH (a:ClaimVariant {id: $from_id}), (b:ClaimVariant {id: $to_id})
-MATCH p = (a)-[:EXPRESSES|USES_FRAME|MENTIONS*1..8]-(b)
-WITH p, length(p) AS hops ORDER BY hops LIMIT 1
-RETURN [n IN nodes(p) | n.id], [e IN relationships(p) | type(e)]
+CALL algo.SPpaths({sourceNode: a, targetNode: b,
+                   relTypes: ['EXPRESSES', 'USES_FRAME', 'MENTIONS'],
+                   relDirection: 'both', maxLen: 8, pathCount: 1})
+YIELD path
+RETURN [n IN nodes(path) | n.id], [e IN relationships(path) | type(e)]
 """
 
 BFS = """
