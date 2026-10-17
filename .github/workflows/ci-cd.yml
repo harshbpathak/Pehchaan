@@ -99,3 +99,30 @@ jobs:
           print(f"Uploaded; the Space rebuilds from commit {os.environ['GITHUB_SHA'][:7]}.")
           PY
 
+  deploy-ec2:
+    name: Deploy to AWS EC2
+    needs: test
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
+    env:
+      EC2_HOST: ${{ secrets.EC2_HOST }}
+      EC2_USER: ${{ vars.EC2_USER || 'ubuntu' }}
+      EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check deployment settings
+        run: |
+          if [ -z "$EC2_HOST" ] || [ -z "$EC2_SSH_KEY" ]; then
+            echo "::warning::Set the EC2_HOST and EC2_SSH_KEY secrets to enable EC2 deployment."
+            echo "SKIP=1" >> "$GITHUB_ENV"
+          fi
+      - name: Update the server to this commit
+        if: env.SKIP != '1'
+        run: |
+          mkdir -p ~/.ssh
+          install -m 600 /dev/null ~/.ssh/deploy_key
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/deploy_key
+          ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh -i ~/.ssh/deploy_key "$EC2_USER@$EC2_HOST" "bash -s -- $GITHUB_SHA" < deploy/ec2/update.sh
