@@ -674,6 +674,18 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [EC2 scripts](../deploy/ec2/), [workflow](../.github/workflows/ci-cd.yml), [operator steps](Deployment.md#aws-ec2-with-one-command-setup-and-cicd-recommended-permanent-hosting).
 
+## ADR-056 — Use native algo.SPpaths for connection paths; graph loaded into FalkorDB Cloud
+
+**Status:** Implemented and verified 18 October 2026. **Flows:** F-13, F-40. Supersedes ADR-020's bounded variable-length match.
+
+**Decision:** `find_evidence_path` calls FalkorDB's `algo.SPpaths` with `relDirection: 'both'`, the same three relationship types, `maxLen: 8` and `pathCount: 1`, instead of enumerating every variable-length path and sorting by length. FalkorDB's `shortestPath()` was not usable because it does not support undirected traversals. The full graph (645 reviews, 641 embedded variants) was loaded into a FalkorDB Cloud instance in ap-south-1 with `scripts/load_graph.py`.
+
+**Why:** After the 2026 event import, hub entities linked up to 150 claims and the enumerating query took 2.1 s locally and 4.4 s on FalkorDB Cloud, and timed out (10 s limit) during cloud validation. The algorithm returns the same path in 0.01 s locally and 0.05 s on the cloud.
+
+**Consequences:** Both datasets validate on the cloud graph with `--require-narrative`; LPG and Hindi Putin-5G dossiers match local results. The cloud instance currently has TLS disabled (`FALKORDB_SSL=false`), so credentials travel unencrypted; enable TLS in the FalkorDB Cloud console when available and rotate the password that was shared in chat. Running services keep the local database until they are restarted with the cloud settings.
+
+**Implementation:** [query](../src/pehchan/queries.py), [loader](../scripts/load_graph.py), [README Cypher](../README.md#core-cypher).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
