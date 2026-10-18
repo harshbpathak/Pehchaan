@@ -50,6 +50,7 @@
 
   const PROVIDER_NAMES = { openrouter: "OpenRouter", google_ai_studio: "Google AI Studio" };
   const MODEL_NAMES = {
+    "openai/gpt-oss-20b": "GPT-OSS 20B",
     "openai/gpt-oss-120b": "GPT-OSS 120B",
     "google/gemma-4-31b-it": "Gemma 4 31B",
     "gemma-4-31b-it": "Gemma 4 31B",
@@ -228,17 +229,34 @@
     }
   }
 
+  // What the wait is, in the order it happens; the clock shows the page is alive while the model thinks.
+  const STAGES = [
+    [0, "Searching the graph: vector index, relevance check, narratives."],
+    [4, "The hosted model is choosing its next tool call. Each round trip takes a while."],
+    [25, "Still with the model. A typical investigation is 3 to 5 tool calls and 20 to 60 seconds."],
+    [70, "Taking longer than usual; the model provider may be slow. If it fails, the offline agents answer."],
+  ];
+
   async function investigate(claim) {
     const button = $("#run");
     button.disabled = true;
     $("#result").hidden = true;
-    setStatus("Running the agents. The first run loads the local models and can take about 30 seconds.", { busy: true });
+    const started = Date.now();
+    const tick = () => {
+      const s = Math.round((Date.now() - started) / 1000);
+      const stage = STAGES.filter(([at]) => s >= at).pop()[1];
+      setStatus(`${stage} ${s} s`, { busy: true });
+    };
+    tick();
+    const timer = setInterval(tick, 1000);
     try {
       const report = await api("POST", "/api/dossier", { claim });
-      setStatus("");
+      clearInterval(timer);
+      setStatus(`Done in ${Math.round((Date.now() - started) / 1000)} s.`);
       render(report);
       $("#result").scrollIntoView({ behavior: "smooth", block: "start" });
     } catch (error) {
+      clearInterval(timer);
       setStatus(error.message, { error: true });
     } finally {
       button.disabled = false;

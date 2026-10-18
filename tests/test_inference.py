@@ -368,7 +368,8 @@ def test_openrouter_translates_tools_both_ways_without_leaking_key():
         ],
     }
     body = seen[0]
-    assert body["model"] == "openai/gpt-oss-120b" and body["tool_choice"] == "required"
+    assert body["model"] == "openai/gpt-oss-20b" and body["tool_choice"] == "required"
+    assert body["reasoning"] == {"effort": "low"}
     assert len(body["tools"]) == 6
     roles = [m["role"] for m in body["messages"]]
     assert roles == ["system", "user", "assistant", "tool"]

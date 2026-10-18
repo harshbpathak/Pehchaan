@@ -698,6 +698,18 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [index.html](../src/pehchan/web/index.html), [site.css](../src/pehchan/web/assets/site.css), [app.js](../src/pehchan/web/assets/app.js), [README](../README.md), [media](media/).
 
+## ADR-058 — Default to GPT-OSS 20B with low reasoning effort; show the wait honestly
+
+**Status:** Implemented and measured 18 October 2026. **Flows:** F-32, F-38. Amends ADR-053's model default.
+
+**Decision:** The OpenRouter default is `openai/gpt-oss-20b`, and the provider sends `reasoning: {effort: low}` unless `PEHCHAN_OPENROUTER_REASONING` says otherwise (`none` sends no preference). The page's wait message is a stage-aware line with a running clock ("The hosted model is choosing its next tool call… 23 s") instead of a fixed sentence about loading local models.
+
+**Why:** On the live server a Hindi investigation took 32-67 s, of which the local work (vector index, NLI, graph) was 0.15 s; the rest was three round trips to GPT-OSS 120B, a reasoning model that thinks before each call. Measured on the laptop against OpenRouter for the same claim: 120B with low effort 48 s, without 112 s (six turns), Gemma 4 31B 24 s, 20B with low effort 14 s. The 20B model then matched the 120B's findings on four more claims in 12-18 s with no dropped references. It also costs about a tenth as much per token.
+
+**Consequences:** Investigations on the live site should take about 15-25 s. The smaller model may reason less carefully on unusual claims; application checks (allow-list, required reads, citation validation, status decided in code) are unchanged, so a weaker choice costs recall, never an invented source. The server's `/etc/pehchan.env` sets the model explicitly and was updated by hand; `setup.sh` writes the new default for fresh servers.
+
+**Implementation:** [provider](../src/pehchan/inference.py), [wait message](../src/pehchan/web/assets/app.js), [test](../tests/test_inference.py), [setup script](../deploy/ec2/setup.sh).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
