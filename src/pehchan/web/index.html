@@ -35,6 +35,7 @@
       <nav class="nav-links" aria-label="Sections">
         <a href="#investigate">Investigate</a>
         <a href="#how">How it works</a>
+        <a href="#tools">Tools</a>
         <a href="#graph">Graph</a>
         <a href="#proof">Proof</a>
         <a href="#connect">Connect your AI</a>
@@ -237,8 +238,89 @@
       </ol>
     </section>
 
+    <section class="section" id="tools" aria-labelledby="tools-title">
+      <p class="eyebrow">03 / Tools</p>
+      <h2 class="display section-title" id="tools-title">Eight tools. One graph.</h2>
+      <p class="lede narrow">Everything the agents can do is one of these tools, and every tool is a FalkorDB query. The same eight are served over MCP, so Claude, ChatGPT or Gemini can call them. Six are open to everyone; the two that write to the graph are reserved for the team.</p>
+      <ul class="tools" aria-label="The eight tools">
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">find_similar_claims</code><span class="badge badge-pass">open to everyone</span></div>
+          <p>Finds recorded wordings close in meaning to the message, in any language, then checks both directions of entailment before calling one a match.</p>
+          <dl>
+            <dt>Behind it</dt><dd>FalkorDB vector index (<code>db.idx.vector.queryNodes</code>) + a local NLI model</dd>
+            <dt>Used by</dt><dd>Claim Scout</dd>
+            <dt>Returns</dt><dd>matches, related context, rejected candidates, and the ids handed to the detective</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">get_claim_evidence</code><span class="badge badge-pass">open to everyone</span></div>
+          <p>Returns the publisher records behind one recorded wording: the URL, the original rating, the review date and the provenance of the source file.</p>
+          <dl>
+            <dt>Behind it</dt><dd>Cypher over <code>CHECKS</code> and <code>PUBLISHED_BY</code></dd>
+            <dt>Used by</dt><dd>Evidence &amp; Response</dd>
+            <dt>Returns</dt><dd>one record per fact-check of that wording</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">explore_narrative_graph</code><span class="badge badge-pass">open to everyone</span></div>
+          <p>Walks claim → narrative frame → related claims → their fact-checks and publishers, returning each path with the basis of every inferred edge.</p>
+          <dl>
+            <dt>Behind it</dt><dd>fixed multi-hop Cypher (<code>NARRATIVE_PATHS</code>)</dd>
+            <dt>Used by</dt><dd>Graph Detective</dd>
+            <dt>Returns</dt><dd>paths with node ids, relationship types and who inferred each edge</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">find_evidence_path</code><span class="badge badge-pass">open to everyone</span></div>
+          <p>Finds the shortest connection between two recorded claims through shared frames and entities, up to eight hops in either direction.</p>
+          <dl>
+            <dt>Behind it</dt><dd><code>algo.SPpaths</code></dd>
+            <dt>Used by</dt><dd>Graph Detective</dd>
+            <dt>Returns</dt><dd>the path as node ids and relationship types, or nothing</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">expand_narrative_context</code><span class="badge badge-pass">open to everyone</span></div>
+          <p>Tags the message with frames and entities, then finds fact-checked claims that share them. Rarer nodes weigh more; hits that share only a hub or a place are dropped.</p>
+          <dl>
+            <dt>Behind it</dt><dd><code>SHARED_CONTEXT</code> Cypher scored by <code>1/degree</code></dd>
+            <dt>Used by</dt><dd>Graph Detective, when there is no direct match</dd>
+            <dt>Returns</dt><dd>related claims with the nodes they share, as context, never evidence</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">assemble_evidence_dossier</code><span class="badge badge-pass">open to everyone</span></div>
+          <p>Runs the whole investigation read-only: recall, scout, trace, widen, decide, draft the reply. Nothing is saved.</p>
+          <dl>
+            <dt>Behind it</dt><dd>all of the above, in one call</dd>
+            <dt>Used by</dt><dd>this page, and any MCP client</dd>
+            <dt>Returns</dt><dd>the full dossier with citations, finding, drafted reply and the agent timeline</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">investigate_claim</code><span class="badge badge-info">team only</span></div>
+          <p>The same investigation, then saved: an <code>Investigation</code> node with exact <code>EXAMINES</code> and <code>CITES</code> edges, and the message written back as a <code>Submission</code> with <code>MATCHES</code> edges.</p>
+          <dl>
+            <dt>Behind it</dt><dd><code>MERGE</code> writes into the same graph</dd>
+            <dt>Used by</dt><dd>the team, with the write token</dd>
+            <dt>Returns</dt><dd>the saved case; a reworded repeat is later answered through its edges</dd>
+          </dl>
+        </li>
+        <li class="tool">
+          <div class="tool-head"><code class="tool-name">create_review_case</code><span class="badge badge-info">team only</span></div>
+          <p>Investigates and files the case for human review whatever the finding, for messages a researcher wants looked at regardless.</p>
+          <dl>
+            <dt>Behind it</dt><dd>the investigation above with the review flag set</dd>
+            <dt>Used by</dt><dd>the team, with the write token</dd>
+            <dt>Returns</dt><dd>the saved case, queued at high priority</dd>
+          </dl>
+        </li>
+      </ul>
+      <p class="muted small tools-note">Inside the server the specialists also call <code>breadth_first_search</code> (<code>algo.BFS</code>) and <code>recall_prior_submission</code> (a vector index over past messages); those are not exposed over MCP. A tool call outside a specialist's fixed list is refused and recorded in the timeline.</p>
+    </section>
+
     <section class="section" id="graph" aria-labelledby="graph-title">
-      <p class="eyebrow">03 / Graph</p>
+      <p class="eyebrow">04 / Graph</p>
       <h2 class="display section-title" id="graph-title">See the connection.</h2>
       <p class="lede narrow">Claims, fact-checks, publishers, frames and entities as they sit in FalkorDB. Dashed lines are inferences; solid lines come from source records. Run an investigation to focus this view on its closest match.</p>
       <div class="graph-legend" aria-hidden="true">
@@ -267,7 +349,7 @@
     </section>
 
     <section class="section section-tint" id="proof" aria-labelledby="proof-title">
-      <p class="eyebrow">04 / Proof</p>
+      <p class="eyebrow">05 / Proof</p>
       <h2 class="display section-title" id="proof-title">We measured it.</h2>
       <p class="lede narrow">Recorded retrieval results, with their scope, plus the graph capabilities behind an investigation.</p>
       <div class="proof-grid">
@@ -304,7 +386,7 @@
     </section>
 
     <section class="section" id="connect" aria-labelledby="connect-title">
-      <p class="eyebrow">05 / Connect your AI</p>
+      <p class="eyebrow">06 / Connect your AI</p>
       <h2 class="display section-title" id="connect-title">Bring it into your chat.</h2>
       <p class="lede narrow">Pehchan is an MCP server. The public endpoint is read-only: six tools for searching, tracing and assembling dossiers. Nothing is saved.</p>
       <div class="card endpoint">
