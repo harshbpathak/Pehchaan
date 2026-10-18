@@ -99,7 +99,7 @@ The diagram shows the retained deterministic baseline. Default CLI/API/MCP inves
 | F-40 | Load the graph into another FalkorDB (e.g. Cloud) | `scripts/load_graph.py` | Target graph nodes, edges, vectors and index |
 | F-41 | Test and deploy on every push | GitHub Actions `ci-cd.yml` | EC2 update and/or Space rebuild (main only, when configured) |
 | F-42 | Provision an EC2 server | `deploy/ec2/setup.sh` | Packages, app, restored graph, env file, service, Caddy |
-| F-43 | Build the demo video from real runs | `scripts/make_demo_video.py` | `artifacts/video/`, `artifacts/pehchan-demo.mp4`; one saved case on the local graph |
+| F-43 | Build the demo video from real runs | `scripts/narrate_demo_video.py`, `scripts/capture_demo_assets.py`, `scripts/render_demo_video.py` | `artifacts/video/` (narration, word cues, captures, frames), `artifacts/pehchan-demo.mp4`; one saved case on the local graph |
 | F-44 | Explore the workflow, screenshot walkthrough and Getting Started FAQ | Web page `#how`, `#walkthrough`, `#getting-started` | No graph writes; screenshot assets refreshed separately |
 
 ## F-01 — Prepare runtime and configuration
@@ -642,11 +642,11 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 ## F-43 — Build the demo video from real runs
 
-**Entry:** [scripts/make_demo_video.py](../scripts/make_demo_video.py) with the local API running. **Decision:** ADR-060.
+**Entry:** [scripts/narrate_demo_video.py](../scripts/narrate_demo_video.py), then [scripts/capture_demo_assets.py](../scripts/capture_demo_assets.py) with the local API running, then [scripts/render_demo_video.py](../scripts/render_demo_video.py). **Decision:** ADR-060.
 
-**Steps:** Run the CLI path command and the MCP client against the live endpoint for the text cards → open the local site in headless Edge at 1280×720 → per scene: drive the page (type the claim, submit, scroll, click Save), screenshot, burn the caption → synthesize each scene's narration, hold the scene's last frame until the narration ends → concatenate frames and the narration track with ffmpeg.
+**Steps:** Synthesize each scene's narration with word timestamps → write `artifacts/video/narration.wav` (each scene padded to its length) and `cues.json` (scene lengths, per-word times) → run the CLI path command and the MCP client against the live endpoint for the text cards → capture excerpts of real runs on the local site in headless Edge (the LPG result, reply, sources and timeline; the graph explorer; the recall of a reworded forward; the tools grid) → build the HTML/CSS scene timeline with scene lengths from `cues.json` and every beat delayed to its cue word → seek the animations to each frame's time, capture 16 frames per second → encode frames and the narration track with ffmpeg → copy to `Docs/media/pehchan-demo.mp4`.
 
-**Failure branches:** No neural voice (network) → the Windows voice; any investigation error shows in the footage as the page's own error line; the save step writes one case to the local graph.
+**Failure branches:** Voice service unreachable → narration fails and nothing renders (the word cues are required); a cue word missing from the narration → printed and that beat keeps its default delay; any investigation error shows in the captured footage as the page's own error line; the recall capture needs one saved case on the local graph. The earlier frame-hold cut in [scripts/make_demo_video.py](../scripts/make_demo_video.py) remains as the fallback that needs no browser animation.
 
 ## F-44 — Explore the workflow, walkthrough and Getting Started guide
 

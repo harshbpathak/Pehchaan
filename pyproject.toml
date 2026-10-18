@@ -37,4 +37,5 @@ line-length = 100
 "scripts/make_demo_video.py" = ["BLE001", "ASYNC221", "PLW1510"]
 "scripts/check_public_endpoint.py" = ["SIM117"]
 "scripts/render_demo_video.py" = ["BLE001", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC251", "PLW1510", "E501", "PLC0415"]
+"scripts/narrate_demo_video.py" = ["ASYNC221", "E501"]
 "scripts/capture_demo_assets.py" = ["BLE001", "ASYNC210", "ASYNC220", "ASYNC221", "ASYNC251", "PLW1510", "E501"]
