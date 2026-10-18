@@ -253,8 +253,8 @@ def s2():
         "",
         t + h2 - 0.3,
         0.6,
-        shot("claim_form", 70, 90, 620, t + 0.3, cls="slide-r", kb=30)
-        + el("div", "ring fade", "left:94px;top:140px;width:572px;height:84px", t + 1.2, 0.5),
+        shot("claim_form", 70, 90, 560, t + 0.3, cls="slide-r", kb=30)
+        + el("div", "ring fade", "left:92px;top:135px;width:517px;height:76px", t + 1.2, 0.5),
     )
     # pipeline chips
     chips = [
@@ -294,8 +294,8 @@ def s2():
     out += node(510, 420, 24, "#E9B949", "frame", t + f2 - 0.2, fs=11)
     out += node(660, 330, 16, "#3FA57A", "", t + q2)
     out += node(660, 510, 16, "#3FA57A", "", t + c2)
-    out += label(96, 455, "Your message", "no recorded wording matches", t + w2 - 0.2)
-    out += label(276, 455, "Entity: LPG", "shared · 1/degree weighted", t + l2)
+    out += label(96, 455, "Your message", "no wording matches", t + w2 - 0.2)
+    out += label(276, 455, "Entity: LPG", "shared entity", t + l2)
     out += label(446, 455, "Fuel prices as weapons", "narrative frame", t + f2, 240)
     out += label(686, 300, "The Quint · FALSE", "related review", t + q2 + 0.2, 240)
     out += label(686, 530, "Fact Crescendo · False", "related review", t + c2 + 0.2, 240)

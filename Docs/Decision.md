@@ -744,7 +744,7 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Why:** The hackathon requires a demo video; the user asked for a story-like narration with a future-scope section. Everything shown is an actual run so that the video claims nothing the product does not do.
 
-**Consequences:** 3:36 at 1280×720, 16 fps, 8.0 MB. Every screenshot in it is a real run; the diagrams are drawn from real outputs (the path ids, the MCP client output). The voice is synthetic; re-recording it re-times the visuals automatically, but a changed script needs its cue words checked (a cue that is not found is printed and keeps its default delay). Rendering takes about seven minutes; the scripts depend on the local server, OpenRouter access and network for the neural voice and fonts.
+**Consequences:** 3:36 at 1280×720, 16 fps, 7.9 MB. Every screenshot in it is a real run; the diagrams are drawn from real outputs (the path ids, the MCP client output). The voice is synthetic; re-recording it re-times the visuals automatically, but a changed script needs its cue words checked (a cue that is not found is printed and keeps its default delay). Rendering takes about seven minutes; the scripts depend on the local server, OpenRouter access and network for the neural voice and fonts.
 
 **Implementation:** [narration and word cues](../scripts/narrate_demo_video.py), [captures](../scripts/capture_demo_assets.py), [renderer](../scripts/render_demo_video.py), [MCP check used for the footage](../scripts/check_public_endpoint.py), [video](media/pehchan-demo.mp4).
 
