@@ -99,6 +99,7 @@ The diagram shows the retained deterministic baseline. Default CLI/API/MCP inves
 | F-40 | Load the graph into another FalkorDB (e.g. Cloud) | `scripts/load_graph.py` | Target graph nodes, edges, vectors and index |
 | F-41 | Test and deploy on every push | GitHub Actions `ci-cd.yml` | EC2 update and/or Space rebuild (main only, when configured) |
 | F-42 | Provision an EC2 server | `deploy/ec2/setup.sh` | Packages, app, restored graph, env file, service, Caddy |
+| F-43 | Build the demo video from real runs | `scripts/make_demo_video.py` | `artifacts/video/`, `artifacts/pehchan-demo.mp4`; one saved case on the local graph |
 
 ## F-01 — Prepare runtime and configuration
 
@@ -635,6 +636,14 @@ python -m pip install -c requirements.lock -e ".[dev]"
 **Outputs/effects:** Updated static proof section and rollback copies. No database mutation, hosted inference, backend restart or Git commit is required. The source changes must be included in a later normal deployment to survive an exact-commit checkout.
 
 **Failure branches:** Unfinished embedding work → retain historical scores with their original scope; do not invent a fresh benchmark. Asset hashes differ → stop the targeted publish to avoid overwriting unrelated server edits. Replacement failure → restore changed assets from the rollback copies. Public verification failure → inspect served files and restore the prior copies if needed. Screenshot capture unavailable → verify the page's rendered DOM without claiming a screenshot was inspected.
+
+## F-43 — Build the demo video from real runs
+
+**Entry:** [scripts/make_demo_video.py](../scripts/make_demo_video.py) with the local API running. **Decision:** ADR-060.
+
+**Steps:** Run the CLI path command and the MCP client against the live endpoint for the text cards → open the local site in headless Edge at 1280×720 → per scene: drive the page (type the claim, submit, scroll, click Save), screenshot, burn the caption → synthesize each scene's narration, hold the scene's last frame until the narration ends → concatenate frames and the narration track with ffmpeg.
+
+**Failure branches:** No neural voice (network) → the Windows voice; any investigation error shows in the footage as the page's own error line; the save step writes one case to the local graph.
 
 ## Original blueprint flow status
 

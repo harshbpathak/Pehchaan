@@ -736,6 +736,18 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [prepare](../src/pehchan/ingestion.py), [CLI flag](../src/pehchan/cli.py), [paged reads](../src/pehchan/semantic.py), [test](../tests/test_ingestion.py), [README import steps](../README.md#import-the-larger-feed).
 
+## ADR-060 — Build the demo video from real runs
+
+**Status:** Implemented 18 October 2026. **Flows:** F-43.
+
+**Decision:** [scripts/make_demo_video.py](../scripts/make_demo_video.py) records the product in a headless browser against the local server (same code and data as the live site): the LPG investigation, the agent timeline and diagram, the graph explorer, a saved case followed by a reworded repeat answered from graph memory, the official MCP client against the live endpoint, the Tools and Connect sections, a future-scope card and a closing card. Captions are burned into frames; waits longer than a few seconds are cut and labelled "Processing time shortened (actual: N s)". Narration is synthesized (a neural voice through `edge-tts`, falling back to a Windows voice) and the result is encoded with ffmpeg to `artifacts/pehchan-demo.mp4`, copied to `Docs/media/`.
+
+**Why:** The hackathon requires a demo video; the user asked for a story-like narration with a future-scope section. Everything shown is an actual run so that the video claims nothing the product does not do.
+
+**Consequences:** 3:36 at 1280×720, 5.2 MB. The voice is synthetic; the narration track can be replaced by a human recording. The script depends on the local server, OpenRouter access and network for the neural voice.
+
+**Implementation:** [script](../scripts/make_demo_video.py), [MCP check used for the footage](../scripts/check_public_endpoint.py), [video](media/pehchan-demo.mp4).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.
