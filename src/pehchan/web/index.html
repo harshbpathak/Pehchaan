@@ -42,7 +42,7 @@
       <div class="nav-right">
         <span class="nav-track">Graph Hacks · Track 1</span>
         <button type="button" class="status-pill" id="status-pill" data-tone="running" aria-expanded="false" aria-controls="status-panel">
-          <i class="dot" aria-hidden="true"></i><span id="status-pill-text">checking FalkorDB…</span><span class="caret" aria-hidden="true">⌄</span>
+          <i class="dot" aria-hidden="true"></i><span id="status-pill-text">checking the graph…</span><span class="caret" aria-hidden="true">⌄</span>
         </button>
         <div class="status-panel glass" id="status-panel" hidden>
           <dl>
@@ -52,7 +52,7 @@
             <dt>agent</dt><dd id="sp-agent">–</dd>
             <dt>access</dt><dd><span class="badge badge-info" id="sp-access">–</span></dd>
           </dl>
-          <p>Live from <code>GET /health</code>. Unknown values show as "–", never as a guess.</p>
+          <p>Read live from this server's <code>/health</code>. Anything unknown shows as "–".</p>
         </div>
       </div>
     </div>
@@ -222,8 +222,8 @@
           </g>
         </svg>
         <figcaption class="diagram-foot">
-          <span class="caption" id="diagram-caption"><span class="mono-label">Hover a part</span></span>
-          <span class="mono-label">illustrative</span>
+          <span class="caption" id="diagram-caption"><span class="mono-label">Point at any part to see what it does</span></span>
+          <span class="mono-label">not to scale</span>
         </figcaption>
       </figure>
 

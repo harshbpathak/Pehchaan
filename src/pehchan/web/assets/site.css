@@ -94,24 +94,27 @@ code, pre { font-family: var(--mono); font-size: .9em; }
 .nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; position: relative; }
 .nav-track { font: 500 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .mono-label { font: 500 11px/1.4 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
-/* status is never colour-only: a dot, a label and a tone */
+/* the live graph badge: a cream capsule with the brand mark; never colour-only, the text says the state */
 .status-pill {
-  display: inline-flex; align-items: center; gap: 7px; border-radius: 8px; border: 1px solid; padding: 5px 9px;
-  font: 500 12px/16px var(--text); white-space: nowrap; cursor: pointer; background: #fff; color: inherit;
+  display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; border: 1.5px solid var(--ink); padding: 6px 12px 6px 8px;
+  font: 600 12px/16px var(--text); white-space: nowrap; cursor: pointer; background: var(--card); color: var(--ink);
+  transition: transform .16s var(--ease-quick), background-color .16s;
 }
-.status-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; margin: 0; }
-.status-pill .caret { font-size: 11px; line-height: 1; opacity: .7; }
-.status-pill[data-tone="pass"] { color: #157A4F; background: #E6F6EE; border-color: #9BD8B8; }
-.status-pill[data-tone="pass"] .dot { box-shadow: 0 0 10px rgba(63, 165, 122, .7); }
-.status-pill[data-tone="running"] { color: #2F4FA6; background: var(--sky); border-color: #B7C8F5; }
-.status-pill[data-tone="running"] .dot { animation: pulse 1.2s ease-in-out infinite; }
-.status-pill[data-tone="fail"] { color: #B8402A; background: var(--signal-soft); border-color: #F3B8A8; }
+.status-pill:hover { background: var(--paper-2); }
+.status-pill:active { transform: scale(.97); }
+.status-pill .dot { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; margin: 0; background: var(--paper-2); font-size: 11px; color: var(--signal); }
+.status-pill .dot::before { content: "◈"; }
+.status-pill .caret { font-size: 11px; line-height: 1; opacity: .6; }
+.status-pill[data-tone="pass"] .dot { background: var(--mint); color: var(--mint-ink); }
+.status-pill[data-tone="running"] .dot { background: var(--sky); color: var(--sky-ink); animation: pulse 1.2s ease-in-out infinite; }
+.status-pill[data-tone="fail"] { border-color: var(--signal-text); color: var(--signal-text); }
+.status-pill[data-tone="fail"] .dot { background: var(--signal-soft); color: var(--signal-text); }
 @keyframes pulse { 50% { opacity: .35; } }
 .status-panel {
   position: absolute; right: 0; top: calc(100% + 10px); width: min(380px, calc(100vw - 32px));
-  border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; z-index: 45; text-align: left;
+  border-radius: 20px; padding: 16px 18px; display: grid; gap: 10px; z-index: 45; text-align: left; border: 1.5px solid var(--ink);
 }
-.glass { background: color-mix(in srgb, #fff 82%, transparent); border: 1px solid var(--line); box-shadow: 0 20px 40px -24px rgba(35, 40, 66, .45), inset 0 1px 0 #fff; backdrop-filter: blur(14px) saturate(140%); }
+.glass { background: var(--card); box-shadow: 0 20px 40px -24px rgba(35, 40, 66, .45); }
 .status-panel dl { display: grid; grid-template-columns: 56px 1fr; gap: 8px 12px; margin: 0; font-size: 13px; }
 .status-panel dt { color: var(--muted); }
 .status-panel dd { margin: 0; font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
@@ -311,7 +314,7 @@ details.card ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
 .diagram svg { position: relative; width: 100%; height: auto; display: block; font-family: var(--text); }
 .diagram .part { cursor: pointer; outline: none; }
 .diagram .part .tile { transition: transform .35s var(--ease), filter .2s; transform-box: fill-box; transform-origin: center; }
-.diagram .part:hover .tile, .diagram .part:focus-visible .tile, .diagram .part[data-on] .tile { transform: translateY(-5px); filter: drop-shadow(0 8px 10px rgba(35, 40, 66, .18)); }
+.diagram .part:hover .tile, .diagram .part:focus-visible .tile, .diagram .part[data-on] .tile { transform: translateY(-5px); filter: drop-shadow(0 8px 10px rgba(35, 40, 66, .18)); color: var(--signal); }
 .diagram .part text { fill: var(--ink); }
 .diagram .part .sub { fill: var(--muted); }
 .diagram .flow { stroke-dasharray: 3 5; animation: dash 2.4s linear infinite; }

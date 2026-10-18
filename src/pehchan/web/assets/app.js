@@ -449,7 +449,7 @@
       const health = await api("GET", "/health");
       document.querySelector('[data-stat="claims"]').textContent = health.claims;
       const ready = health.status === "ready";
-      setPill(ready ? "pass" : "fail", ready ? "FalkorDB ready" : "setup required");
+      setPill(ready ? "pass" : "fail", ready ? `Graph live · ${health.claims} wordings` : "Graph needs setup");
       const inference = health.inference || {};
       const chain = (inference.chain || []).map((c) => `${MODEL_NAMES[c.model] || c.model} via ${PROVIDER_NAMES[c.provider] || c.provider}`);
       $("#sp-graph").textContent = `graph: ${health.graph}`;
@@ -458,7 +458,7 @@
       $("#sp-agent").textContent = chain.length ? chain.join(" → ") : "offline specialists";
       $("#sp-access").textContent = serverConfig.public_read ? "public read-only · writes need a token" : "local";
     } catch {
-      setPill("fail", "API unreachable");
+      setPill("fail", "Graph unreachable");
     }
   }
 
