@@ -34,10 +34,23 @@ class VectorIndex:
     def __init__(self, store):
         self.store = store
 
+    def _variants(self, columns: str, page: int = 5000) -> list:
+        """Read every variant in pages: the server caps one result set at 10,000 rows."""
+        rows, skip = [], 0
+        while True:
+            batch = self.store.read(
+                f"MATCH (v:ClaimVariant) RETURN {columns} ORDER BY v.id SKIP $skip LIMIT $limit",
+                {"skip": skip, "limit": page},
+            )
+            rows.extend(batch)
+            if len(batch) < page:
+                return rows
+            skip += page
+
     def status(self) -> dict:
-        rows = self.store.read(
-            "MATCH (v:ClaimVariant) RETURN v.id,v.text,v.embedding_model,"
-            "v.embedding_revision,v.embedding_text_sha256,v.embedding IS NOT NULL"
+        rows = self._variants(
+            "v.id,v.text,v.embedding_model,v.embedding_revision,v.embedding_text_sha256,"
+            "v.embedding IS NOT NULL"
         )
         stale = [
             row[0]
@@ -72,7 +85,7 @@ class VectorIndex:
     def build(self, embedder, batch_size: int = 16) -> dict:
         if not 1 <= batch_size <= 64:
             raise ValueError("batch_size must be 1–64")
-        rows = self.store.read("MATCH (v:ClaimVariant) RETURN v.id,v.text ORDER BY v.id")
+        rows = self._variants("v.id,v.text")
         if not rows:
             raise ValueError("Ingest source records before building embeddings.")
         before = self.status()

@@ -152,7 +152,7 @@
             <text x="46" y="130" text-anchor="end" font-size="12" class="sub">WhatsApp-style messages</text>
             <path d="M150 118 C 260 118, 330 230, 440 262" class="flow" fill="none" stroke="#EF5B3F" stroke-width="1.5"/>
           </g>
-          <g class="part" data-caption="<b>Fact-checks.</b> 645 ClaimReview records from 64 publishers, kept with their original ratings, URLs and provenance. Ratings never move to a different claim." tabindex="0" color="#232842">
+          <g class="part" data-caption="<b>Fact-checks.</b> 11,758 ClaimReview records from 184 publishers, every review in the public feed dated 2025-2026 plus the earlier seed, kept with their original ratings, URLs and provenance. Ratings never move to a different claim." tabindex="0" color="#232842">
             <use href="#tile" x="60" y="192" width="88" height="56" class="tile"/>
             <text x="46" y="212" text-anchor="end" font-size="15" font-weight="600">Fact-checks</text>
             <text x="46" y="230" text-anchor="end" font-size="12" class="sub">ClaimReview feed</text>
@@ -192,7 +192,7 @@
             <circle cx="500" cy="270" r="7" fill="#EF5B3F"/><circle cx="440" cy="300" r="5" fill="#3FA57A"/><circle cx="560" cy="300" r="5" fill="#3FA57A"/><circle cx="520" cy="330" r="4" fill="#6C8EEA"/><circle cx="470" cy="326" r="4" fill="#A57BE0"/>
             <circle cx="392" cy="246" r="20" fill="#FFF5CF" stroke="#232842" stroke-opacity=".3"/>
             <text x="500" y="424" text-anchor="middle" font-size="18" font-weight="600">● FalkorDB claim graph</text>
-            <text x="500" y="450" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" class="sub">645 FACT-CHECKS · VECTORS · PATHS · BFS</text>
+            <text x="500" y="450" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" class="sub">11,758 FACT-CHECKS · VECTORS · PATHS · BFS</text>
             <text x="500" y="470" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" class="sub">MEMORY ON THE NODES</text>
           </g>
           <text x="630" y="196" font-family="Geist Mono, monospace" font-size="11" letter-spacing="2" fill="#5B6075">PROOF OUT</text>
@@ -269,11 +269,14 @@
     <section class="section section-tint" id="proof" aria-labelledby="proof-title">
       <p class="eyebrow">04 / Proof</p>
       <h2 class="display section-title" id="proof-title">We measured it.</h2>
+      <p class="lede narrow">Recorded retrieval results, with their scope, plus the graph capabilities behind an investigation.</p>
       <div class="proof-grid">
         <div class="card">
-          <h3>Held-out retrieval, 30 queries</h3>
-          <p class="muted">24 paraphrases and 6 translations (Hindi, Spanish, German, French, Indonesian) that are not in the graph. A hit is a recorded wording of the same claim in the top five.</p>
+          <div class="proof-meta" aria-label="Benchmark scope"><span>18 Oct 2026</span><span>248-wording seed</span><span>30 queries</span></div>
+          <h3>Retrieval benchmark snapshot</h3>
+          <p class="muted">24 author-written paraphrases and 6 translations in Hindi, Spanish, German, French and Indonesian, separate from the stored claim wordings. A hit means an accepted wording of the same claim appears in the top five results.</p>
           <table class="proof-table">
+            <caption class="sr-only">Top-five retrieval hits on 30 held-out queries against the original 248-wording graph; translation results cover six queries.</caption>
             <thead><tr><th scope="col">Method</th><th scope="col">hit@5</th><th scope="col">Translations</th></tr></thead>
             <tbody>
               <tr><td>Word overlap</td><td>25/30</td><td>3/6</td></tr>
@@ -281,16 +284,21 @@
               <tr><td>Vector index + graph</td><td>30/30</td><td>6/6</td></tr>
             </tbody>
           </table>
-          <p class="muted small">Embeddings already find every case here, so the graph adds no retrieval gain on this set. Its job is widening, recall and explanation.</p>
+          <p class="muted small"><b>Scope:</b> Measured on the original seed before expansion. Not rerun on the expanded collection; this small, author-written test does not measure fact-checking accuracy.</p>
+          <p class="muted small">Graph re-ranking added no top-five retrieval gain in this run. The graph's separate roles are widening, saved-submission recall and inspectable paths.</p>
+          <div class="proof-links"><a href="https://github.com/harshbpathak/Pehchaan/blob/main/Docs/retrieval-evaluation.json" target="_blank" rel="noopener noreferrer">Read the benchmark report ↗</a><a href="https://github.com/harshbpathak/Pehchaan/blob/main/data/evaluation/heldout_cases.json" target="_blank" rel="noopener noreferrer">Inspect the 30 queries ↗</a></div>
         </div>
         <div class="card">
-          <h3>What the graph does that search cannot</h3>
+          <div class="proof-meta"><span>Implemented behavior</span><span>Evidence stays attributable</span></div>
+          <h3>Beyond finding similar wording</h3>
           <ul class="ticks">
-            <li>Links a vaccine-microchip claim to a climate claim through <b>Bill Gates</b> in four hops.</li>
-            <li>Answers a repeated forward through a <b>MATCHES</b> edge the agent wrote, without rerunning models.</li>
-            <li>Finds reviewed claims for a new wording through shared <b>entities and frames</b>, weighted by rarity.</li>
-            <li>Shows every edge's basis: source record, rule inference or model assessment.</li>
+            <li><b>Native paths.</b> A four-hop Bill Gates bridge connects vaccine-microchip and climate claims using <code>algo.SPpaths</code>.</li>
+            <li><b>Submission memory.</b> Near-identical forwards reuse <code>MATCHES</code>. Input embedding and source reads still run; fresh NLI and hosted-LLM calls are skipped.</li>
+            <li><b>Context widening.</b> Shared entities and frames reach related reviews, weighted by rarity. Context can trigger human review; it is not a direct fact-check.</li>
+            <li><b>Source provenance.</b> Inspect original publisher ratings and inferred-edge basis. Shared connections do not prove truth or coordination.</li>
+            <li><b>MCP access.</b> Six public read-only tools and two protected case-writing tools use the same graph.</li>
           </ul>
+          <p class="muted small proof-footnote">MCP discovery and calls were checked with the official client. End-to-end coding-agent verification is a separate check.</p>
         </div>
       </div>
     </section>

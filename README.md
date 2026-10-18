@@ -26,7 +26,7 @@
 | | |
 |---|---|
 | **Who it is for** | Journalists, fact-checkers and researchers who receive a forwarded claim and need to know, fast, whether it has been reviewed before and what it connects to. |
-| **What it keeps in FalkorDB** | 645 real ClaimReview fact-checks from 64 publishers, their claim wordings, 69 entities, 14 narrative frames, 8 topics, every saved investigation, and every submitted message with the edges the agent established for it. |
+| **What it keeps in FalkorDB** | 11,758 real ClaimReview fact-checks from 184 publishers (every review in the public feed dated 2025-2026, plus the earlier seed), their 11,623 claim wordings in many languages, 69 entities, 14 narrative frames, 8 topics, every saved investigation, and every submitted message with the edges the agent established for it. |
 | **How it decides** | A native vector index finds recorded wordings by meaning; an NLI model has to agree in both directions before one counts as a match. Without a match the Graph Detective widens through shared entities and frames, and reports that as context. The application, not the model, chooses the case status and every citation. |
 | **What it does with the answer** | Classifies the message (known recycled claim, variant of a known narrative, new), drafts a reply from graph records only, queues new claims for a human, persists the case with exact `EXAMINES`/`CITES` edges, and writes the message back so a repeat forward is answered through a `MATCHES` edge. |
 | **How you can use it** | The web app, the CLI, or eight MCP tools over Streamable HTTP; six of them are public and read-only, so Claude, ChatGPT and Gemini can call the same graph. |
@@ -85,7 +85,7 @@ graph TD
   A & B & C & M --> F[(FalkorDB<br/>claims · fact-checks · frames · entities · investigations · submissions)]
 ```
 
-The graph holds 645 real ClaimReview records (641 claim variants, 64 publishers) in 8 topics, linked to 14 narrative frames and 69 entities. Beyond the original COVID-19/5G, vaccine-microchip, climate and moon-landing seed, it covers the 2026 events on the landing page: the LPG crisis (48 reviews), the CJP protest (48), the Iran war (150) and the Russia-Ukraine war (150), imported from the same feed. Wordings are multilingual.
+The graph holds 11,758 real ClaimReview records (11,623 claim wordings, 184 publishers): the original COVID-19/5G, vaccine-microchip, climate and moon-landing seed, the 2026 event subsets (LPG crisis, CJP protest, Iran war, Russia-Ukraine war), and, since the evening of 18 October 2026, every review in the public feed dated 2025 or 2026 (11,392 reviews; 18 rating conflicts audited and skipped). Rule-based frame and entity tags cover the topics the rules know; direct matching covers everything. Wordings are multilingual.
 
 ## What the agent does with a new message
 
@@ -384,17 +384,15 @@ For this workspace, a portable Python runtime is already available:
 
 On October 18, 2026 (IST), the official feed was downloaded and 250 records were selected using the reproducible filters below. The local `pehchan` graph contains:
 
-| Records | Count |
+| Records | Count (18 Oct 2026, after all imports) |
 | --- | ---: |
-| FactCheck | 250 |
-| ClaimVariant / Claim | 248 each |
-| Publisher domains | 53 |
-| NarrativeFrame | 10 |
-| Topic | 4 |
-| Entity | 53 |
-| USES_FRAME / ABOUT_TOPIC / MENTIONS | 203 / 252 / 356 |
+| FactCheck | 11,758 |
+| ClaimVariant / Claim | 11,623 / 11,620 |
+| Publisher domains | 184 |
+| NarrativeFrame / Topic / Entity | 14 / 8 / 69 |
+| USES_FRAME / ABOUT_TOPIC / MENTIONS | 487 / 922 / 2,334 |
 
-Two pairs of fact-checks review identical claim wording, so 250 reviews produce 248 variants. Twelve claims carry hand-inspected annotations ([sample](data/samples/annotations.json)); the whole collection is annotated by explicit keyword rules ([annotator](scripts/annotate_collection.py), [output](data/annotations/collection.json)) that keep those curated rows and add rule-assigned frames, topics and entities. Every entity carries a span quoted from the claim text. Rule annotations are inferences awaiting human review, not 248 validated narrative memberships. The 250-record selection is a substring-filtered seed that includes multilingual records.
+Reviews of identical wording share a variant, so the counts differ. The original 250-record seed (248 variants, 53 publishers) is still the reproducible subset described below. Twelve claims carry hand-inspected annotations ([sample](data/samples/annotations.json)); the whole collection is annotated by explicit keyword rules ([annotator](scripts/annotate_collection.py), [output](data/annotations/collection.json)) that keep those curated rows and add rule-assigned frames, topics and entities. Every entity carries a span quoted from the claim text. Rule annotations are inferences awaiting human review, not 248 validated narrative memberships. The 250-record selection is a substring-filtered seed that includes multilingual records.
 
 The live database tests and source-sample checks passed. See [the validation snapshot](Docs/validation.json), [graph design](Docs/graph-schema.md), and [data notes](data/samples/README.md). All source URLs and ratings in reports come from records; Pehchan does not assign a new truth verdict.
 
@@ -402,7 +400,17 @@ The [architectural decision register](Docs/Decision.md) records what we chose, w
 
 ## Import the larger feed
 
-The 2026 event reviews were added with the same commands, one subset per topic, then merged, tagged and embedded:
+The 2025-2026 bulk import filters the raw feed by `datePublished`, then uses `prepare --on-conflict skip` (the default aborts on two ratings for the same URL and claim; `skip` keeps the first and audits the rest), tags, ingests and embeds. Whole-graph reads are paged because the server returns at most 10,000 rows per query, so `embedding-status` and `embed` cover every wording.
+
+```powershell
+# data/raw/claimreview-2025-2026.json: the feed elements whose datePublished starts with 2025 or 2026
+python -m pehchan.cli prepare data/raw/claimreview-2025-2026.json --output data/processed/recent.jsonl --report data/processed/recent-report.json --source <feed URL> --on-conflict skip
+python scripts/annotate_collection.py data/processed/recent.jsonl --output data/annotations/recent.json
+python -m pehchan.cli --graph pehchan ingest data/processed/recent.jsonl --annotations data/annotations/recent.json
+python -m pehchan.cli --graph pehchan embed
+```
+
+The 2026 event reviews were added earlier with the same commands, one subset per topic, then merged, tagged and embedded:
 
 ```powershell
 python -m pehchan.cli prepare data/raw/claimreview-latest.json --output data/processed/events-lpg.jsonl --report data/processed/events-lpg-report.json --source <feed URL> --contains lpg --contains "cooking gas" --contains "gas cylinder" --contains "एलपीजी" --contains "सिलेंडर"

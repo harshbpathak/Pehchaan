@@ -710,6 +710,32 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [provider](../src/pehchan/inference.py), [wait message](../src/pehchan/web/assets/app.js), [test](../tests/test_inference.py), [setup script](../deploy/ec2/setup.sh).
 
+## ADR-059 — Show benchmark scope separately from implemented graph behavior
+
+**Status:** Implemented 18 October 2026. **Flows:** F-37, F-38, F-43. Extends ADR-047/ADR-057.
+
+**Decision:** Keep the recorded 30-query retrieval results, but label the proof section as the 18 October 2026 benchmark on the original 248-wording seed. Link the report and query set. State that it has not been rerun against the expanded graph, and that hit@5 measures retrieval rather than factual accuracy. Describe graph paths, widening, saved-submission recall and MCP capabilities separately from those benchmark scores. Correct the recall description: the query is still embedded and source evidence re-read; fresh NLI and hosted-LLM calls are skipped.
+
+**Why:** The screenshot still presented the old seed evaluation without its corpus scope, while local ingestion has expanded the graph and embedding work is in progress. An unqualified perfect retrieval score could be read as a current full-collection accuracy claim. The earlier wording also incorrectly implied that recall runs no models, and overstated what ordinary search cannot do.
+
+**Consequences:** The page preserves measured results and their limits instead of substituting unmeasured scores. Collection size and current engine remain available through the existing live badge. The proof section also distinguishes official-client MCP verification from an actual coding-agent integration recording. No new endpoint or inference call is introduced; a new completed evaluation must update the displayed scope and numbers together.
+
+**Publishing:** The HTML/CSS-only update can be copied to the existing deployment after verifying the exact prior Git blob hashes and retaining rollback copies. Static assets are served directly, so no backend restart is required. This targeted update creates no Git commit; a later normal deployment must include the source changes to retain them.
+
+**Implementation:** [proof markup](../src/pehchan/web/index.html), [proof layout](../src/pehchan/web/assets/site.css), [recorded report](retrieval-evaluation.json), [query set](../data/evaluation/heldout_cases.json).
+
+## ADR-059 — Import every 2025-2026 review from the feed; page whole-graph reads
+
+**Status:** Implemented 18 October 2026. **Flows:** F-04, F-09, F-23, F-34. Extends ADR-013, ADR-031, ADR-052.
+
+**Decision:** The graph now holds every review in the public ClaimReview feed dated 2025 or 2026 (11,392 reviews after de-duplication) on top of the seed and the event subsets: 11,758 fact-checks, 11,623 wordings, 184 publishers. `prepare` gains `--on-conflict skip`: two reviews with the same URL and claim but different ratings keep the first and audit the second as a rejection, instead of aborting the run (the default is unchanged). `VectorIndex` reads the variant set in pages of 5,000 ordered by id, because FalkorDB returns at most 10,000 rows for one query; before this, `embedding-status` and `embed` silently covered only part of a graph above that size.
+
+**Why:** With 645 fact-checks on a few topics, most claims a judge might type came back `NEW_CLAIM`. The feed was already on disk; the multilingual index makes the non-English reviews useful for direct matching even where the rules add no tags. The 10,000-row cap surfaced during the first embed of this import (8,057 written, 1,623 never visited).
+
+**Consequences:** Coverage of 2025-2026 topics is broad; older claims still fall back to context or `NEW_CLAIM`. Four random 2025-26 claims, lightly reworded, found their records at 0.78-0.95 similarity in about a second each (offline path); the appended question made them narrative variants rather than direct matches, which is the intended strictness. Rule tags cover 1,541 of the new wordings. Graph queries stayed fast (focused graph view 0.22 s, narratives 0.21 s). Embedding took about five minutes on a laptop CPU; the finished database volume was copied to the server rather than rebuilt there, replacing the server's earlier saved cases. The retrieval evaluation (ADR-047) was not rerun on this graph.
+
+**Implementation:** [prepare](../src/pehchan/ingestion.py), [CLI flag](../src/pehchan/cli.py), [paged reads](../src/pehchan/semantic.py), [test](../tests/test_ingestion.py), [README import steps](../README.md#import-the-larger-feed).
+
 ## Blueprint status after the local MVP
 
 This table preserves the original intention IDs while making their current boundary explicit.

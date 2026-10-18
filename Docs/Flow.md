@@ -169,6 +169,8 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Boundary:** Source preparation does not contact FalkorDB. Replacing JSONL and writing its report are separate filesystem operations.
 
+`--on-conflict skip` (ADR-059) keeps the first of two reviews that share a URL and claim but differ in rating, and records the other under `rejected`; the default `abort` stops the run and writes the report with `aborted: true`.
+
 ## F-05 — Normalize one ClaimReview
 
 **Entry:** [records.py](../src/pehchan/records.py): `normalize_review`, `canonical_url`, `organization`, `parsed_date`, `normalize_text`, `stable_id`. **Decisions:** ADR-008 through ADR-012.
@@ -578,6 +580,8 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Outputs/limits:** Read-only. Smoke-scale, author-written queries; no tuning on these cases.
 
+**Website reporting (ADR-059):** The proof section shows this recorded benchmark as a dated snapshot on the original 248-wording seed, with links to the report and the 30 queries. It explicitly says that the scores have not been rerun against the expanded graph. Read the corpus scope before comparing the snapshot with the live collection badge. A future completed rerun must update both the report and displayed scope/results together; embedding work in progress is not a completed evaluation. Retrieval hits do not measure factual accuracy, and protocol-client checks do not establish a coding-agent integration run.
+
 ## F-38 — Use the web app
 
 **Entry:** `/` served by [api.py](../src/pehchan/api.py); [app.js](../src/pehchan/web/assets/app.js). **Decision:** ADR-048.
@@ -585,6 +589,8 @@ python -m pip install -c requirements.lock -e ".[dev]"
 **Steps:** Load the page → fetch `/api/config` then `/health` for the status pill and panel (tone, graph, size, agent chain, access) and the live count in the numbers row, and `/api/graph` for the overview (settles, then freezes; click a node for its connections and reviews) → the diagram caption follows hover or focus → user picks or types a claim (or `/?claim=` supplies one) → POST `/api/dossier` with a stage-aware busy status and a running clock → render the finding banner, drafted reply (copyable), direct and close evidence, widened context with shared nodes, the numbered agent timeline and uncertainties → refocus the graph on the closest variant, or say that nothing connects to a new claim → optional "Save as case" POSTs `/api/investigations` with a fresh request ID; on write-protected servers without a stored token it first shows an inline team-only panel with a token field; a rejected token is cleared → optional JSON download. The connect section fills the public MCP URL and client snippets from `location.origin`.
 
 **Failure branches:** API errors show their `detail` in the status line; a failed `/health` sets the pill to "API unreachable"; graph failures show in the caption; a missing graph library leaves a message instead of a canvas. No invented results are shown.
+
+**Proof section (ADR-059):** Display the original retrieval snapshot with its date, corpus size, query definition, report/query links and limitations. Keep implemented graph behaviors separate, including native path queries, context-only widening, recall that still embeds the input/re-reads sources, and six public MCP tools plus two protected write tools. The proof copy does not query an LLM, recompute metrics on page load or claim that a coding-agent integration was measured by retrieval tests.
 
 ## F-39 — Publish a public read-only endpoint
 
@@ -617,6 +623,18 @@ python -m pip install -c requirements.lock -e ".[dev]"
 **Steps:** Install packages → add 4 GB swap if RAM is under 7 GB → clone the app, create the venv, install CPU PyTorch and extras, download models → restore `~/falkordb-data.tgz` into the FalkorDB volume if the volume does not exist → start FalkorDB with a restart policy → create `/etc/pehchan.env` (mode 600) with generated read/write tokens unless it exists → install and start the systemd service → install Caddy and proxy the hostname with a 180 s read timeout → wait for `/health`.
 
 **Failure branches:** Any command failure stops the script (`set -euo pipefail`); rerunning is safe and keeps existing tokens and data. Certificate issuance fails if DNS or ports 80/443 are wrong. Not yet run against a real instance.
+
+## F-43 — Refresh and publish the proof section
+
+**Entry:** Proof markup in [index.html](../src/pehchan/web/index.html), [site.css](../src/pehchan/web/assets/site.css), recorded [retrieval report](retrieval-evaluation.json) and F-37. **Decision:** ADR-059.
+
+**Trigger/inputs:** A request to update the website's evidence/benchmark section; the recorded test scope and current implementation.
+
+**Steps:** Read the existing report and relevant graph/recall/MCP code → distinguish historical results from current collection state → update proof copy, scope, report/query links and responsive styles → run relevant API checks and lint → inspect the served local page → compare deployed asset Git blob hashes with the reviewed starting version → stage only the changed HTML/CSS and retain prior copies in an ignored server artifact directory → replace assets → verify the public page and stylesheet.
+
+**Outputs/effects:** Updated static proof section and rollback copies. No database mutation, hosted inference, backend restart or Git commit is required. The source changes must be included in a later normal deployment to survive an exact-commit checkout.
+
+**Failure branches:** Unfinished embedding work → retain historical scores with their original scope; do not invent a fresh benchmark. Asset hashes differ → stop the targeted publish to avoid overwriting unrelated server edits. Replacement failure → restore changed assets from the rollback copies. Public verification failure → inspect served files and restore the prior copies if needed. Screenshot capture unavailable → verify the page's rendered DOM without claiming a screenshot was inspected.
 
 ## Original blueprint flow status
 

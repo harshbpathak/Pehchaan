@@ -26,6 +26,12 @@ def main() -> int:
         "--contains", action="append", help="case-insensitive claim substring; OR matching"
     )
     prep.add_argument("--limit", type=int)
+    prep.add_argument(
+        "--on-conflict",
+        choices=("abort", "skip"),
+        default="abort",
+        help="same URL and claim with different ratings: abort (default) or keep the first",
+    )
     ingest = sub.add_parser("ingest", help="idempotently merge prepared records into FalkorDB")
     ingest.add_argument("input", type=Path)
     ingest.add_argument("--annotations", type=Path)
@@ -76,6 +82,7 @@ def main() -> int:
                 source=args.source,
                 contains=args.contains,
                 limit=args.limit,
+                on_conflict=args.on_conflict,
             )
         else:
             # Validate all input before creating schema or writing any graph nodes.

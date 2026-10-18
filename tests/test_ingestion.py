@@ -126,3 +126,17 @@ def test_invalid_json_does_not_replace_previous_output(tmp_path):
     with pytest.raises(ijson.JSONError):
         prepare(source, output, tmp_path / "report", source="test")
     assert output.read_text() == "previous valid output"
+
+
+def test_conflicting_rating_can_be_skipped_and_audited(tmp_path, review):
+    conflicting = copy.deepcopy(review)
+    conflicting["reviewRating"]["alternateName"] = "Different rating"
+    source = tmp_path / "feed.json"
+    source.write_text(json.dumps([review, conflicting]))
+    report = prepare(
+        source, tmp_path / "out.jsonl", tmp_path / "report.json", source="test", on_conflict="skip"
+    )
+    assert report["selected"] == 1 and "aborted" not in report
+    assert report["rejected"][0]["reason"].startswith("conflicting rating")
+    with pytest.raises(ValueError, match="on_conflict"):
+        prepare(source, tmp_path / "o2.jsonl", tmp_path / "r2.json", source="test", on_conflict="x")

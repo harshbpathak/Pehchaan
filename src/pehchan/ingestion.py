@@ -73,9 +73,12 @@ def prepare(
     source: str,
     contains: list[str] | None = None,
     limit: int | None = None,
+    on_conflict: str = "abort",
 ) -> dict:
     if limit is not None and limit < 1:
         raise ValueError("limit must be positive")
+    if on_conflict not in {"abort", "skip"}:
+        raise ValueError("on_conflict must be abort or skip")
     paths = [p.resolve() for p in (input_path, output_path, report_path)]
     if len(set(paths)) != 3:
         raise ValueError("input, output and report paths must differ")
@@ -109,6 +112,16 @@ def prepare(
                     if key in seen:
                         previous = seen[key]
                         if previous["rating_original"] != record["rating_original"]:
+                            if on_conflict == "skip":
+                                # Bulk imports keep the first review and audit the rest.
+                                report["rejected"].append(
+                                    {
+                                        "index": index,
+                                        "reason": "conflicting rating for the same source URL "
+                                        "and claim; first review kept",
+                                    }
+                                )
+                                continue
                             raise ConflictingReviewError(
                                 "conflicting rating for the same source URL and claim"
                             )
