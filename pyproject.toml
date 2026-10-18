@@ -36,3 +36,5 @@ line-length = 100
 # Media and smoke scripts: blocking subprocess calls inside the recorder and a broad fallback are deliberate.
 "scripts/make_demo_video.py" = ["BLE001", "ASYNC221", "PLW1510"]
 "scripts/check_public_endpoint.py" = ["SIM117"]
+"scripts/render_demo_video.py" = ["BLE001", "ASYNC221", "PLW1510", "E501", "PLC0415"]
+"scripts/capture_demo_assets.py" = ["BLE001", "ASYNC221", "PLW1510", "E501"]

@@ -100,6 +100,7 @@ The diagram shows the retained deterministic baseline. Default CLI/API/MCP inves
 | F-41 | Test and deploy on every push | GitHub Actions `ci-cd.yml` | EC2 update and/or Space rebuild (main only, when configured) |
 | F-42 | Provision an EC2 server | `deploy/ec2/setup.sh` | Packages, app, restored graph, env file, service, Caddy |
 | F-43 | Build the demo video from real runs | `scripts/make_demo_video.py` | `artifacts/video/`, `artifacts/pehchan-demo.mp4`; one saved case on the local graph |
+| F-44 | Explore the workflow, screenshot walkthrough and Getting Started FAQ | Web page `#how`, `#walkthrough`, `#getting-started` | No graph writes; screenshot assets refreshed separately |
 
 ## F-01 — Prepare runtime and configuration
 
@@ -593,6 +594,8 @@ python -m pip install -c requirements.lock -e ".[dev]"
 
 **Proof section (ADR-059):** Display the original retrieval snapshot with its date, corpus size, query definition, report/query links and limitations. Keep implemented graph behaviors separate, including native path queries, context-only widening, recall that still embeds the input/re-reads sources, and six public MCP tools plus two protected write tools. The proof copy does not query an LLM, recompute metrics on page load or claim that a coding-agent integration was measured by retrieval tests.
 
+**Guided components (ADR-061, F-44):** The existing How it works diagram gains selectable step highlights; a separate screenshot carousel explains one real run. Getting Started answers open as native disclosures. These interactions are independent of the API, inference and saved-case flow. The carousel's Try action fills the original claim form without submitting it.
+
 ## F-39 — Publish a public read-only endpoint
 
 **Entry:** [scripts/run_public.py](../scripts/run_public.py). **Decision:** ADR-049.
@@ -644,6 +647,20 @@ python -m pip install -c requirements.lock -e ".[dev]"
 **Steps:** Run the CLI path command and the MCP client against the live endpoint for the text cards → open the local site in headless Edge at 1280×720 → per scene: drive the page (type the claim, submit, scroll, click Save), screenshot, burn the caption → synthesize each scene's narration, hold the scene's last frame until the narration ends → concatenate frames and the narration track with ffmpeg.
 
 **Failure branches:** No neural voice (network) → the Windows voice; any investigation error shows in the footage as the page's own error line; the save step writes one case to the local graph.
+
+## F-44 — Explore the workflow, walkthrough and Getting Started guide
+
+**Entry:** `setupMotion` and `setupWalkthrough` in [app.js](../src/pehchan/web/assets/app.js); sections in [index.html](../src/pehchan/web/index.html). **Decision:** ADR-061.
+
+**Trigger/inputs:** A visitor selects a workflow step, opens the five-step screenshot guide, expands a FAQ answer or chooses to try the guide's claim. Inputs are the authored workflow descriptions and five local captures from the read-only LPG investigation documented in ADR-061.
+
+**Steps:** Load the existing page → use the hero's Getting Started link or the How it works section → select Recall/Scout/Trace/Widen/Decide/Remember to update the highlighted diagram connections, pressed state and explanation → choose a carousel tab, use Previous/Next, ArrowLeft/ArrowRight/Home/End on its tabs, or swipe horizontally → update the visible panel, step count and progress → optionally expand a screenshot in a native dialog and dismiss with Close, Escape or the backdrop → optionally choose Try this claim yourself to populate and focus the original form → explicitly Run the agents to enter F-38. The FAQ's native summary controls toggle each answer independently.
+
+**Outputs/side effects:** Only local UI selection, focus, scrolling and image reads until the visitor submits an investigation or separately saves a case through F-38. Carousel navigation never invokes inference or writes a case. The screenshot dialog returns focus to its invoking button on close. CSS/JS version queries invalidate stale cached UI assets. Motion is suppressed when the browser requests reduced motion.
+
+**Capture/refresh workflow:** Open the running app → enter the complete claim from ADR-061 → capture the input → run one read-only dossier → verify the actual finding, publisher, date and tool trace → capture the finding, evidence, trace and focused graph into `src/pehchan/web/assets/tour-01-input.jpg` through `tour-05-graph.jpg` → check the images visually and update their captions, alt text, capture date and ADR provenance together. Do not reconstruct a success screen from mock data or save a case just to illustrate a read-only step. Test the controls and responsive layout before publishing. Deploy these assets together with the matching HTML, CSS and JS; no backend restart or graph migration is needed.
+
+**Failure branches:** An image load fails → keep its caption, disable enlargement and show the fallback text. JavaScript unavailable → the first screenshot and native FAQ still provide content, but step switching and enlargement need JavaScript. API/database unavailable → static guidance still loads; the existing live status and investigation controls report their failures. A new capture returns a different status → describe that actual result or retain the explicitly dated earlier example, rather than relabelling it as success.
 
 ## Original blueprint flow status
 

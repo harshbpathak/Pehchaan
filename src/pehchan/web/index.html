@@ -10,9 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/assets/site.css?v=20261018-tour">
   <script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js" defer></script>
-  <script src="/assets/app.js" defer></script>
+  <script src="/assets/app.js?v=20261018-tour" defer></script>
 </head>
 <body>
   <a class="skip" href="#investigate">Skip to the investigation</a>
@@ -68,6 +68,7 @@
         <a class="btn btn-primary" href="#investigate">Check a forward now</a>
         <a class="btn btn-ghost" href="#spark">See how a narrative ignites</a>
       </div>
+      <a class="getting-started-link" href="#getting-started">New here? Getting started <span aria-hidden="true">↗</span></a>
       <dl class="stats" id="stats" aria-live="polite">
         <div><dt>Fact-checks in the graph</dt><dd data-stat="claims">—</dd></div>
         <div><dt>Entities</dt><dd data-stat="entities">69</dd></div>
@@ -141,7 +142,9 @@
     <section class="section section-tint" id="how" aria-labelledby="how-title">
       <p class="eyebrow">02 / How it works</p>
       <h2 class="display section-title" id="how-title">Agents propose. The graph decides.</h2>
+      <p class="lede narrow">From the wording you received to the source behind it. Follow the handoffs, then see the same journey inside the app.</p>
       <figure class="diagram" aria-label="How a forward flows through Pehchan">
+        <div class="diagram-toolbar"><span class="diagram-label"><span class="diagram-symbol" aria-hidden="true">◈</span> Inside an investigation</span><a href="#walkthrough">See it in the app <span aria-hidden="true">↗</span></a></div>
         <svg viewBox="-190 0 1380 500" role="img" aria-labelledby="diagram-title">
           <title id="diagram-title">Forwards, fact-checks, event imports and rules flow into the FalkorDB claim graph; the agents propose and the graph decides; out come a cited reply, a review queue, a written-back submission and MCP tools.</title>
           <defs>
@@ -224,18 +227,58 @@
         </svg>
         <figcaption class="diagram-foot">
           <span class="caption" id="diagram-caption"><span class="mono-label">Point at any part to see what it does</span></span>
-          <span class="mono-label">not to scale</span>
+          <span class="diagram-key"><i aria-hidden="true"></i> Workflow guide</span>
         </figcaption>
       </figure>
 
-      <ol class="steps">
-        <li><span class="step-n">1</span><div><h3>Recall</h3><p>Has this wording been seen before? A FalkorDB vector index over past submissions answers instantly through the edges the agent wrote last time.</p><span class="who">FalkorDB vector index</span></div></li>
-        <li><span class="step-n">2</span><div><h3>Scout</h3><p>Find recorded wordings by meaning, in many languages, then check both directions of entailment before calling anything a match.</p><span class="who">Multilingual embeddings · NLI</span></div></li>
-        <li><span class="step-n">3</span><div><h3>Trace</h3><p>Follow claim → narrative frame → related claim → fact-check → publisher, plus native BFS and bounded paths.</p><span class="who">Cypher · algo.BFS</span></div></li>
-        <li><span class="step-n">4</span><div><h3>Widen</h3><p>No direct match? Walk through the entities and frames the message shares with reviewed claims. Rare connections count more than hubs.</p><span class="who">Graph Detective</span></div></li>
-        <li><span class="step-n">5</span><div><h3>Decide</h3><p>Known recycled claim, variant of a known narrative, or new. Draft a reply from graph records only, or queue it for a fact-checker.</p><span class="who">Evidence &amp; Response</span></div></li>
-        <li><span class="step-n">6</span><div><h3>Remember</h3><p>Write the message back into the graph, linked to what it matched, so the next forward is answered by following an edge.</p><span class="who">Submission write-back</span></div></li>
+      <p class="workflow-hint"><span aria-hidden="true">↳</span> Select a step to follow its connections in the diagram.</p>
+      <ol class="steps workflow-steps" aria-label="Explore the investigation steps">
+        <li><span class="step-n">01</span><div><h3><button type="button" data-workflow="0" aria-pressed="false" aria-controls="workflow-detail">Recall <span aria-hidden="true">↗</span></button></h3><p>Check whether a near-identical forward has a saved direct match. If it does, follow its links and read the sources again.</p><span class="who">Start with graph memory</span></div></li>
+        <li><span class="step-n">02</span><div><h3><button type="button" data-workflow="1" aria-pressed="false" aria-controls="workflow-detail">Scout <span aria-hidden="true">↗</span></button></h3><p>Find wordings by meaning, then check relevance in both directions. Similar wording is a candidate, not yet a match.</p><span class="who">Search → relevance check</span></div></li>
+        <li><span class="step-n">03</span><div><h3><button type="button" data-workflow="2" aria-pressed="false" aria-controls="workflow-detail">Trace <span aria-hidden="true">↗</span></button></h3><p>Follow claims to frames, related claims and their publishers. Keep the basis of each connection visible.</p><span class="who">Follow the evidence trail</span></div></li>
+        <li><span class="step-n">04</span><div><h3><button type="button" data-workflow="3" aria-pressed="false" aria-controls="workflow-detail">Widen <span aria-hidden="true">↗</span></button></h3><p>No direct match? Explore shared entities and frames. Rare connections count more; these results stay labelled as context.</p><span class="who">When no direct review matches</span></div></li>
+        <li><span class="step-n">05</span><div><h3><button type="button" data-workflow="4" aria-pressed="false" aria-controls="workflow-detail">Decide <span aria-hidden="true">↗</span></button></h3><p>Return the finding, sources and a cited draft. Show when evidence is insufficient or a person needs to review it.</p><span class="who">Evidence &amp; Response</span></div></li>
+        <li><span class="step-n">06</span><div><h3><button type="button" data-workflow="5" aria-pressed="false" aria-controls="workflow-detail">Remember <span aria-hidden="true">↗</span></button></h3><p>Choose to save a case and link its message to the graph. Saving is optional and reserved for the team on the public demo.</p><span class="who">Only after an authorized save</span></div></li>
       </ol>
+      <div class="workflow-detail" id="workflow-detail" role="status"><span class="workflow-detail-mark" aria-hidden="true">◈</span><p id="workflow-detail-text">Six handoffs, one evidence trail. Select a step above to see what goes in, what comes out, and when it runs.</p></div>
+
+      <div class="walkthrough" id="walkthrough" role="region" aria-roledescription="carousel" aria-labelledby="walkthrough-title">
+        <div class="walkthrough-heading"><div><p class="eyebrow">A real investigation / Step by step</p><h3 class="display" id="walkthrough-title">From forward<br>to <span class="mark">finding.</span></h3></div><p>A real LPG tax hoax, followed through Pehchan. These are screenshots from one app run—not a live investigation.</p></div>
+        <div class="tour-tabs" role="tablist" aria-label="Investigation walkthrough">
+          <button type="button" role="tab" id="tour-tab-0" aria-selected="true" aria-controls="tour-slide-0"><span class="tour-tab-number">01</span><span>Paste the forward<small>Keep the complete wording</small></span></button>
+          <button type="button" role="tab" id="tour-tab-1" aria-selected="false" aria-controls="tour-slide-1" tabindex="-1"><span class="tour-tab-number">02</span><span>Read the finding<small>Start with the outcome</small></span></button>
+          <button type="button" role="tab" id="tour-tab-2" aria-selected="false" aria-controls="tour-slide-2" tabindex="-1"><span class="tour-tab-number">03</span><span>Check the source<small>Open the original review</small></span></button>
+          <button type="button" role="tab" id="tour-tab-3" aria-selected="false" aria-controls="tour-slide-3" tabindex="-1"><span class="tour-tab-number">04</span><span>Follow the agents<small>Inspect the tool calls</small></span></button>
+          <button type="button" role="tab" id="tour-tab-4" aria-selected="false" aria-controls="tour-slide-4" tabindex="-1"><span class="tour-tab-number">05</span><span>Explore the graph<small>See how it connects</small></span></button>
+        </div>
+        <div class="tour-window">
+          <div class="tour-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>Pehchan / Investigation</span><span class="capture-label">Actual app capture</span></div>
+          <div class="tour-stage" id="tour-stage">
+            <figure class="tour-slide" role="tabpanel" id="tour-slide-0" aria-labelledby="tour-tab-0">
+              <button type="button" class="tour-image-button" aria-label="Enlarge screenshot: Paste the forward"><img src="/assets/tour-01-input.jpg" width="1265" height="712" loading="lazy" decoding="async" alt="Pehchan's investigation form containing the complete claim that state governments levy 55 percent tax on domestic LPG and the centre only 5 percent."><span class="tour-zoom" aria-hidden="true">Expand screenshot ↗</span></button>
+              <figcaption><span class="tour-caption-kicker">01 / The message</span><h4>Start with what was actually said.</h4><p>Paste the full forward, including its numbers and comparisons. This historical hoax claims a 55% state tax and a 5% central tax on domestic LPG.</p></figcaption>
+            </figure>
+            <figure class="tour-slide" role="tabpanel" id="tour-slide-1" aria-labelledby="tour-tab-1" hidden>
+              <button type="button" class="tour-image-button" aria-label="Enlarge screenshot: Read the finding"><img src="/assets/tour-02-finding.jpg" width="1265" height="712" loading="lazy" decoding="async" alt="The completed LPG investigation in Pehchan, showing its finding and evidence status."><span class="tour-zoom" aria-hidden="true">Expand screenshot ↗</span></button>
+              <figcaption><span class="tour-caption-kicker">02 / The finding</span><h4>A result you can inspect.</h4><p>The complete wording reaches a recorded review. The finding, evidence status and named inference engine appear together, so you can see what answered.</p></figcaption>
+            </figure>
+            <figure class="tour-slide" role="tabpanel" id="tour-slide-2" aria-labelledby="tour-tab-2" hidden>
+              <button type="button" class="tour-image-button" aria-label="Enlarge screenshot: Check the source"><img src="/assets/tour-03-evidence.jpg" width="1265" height="712" loading="lazy" decoding="async" alt="Published evidence in Pehchan showing FACTLY's original FALSE rating, reviewed LPG claim, review date and fact-check link."><span class="tour-zoom" aria-hidden="true">Expand screenshot ↗</span></button>
+              <figcaption><span class="tour-caption-kicker">03 / The source</span><h4>The rating belongs to the publisher.</h4><p>Inspect FACTLY's original review of this wording, dated 16 July 2021. Follow its source link and check the context before using the drafted reply.</p></figcaption>
+            </figure>
+            <figure class="tour-slide" role="tabpanel" id="tour-slide-3" aria-labelledby="tour-tab-3" hidden>
+              <button type="button" class="tour-image-button" aria-label="Enlarge screenshot: Follow the agents"><img src="/assets/tour-04-trace.jpg" width="1265" height="712" loading="lazy" decoding="async" alt="Pehchan's completed agent timeline showing the tools used to search, retrieve publisher evidence and explore graph context."><span class="tour-zoom" aria-hidden="true">Expand screenshot ↗</span></button>
+              <figcaption><span class="tour-caption-kicker">04 / The handoffs</span><h4>See the work behind the answer.</h4><p>The completed timeline records the actual tool calls. Model commentary is labelled separately from publisher evidence, and uncertainties remain inspectable.</p></figcaption>
+            </figure>
+            <figure class="tour-slide" role="tabpanel" id="tour-slide-4" aria-labelledby="tour-tab-4" hidden>
+              <button type="button" class="tour-image-button" aria-label="Enlarge screenshot: Explore the graph"><img src="/assets/tour-05-graph.jpg" width="1265" height="712" loading="lazy" decoding="async" alt="Pehchan's graph focused on the matched LPG claim with connected nodes and a source detail panel."><span class="tour-zoom" aria-hidden="true">Expand screenshot ↗</span></button>
+              <figcaption><span class="tour-caption-kicker">05 / The connections</span><h4>Follow a connection. Inspect its basis.</h4><p>The app focuses the graph on the closest recorded claim. Solid links come from source records; dashed links are inferences. A shared frame is context, not proof.</p></figcaption>
+            </figure>
+          </div>
+          <div class="tour-controls"><span class="tour-position" id="tour-position" role="status" aria-live="polite">01 <span>/ 05</span></span><div class="tour-progress" aria-hidden="true"><span id="tour-progress"></span></div><div class="tour-arrows"><button class="tour-arrow" id="tour-prev" type="button" aria-label="Previous walkthrough step" disabled>←</button><button class="tour-arrow" id="tour-next" type="button" aria-label="Next walkthrough step">→</button></div></div>
+        </div>
+        <div class="tour-footer"><p><span aria-hidden="true">↳</span> Captured 18 October 2026. One example; wording and results can vary.</p><button type="button" class="btn btn-small" id="try-walkthrough">Try this claim yourself <span aria-hidden="true">↗</span></button></div>
+      </div>
     </section>
 
     <section class="section" id="tools" aria-labelledby="tools-title">
@@ -423,7 +466,22 @@
       </div>
       <p class="muted small">Ask, for example: <i>"Use Pehchan to check this WhatsApp forward and draft a reply with sources."</i></p>
     </section>
+    <section class="section getting-started" id="getting-started" aria-labelledby="getting-started-title">
+      <div class="faq-intro"><p class="eyebrow">07 / A few good questions</p><h2 class="display section-title" id="getting-started-title">Getting<br><span class="mark">started.</span></h2><p class="lede">A little context before<br>your first investigation.</p><a href="#investigate" class="btn btn-primary">Check your first forward <span aria-hidden="true">↗</span></a><a class="faq-docs" href="https://github.com/harshbpathak/Pehchaan#readme" target="_blank" rel="noopener noreferrer">Building with Pehchan? Read the docs ↗</a></div>
+      <div class="faq-list">
+        <details><summary>Can I try it without an account?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Yes. The public demo lets you investigate a claim, inspect sources, explore the graph and download the dossier without signing in. Saving a case is reserved for the Pehchan team.</p><a href="#investigate">Start with a forward ↗</a></div></details>
+        <details><summary>What should I paste into Pehchan?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Paste the text of the claim as you received it. Keep names, dates, numbers and comparisons: removing them can change what is being checked. Pehchan searches multilingual wordings, but relevance checks can be uncertain, especially across languages. Image and video analysis are outside this MVP.</p><a href="#walkthrough">See an example, step by step ↗</a></div></details>
+        <details><summary>Does it need an LLM or an API key?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>You do not need to bring a key to use this demo. Hosted inference is configured on the server; the result names the engine that answered. Local embeddings and relevance checks support retrieval. A disclosed offline specialist workflow is available when configured, so hosted inference is optional for self-hosting.</p></div></details>
+        <details><summary>Is the data real?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Yes. The graph imports published ClaimReview records with their original publisher ratings, source URLs and available review dates. These are structured records, not freshly read article bodies. Narrative and entity links are separate annotations, labelled as inferences.</p></div></details>
+        <details><summary>Does a match mean the claim is false?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>A match means Pehchan found a review of the same proposition; the publisher's original rating tells you how it was reviewed. A related narrative is only context. No match means the collection has insufficient evidence, not that the claim is true. Open the sources and review the wording before sharing a reply.</p></div></details>
+        <details><summary>Will it save or share my message?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Running an investigation does not save a case in the graph. The server processes the text and, when hosted inference is active, sends it to the configured model provider. Saving requires a separate authorized action. Pehchan does not automatically send the drafted reply anywhere.</p></div></details>
+        <details><summary>What happens if FalkorDB is unavailable?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>The status badge and investigation show an error. Graph-backed evidence and investigations need a reachable database; Pehchan cannot complete them while it is down. This guide remains available, and you can retry when the service recovers.</p></div></details>
+        <details><summary>Where do the numbers on this page come from?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>The graph badge reads the running server. The retrieval benchmark is a separate, dated test on the original 248-wording seed with 30 author-written queries. Its results are not an accuracy score for the expanded collection.</p><a href="#proof">Read the benchmark and its limits ↗</a></div></details>
+      </div>
+    </section>
   </main>
+
+  <dialog class="tour-lightbox" id="tour-lightbox" aria-labelledby="tour-lightbox-title"><div class="tour-lightbox-bar"><p id="tour-lightbox-title">App screenshot</p><button type="button" class="btn btn-small" id="tour-lightbox-close" aria-label="Close screenshot">Close <span aria-hidden="true">×</span></button></div><img id="tour-lightbox-image" alt=""><p class="tour-lightbox-note">Actual app capture · 18 October 2026</p></dialog>
 
   <footer class="footer">
     <p class="display footer-title">Pehchan <span class="mark">AI</span></p>

@@ -460,7 +460,7 @@
     $("#cfg-gemini").textContent = JSON.stringify({ mcpServers: { pehchan: { httpUrl: url } } }, null, 2);
     document.querySelectorAll("[data-copy]").forEach((button) =>
       button.addEventListener("click", () => copyText($("#" + button.dataset.copy).textContent, button)));
-    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const tabs = [...document.querySelectorAll('#connect [role="tab"]')];
     tabs.forEach((tab) => tab.addEventListener("click", () => {
       tabs.forEach((t) => {
         const selected = t === tab;
@@ -525,6 +525,25 @@
     const parts = document.querySelectorAll(".diagram .part");
     if (!caption || !parts.length) return;
     const idle = caption.innerHTML;
+    let chosen = null;
+    const workflow = [
+      { title: "Recall", parts: [0, 5, 8], text: "The incoming wording is embedded and compared with saved submissions. A qualifying direct match reuses its MATCHES links and re-reads the sources; otherwise the investigation continues to Scout." },
+      { title: "Scout", parts: [0, 1, 4, 5], text: "The original message goes into the vector search. Retrieved wordings pass through a two-direction relevance check, producing direct matches, related context or uncertainty—not a new truth rating." },
+      { title: "Trace", parts: [1, 3, 5], text: "The graph returns paths from recorded claims through frames and entities to publisher records. Each connection retains its source-record or inference basis for inspection." },
+      { title: "Widen", parts: [3, 4, 5, 7], text: "When there is no direct match, the message's tagged entities and frames lead to related reviewed claims. Rare shared connections count more. Their reviews remain context and can trigger human review." },
+      { title: "Decide", parts: [4, 5, 6, 7], text: "Application checks assemble the finding and evidence status from the retrieved records. The cited reply is a draft for a person to review; uncertain or missing evidence stays visible." },
+      { title: "Remember", parts: [5, 8], text: "An authorized Save as case action stores the investigation and its Submission links. A normal read-only investigation skips this write. A later qualifying repeat can reuse those links." },
+    ];
+    const explain = (target, step) => target.replaceChildren(el("b", { text: step.title + ". " }), step.text);
+    document.querySelectorAll("[data-workflow]").forEach((button) => {
+      button.addEventListener("click", () => {
+        chosen = workflow[Number(button.dataset.workflow)];
+        document.querySelectorAll("[data-workflow]").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        parts.forEach((part, i) => part.toggleAttribute("data-selected", chosen.parts.includes(i)));
+        explain(caption, chosen);
+        explain($("#workflow-detail-text"), chosen);
+      });
+    });
     const show = (part) => {
       parts.forEach((p) => p.removeAttribute("data-on"));
       part.setAttribute("data-on", "");
@@ -532,7 +551,11 @@
       const [title, ...rest] = part.dataset.caption.replace(/<\/?b>/g, "\u0000").split("\u0000").filter(Boolean);
       caption.replaceChildren(el("b", { text: title }), rest.join(""));
     };
-    const reset = () => { parts.forEach((p) => p.removeAttribute("data-on")); caption.innerHTML = idle; };
+    const reset = () => {
+      parts.forEach((p) => p.removeAttribute("data-on"));
+      if (chosen) explain(caption, chosen);
+      else caption.innerHTML = idle;
+    };
     parts.forEach((part) => {
       part.addEventListener("mouseenter", () => show(part));
       part.addEventListener("focus", () => show(part));
@@ -542,10 +565,107 @@
     });
   }
 
+  // Static captures of one real run. Moving through the guide never calls the API.
+  function setupWalkthrough() {
+    const tour = $("#walkthrough");
+    if (!tour) return;
+    const tabs = [...tour.querySelectorAll('[role="tab"]')];
+    const slides = [...tour.querySelectorAll('[role="tabpanel"]')];
+    const prev = $("#tour-prev");
+    const next = $("#tour-next");
+    const dialog = $("#tour-lightbox");
+    let current = 0;
+    const select = (index, focus = false) => {
+      current = Math.max(0, Math.min(index, tabs.length - 1));
+      tabs.forEach((tab, i) => {
+        const selected = i === current;
+        tab.setAttribute("aria-selected", String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        slides[i].hidden = !selected;
+      });
+      prev.disabled = current === 0;
+      next.disabled = current === tabs.length - 1;
+      $("#tour-position").replaceChildren(String(current + 1).padStart(2, "0") + " ", el("span", { text: "/ " + String(tabs.length).padStart(2, "0") }));
+      $("#tour-progress").style.width = ((current + 1) / tabs.length * 100) + "%";
+      // Keep the active mobile tab in its own scroll area without moving the page.
+      const strip = tabs[current].parentElement;
+      const tabRect = tabs[current].getBoundingClientRect();
+      const stripRect = strip.getBoundingClientRect();
+      if (tabRect.left < stripRect.left || tabRect.right > stripRect.right) {
+        strip.scrollLeft += tabRect.left - stripRect.left - (strip.clientWidth - tabs[current].offsetWidth) / 2;
+      }
+      if (focus) tabs[current].focus({ preventScroll: true });
+    };
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => select(index));
+      tab.addEventListener("keydown", (event) => {
+        let target;
+        if (event.key === "ArrowRight") target = (current + 1) % tabs.length;
+        else if (event.key === "ArrowLeft") target = (current - 1 + tabs.length) % tabs.length;
+        else if (event.key === "Home") target = 0;
+        else if (event.key === "End") target = tabs.length - 1;
+        else return;
+        event.preventDefault();
+        select(target, true);
+      });
+    });
+    prev.addEventListener("click", () => select(current - 1));
+    next.addEventListener("click", () => select(current + 1));
+    let touch = null;
+    let swiped = false;
+    const stage = $("#tour-stage");
+    stage.addEventListener("touchstart", (event) => {
+      swiped = false;
+      touch = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+    }, { passive: true });
+    stage.addEventListener("touchend", (event) => {
+      if (!touch || !event.changedTouches.length) return;
+      const dx = event.changedTouches[0].clientX - touch.x;
+      const dy = event.changedTouches[0].clientY - touch.y;
+      touch = null;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        swiped = true;
+        select(current + (dx < 0 ? 1 : -1));
+      }
+    }, { passive: true });
+    stage.addEventListener("touchcancel", () => { touch = null; }, { passive: true });
+    tour.querySelectorAll(".tour-image-button").forEach((button) => {
+      const img = button.querySelector("img");
+      const failed = () => {
+        button.disabled = true;
+        if (!button.nextElementSibling?.classList.contains("tour-image-error")) {
+          button.after(el("p", { class: "tour-image-error", text: "This capture could not load. You can still follow the description below or try the claim in the app." }));
+        }
+      };
+      img.addEventListener("error", failed);
+      if (img.complete && !img.naturalWidth) failed();
+      button.addEventListener("click", () => {
+        if (swiped) { swiped = false; return; }
+        if (!img.naturalWidth) return;
+        $("#tour-lightbox-image").src = img.src;
+        $("#tour-lightbox-image").alt = img.alt;
+        $("#tour-lightbox-title").textContent = button.getAttribute("aria-label").replace("Enlarge screenshot: ", "");
+        dialog.showModal();
+      });
+    });
+    $("#tour-lightbox-close").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const r = dialog.getBoundingClientRect();
+      if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close();
+    });
+    $("#try-walkthrough").addEventListener("click", () => {
+      $("#claim").value = "On the domestic LPG cylinders, the State Government levy a tax of 55% whereas the Central Government’s tax is just 5%";
+      $("#investigate").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
+      $("#claim").focus({ preventScroll: true });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     setupConnect();
     setupStatusPanel();
     setupMotion();
+    setupWalkthrough();
     api("GET", "/api/config").then((c) => { serverConfig = c; }).catch(() => { /* defaults */ }).finally(loadStats);
     $("#graph-fit").addEventListener("click", () => network && network.fit({ animation: true }));
     $("#graph-overview").addEventListener("click", () => loadGraph(null, "Collection overview."));

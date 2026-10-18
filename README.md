@@ -19,7 +19,7 @@
 
 **WeMakeDevs × FalkorDB Graph Hacks — Track 1: Agents That Act on Connected Data**
 
-> **Demo video (3:36):** [Docs/media/pehchan-demo.mp4](Docs/media/pehchan-demo.mp4), real footage of the live build with a synthesized narration, made by `scripts/make_demo_video.py` from actual runs.
+> **Demo video (3:36):** [Docs/media/pehchan-demo.mp4](Docs/media/pehchan-demo.mp4), an animated walkthrough whose only screenshots are excerpts of real runs, with a synthesized narration. Built by `scripts/capture_demo_assets.py` (the excerpts) and `scripts/render_demo_video.py` (the animation, rendered frame by frame).
 
 ## In one table
 
