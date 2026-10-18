@@ -686,15 +686,15 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [query](../src/pehchan/queries.py), [loader](../scripts/load_graph.py), [README Cypher](../README.md#core-cypher).
 
-## ADR-057 — Inherit Faultline's page components in the light theme
+## ADR-057 — Adapt a few Faultline page components in the light theme
 
 **Status:** Implemented 18 October 2026. **Flows:** F-38. Extends ADR-048/ADR-051.
 
-**Decision:** Keep the cream palette and Anton display type, and adopt component patterns from the open-source Faultline front end: a compact top bar with a live "FalkorDB ready" status pill whose panel shows graph, engine, size, agent chain and access from `/health` and `/api/config`; a two-line headline that rises out of masks with a gradient second line; a three-number row where each number is tagged live, measured or by construction; a statement with a highlighter that sweeps in on scroll; three figure cards (match or no claim, context not evidence, remember on the graph); an isometric "hover a part" diagram of Pehchan's own inputs, agents, graph and outputs with authored captions; mono labels, a turning-gradient chip, registration marks and a scroll cue. Geist Mono is loaded for labels. The README is restructured in the same shape with its own headings, a brand mark and real screenshots under `Docs/media/`.
+**Decision:** Keep the page's own content, palette and Anton display type, and adopt a few component patterns from the open-source Faultline front end, adapted: a compact top bar with a live "FalkorDB ready" status pill whose panel shows graph, engine, size, agent chain and access from `/health` and `/api/config`; the headline lines rising out of masks; an isometric "hover a part" diagram of Pehchan's own inputs, agents, graph and outputs with captions written for Pehchan; mono labels; pill buttons. Geist Mono is loaded for labels. The README keeps its previous content and gains a header (mark, badges, screenshot) and one overview table written for Pehchan; the mark and screenshots live under `Docs/media/`.
 
-**Why:** The user asked for the page and README to match Faultline's presentation while keeping the light theme.
+**Why:** The user asked for Faultline's components in the light theme, not its wording. A first version (commits 179fde8..4deeb5f, 18 October 2026) also rewrote the hero, added a statement, figure cards and a numbers row, and restructured the README in Faultline's shape; the user rejected that as copying, so the content was restored and only the components above were kept.
 
-**Consequences:** The hero now states the rule ("No record, no reply") and the numbers row states provenance for each figure; the retrieval number is labelled as measured on the earlier 248-variant graph. Diagram captions are authored in the page's own markup and inserted as text. No new API routes; the pill degrades to "API unreachable". Attribution to Faultline is in the README.
+**Consequences:** No new API routes; the pill degrades to "API unreachable". Diagram captions are authored in the page's own markup and inserted as text. Attribution to Faultline is in the README.
 
 **Implementation:** [index.html](../src/pehchan/web/index.html), [site.css](../src/pehchan/web/assets/site.css), [app.js](../src/pehchan/web/assets/app.js), [README](../README.md), [media](media/).
 
