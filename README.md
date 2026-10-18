@@ -34,6 +34,48 @@
 
 A journalist asks: *"I've seen a claim that vaccines contain tracking microchips. Has something like it been fact-checked? Which narratives connect to it, and should it be reviewed?"* Pehchan finds previously fact-checked wordings, traverses FalkorDB to the narratives, entities and publishers around them, and decides whether a source-backed dossier is ready or the case needs a human. It never invents a truth verdict: ratings always belong to the original publisher, and missing evidence is reported as missing.
 
+## Submission checklist (Graph Hacks, Track 1)
+
+| Requirement | Where it is |
+| --- | --- |
+| Public source-code repository | This repository: github.com/harshbpathak/Pehchaan |
+| README with setup instructions and the graph data model | [Set up the complete MVP from a fresh clone](#set-up-the-complete-mvp-from-a-fresh-clone) and [Graph data model](#graph-data-model) below |
+| Cypher queries and graph algorithms the product depends on | [Core Cypher](#core-cypher) below; source in [src/pehchan/queries.py](src/pehchan/queries.py) |
+| Demo video showing the working project | [Docs/media/pehchan-demo.mp4](Docs/media/pehchan-demo.mp4) (3:36, built from real runs) |
+| Live deployment | https://16-192-177-240.sslip.io/ (web app, REST API, public MCP endpoint at `/public/mcp/`) |
+| Track | Track 1: Agents That Act on Connected Data |
+
+## Graph data model
+
+One FalkorDB graph (`pehchan`) is the only data store. Counts measured on the live graph on 18 October 2026: 35,297 nodes and 38,921 relationships.
+
+| Node label | Count | What it is |
+| --- | --- | --- |
+| FactCheck | 11,758 | A published review: rating, URL, date, publisher |
+| ClaimVariant | 11,623 | An exact wording as it circulates, with its embedding in the vector index |
+| Claim | 11,620 | The proposition behind one or more wordings |
+| Publisher | 184 | Fact-checking organisations |
+| Entity | 69 | People, organisations, places and things a claim mentions |
+| Investigation | 16 | A saved case with its finding, status and citations |
+| NarrativeFrame | 14 | Recurring story patterns (for example, fuel prices as weapons) |
+| Topic | 8 | Broad subject areas |
+| Submission | 5 | A message a user saved, written back into the graph |
+
+| Relationship | Count | Connects |
+| --- | --- | --- |
+| CHECKS | 11,758 | FactCheck → Claim |
+| PUBLISHED_BY | 11,758 | FactCheck → Publisher |
+| EXPRESSES | 11,623 | ClaimVariant → Claim |
+| MENTIONS | 2,334 | Claim or Submission → Entity |
+| ABOUT_TOPIC | 922 | Claim → Topic |
+| USES_FRAME | 487 | Claim or Submission → NarrativeFrame |
+| CITES | 15 | Investigation → FactCheck |
+| EXAMINES | 15 | Investigation → ClaimVariant |
+| SUBMITTED | 7 | Investigation and its Submission |
+| MATCHES | 2 | Submission → ClaimVariant it was matched to |
+
+Graph features the agents depend on: the native vector index on `ClaimVariant.embedding` and `Submission.embedding` (`db.idx.vector.queryNodes`) for semantic candidates in any language; `algo.SPpaths` for the shortest evidence path between two claims (both directions, up to 8 hops); `algo.BFS` for neighbourhood exploration; a shared-context Cypher query that widens through Entity and NarrativeFrame nodes scored by 1/degree; and `MERGE` write-back that turns a saved case into Submission nodes and edges, so a reworded forward is recognised later from the graph's own memory. The queries are listed in [Core Cypher](#core-cypher).
+
 ## Hosting
 
 - **Permanent (recommended):** AWS EC2 set up by one script (`deploy/ec2/setup.sh`) and updated by GitHub Actions on every tested push to `main`. Steps: [Docs/Deployment.md](Docs/Deployment.md#aws-ec2-with-one-command-setup-and-cicd-recommended-permanent-hosting). A Hugging Face Space + FalkorDB Cloud setup is also included.
