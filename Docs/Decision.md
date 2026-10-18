@@ -686,15 +686,15 @@ For every new architectural choice, append the next `ADR-NNN` entry with its sta
 
 **Implementation:** [query](../src/pehchan/queries.py), [loader](../scripts/load_graph.py), [README Cypher](../README.md#core-cypher).
 
-## ADR-057 — Adapt a few Faultline page components in the light theme
+## ADR-057 — A live graph status badge and a flow diagram on the landing page
 
 **Status:** Implemented 18 October 2026. **Flows:** F-38. Extends ADR-048/ADR-051.
 
-**Decision:** Keep the page's own content, palette and Anton display type, and adopt a few component patterns from the open-source Faultline front end, adapted: a compact top bar with a live "FalkorDB ready" status pill whose panel shows graph, engine, size, agent chain and access from `/health` and `/api/config`; the headline lines rising out of masks; an isometric "hover a part" diagram of Pehchan's own inputs, agents, graph and outputs with captions written for Pehchan; mono labels; pill buttons. Geist Mono is loaded for labels. The README keeps its previous content and gains a header (mark, badges, screenshot) and one overview table written for Pehchan; the mark and screenshots live under `Docs/media/`.
+**Decision:** Keep the page's own content, palette and Anton display type, and add two components of our own: a compact top bar with a live graph badge ("Graph live · 641 wordings") whose panel shows graph, engine, size, agent chain and access from `/health` and `/api/config`; and an isometric "point at any part" diagram of Pehchan's inputs, agents, graph and outputs with captions written for Pehchan. Smaller touches: the headline lines rise in on load, labels use Geist Mono, buttons are pills. The README keeps its content and gains a header (mark, badges, screenshot) and one overview table; the mark and screenshots live under `Docs/media/`.
 
-**Why:** The user asked for Faultline's components in the light theme, not its wording. A first version (commits 179fde8..4deeb5f, 18 October 2026) also rewrote the hero, added a statement, figure cards and a numbers row, and restructured the README in Faultline's shape; the user rejected that as copying, so the content was restored and only the components above were kept.
+**Why:** The user wanted the page to show, at a glance, that the graph is live and how a message flows through it, in the style of polished hackathon landing pages, without changing the page's story. An earlier version on 18 October 2026 (commits 179fde8..4deeb5f) rewrote the hero and the README in another project's voice; the user rejected it, the content was restored, and only components designed for Pehchan were kept.
 
-**Consequences:** No new API routes; the pill degrades to "API unreachable". Diagram captions are authored in the page's own markup and inserted as text. Attribution to Faultline is in the README.
+**Consequences:** No new API routes; the badge degrades to "API unreachable". Diagram captions are authored in the page's own markup and inserted as text.
 
 **Implementation:** [index.html](../src/pehchan/web/index.html), [site.css](../src/pehchan/web/assets/site.css), [app.js](../src/pehchan/web/assets/app.js), [README](../README.md), [media](media/).
 
