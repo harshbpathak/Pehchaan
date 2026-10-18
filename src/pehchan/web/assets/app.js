@@ -489,7 +489,9 @@
       $("#sp-engine").textContent = "FalkorDB · vector index · algo.SPpaths · algo.BFS";
       $("#sp-size").textContent = `${health.claims} claim wordings · ${health.embedded} embedded`;
       $("#sp-agent").textContent = chain.length ? chain.join(" → ") : "offline specialists";
-      $("#sp-access").textContent = serverConfig.public_read ? "public read-only · writes need a token" : "local";
+      $("#sp-access").textContent = serverConfig.public_read
+        ? "open to everyone · saving cases reserved for the team"
+        : "local machine · full access";
     } catch {
       setPill("fail", "Graph unreachable");
     }
