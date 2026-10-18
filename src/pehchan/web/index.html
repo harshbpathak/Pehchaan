@@ -227,7 +227,7 @@
         </svg>
         <figcaption class="diagram-foot">
           <span class="caption" id="diagram-caption"><span class="mono-label">Point at any part to see what it does</span></span>
-          <span class="diagram-key"><i aria-hidden="true"></i> Workflow guide</span>
+          <button type="button" class="btn btn-small" id="replay-run">▶ Replay a real run</button>
         </figcaption>
       </figure>
 
@@ -275,7 +275,7 @@
               <figcaption><span class="tour-caption-kicker">05 / The connections</span><h4>Follow a connection. Inspect its basis.</h4><p>The app focuses the graph on the closest recorded claim. Solid links come from source records; dashed links are inferences. A shared frame is context, not proof.</p></figcaption>
             </figure>
           </div>
-          <div class="tour-controls"><span class="tour-position" id="tour-position" role="status" aria-live="polite">01 <span>/ 05</span></span><div class="tour-progress" aria-hidden="true"><span id="tour-progress"></span></div><div class="tour-arrows"><button class="tour-arrow" id="tour-prev" type="button" aria-label="Previous walkthrough step" disabled>←</button><button class="tour-arrow" id="tour-next" type="button" aria-label="Next walkthrough step">→</button></div></div>
+          <div class="tour-controls"><span class="tour-position" id="tour-position" role="status" aria-live="polite">01 <span>/ 05</span></span><div class="tour-segments" id="tour-segments" aria-hidden="true"></div><button type="button" class="tour-play" id="tour-play" aria-pressed="true" aria-label="Pause the walkthrough">❚❚</button><div class="tour-arrows"><button class="tour-arrow" id="tour-prev" type="button" aria-label="Previous walkthrough step" disabled>←</button><button class="tour-arrow" id="tour-next" type="button" aria-label="Next walkthrough step">→</button></div></div>
         </div>
         <div class="tour-footer"><p><span aria-hidden="true">↳</span> Captured 18 October 2026. One example; wording and results can vary.</p><button type="button" class="btn btn-small" id="try-walkthrough">Try this claim yourself <span aria-hidden="true">↗</span></button></div>
       </div>
@@ -468,6 +468,12 @@
     </section>
     <section class="section getting-started" id="getting-started" aria-labelledby="getting-started-title">
       <div class="faq-intro"><p class="eyebrow">07 / A few good questions</p><h2 class="display section-title" id="getting-started-title">Getting<br><span class="mark">started.</span></h2><p class="lede">A little context before<br>your first investigation.</p><a href="#investigate" class="btn btn-primary">Check your first forward <span aria-hidden="true">↗</span></a><a class="faq-docs" href="https://github.com/harshbpathak/Pehchaan#readme" target="_blank" rel="noopener noreferrer">Building with Pehchan? Read the docs ↗</a></div>
+      <div class="faq-side">
+      <ol class="quickstart" aria-label="Getting started in three steps">
+        <li><span class="qs-n">1</span><div><b>Paste the forward</b><p>The full wording, with its numbers and names.</p></div></li>
+        <li><span class="qs-n">2</span><div><b>Read the finding</b><p>Recycled claim, narrative variant, or new. Sources first.</p></div></li>
+        <li><span class="qs-n">3</span><div><b>Use the reply</b><p>Copy it, open the publisher link, check before you share.</p></div></li>
+      </ol>
       <div class="faq-list">
         <details><summary>Can I try it without an account?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Yes. The public demo lets you investigate a claim, inspect sources, explore the graph and download the dossier without signing in. Saving a case is reserved for the Pehchan team.</p><a href="#investigate">Start with a forward ↗</a></div></details>
         <details><summary>What should I paste into Pehchan?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Paste the text of the claim as you received it. Keep names, dates, numbers and comparisons: removing them can change what is being checked. Pehchan searches multilingual wordings, but relevance checks can be uncertain, especially across languages. Image and video analysis are outside this MVP.</p><a href="#walkthrough">See an example, step by step ↗</a></div></details>
@@ -477,6 +483,7 @@
         <details><summary>Will it save or share my message?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>Running an investigation does not save a case in the graph. The server processes the text and, when hosted inference is active, sends it to the configured model provider. Saving requires a separate authorized action. Pehchan does not automatically send the drafted reply anywhere.</p></div></details>
         <details><summary>What happens if FalkorDB is unavailable?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>The status badge and investigation show an error. Graph-backed evidence and investigations need a reachable database; Pehchan cannot complete them while it is down. This guide remains available, and you can retry when the service recovers.</p></div></details>
         <details><summary>Where do the numbers on this page come from?<span class="faq-plus" aria-hidden="true"></span></summary><div class="faq-answer"><p>The graph badge reads the running server. The retrieval benchmark is a separate, dated test on the original 248-wording seed with 30 author-written queries. Its results are not an accuracy score for the expanded collection.</p><a href="#proof">Read the benchmark and its limits ↗</a></div></details>
+      </div>
       </div>
     </section>
   </main>

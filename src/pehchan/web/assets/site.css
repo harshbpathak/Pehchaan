@@ -318,6 +318,9 @@ details.card ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
 .diagram .part text { fill: var(--ink); }
 .diagram .part .sub { fill: var(--muted); }
 .diagram .flow { stroke-dasharray: 3 5; animation: dash 2.4s linear infinite; }
+.diagram.replaying .part:not([data-on]) { opacity: .45; transition: opacity .3s; }
+.diagram .part[data-on] .tile { color: var(--signal); }
+.diagram-foot .btn { flex-shrink: 0; }
 @keyframes dash { to { stroke-dashoffset: -32; } }
 .diagram-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 22px; border-top: 1px solid var(--line); min-height: 58px; }
 .diagram-foot .caption { font-size: 14px; color: var(--muted); }
@@ -480,6 +483,14 @@ section[id], #walkthrough { scroll-margin-top: 80px; }
 .tour-controls { display: flex; align-items: center; gap: 24px; padding: 22px 28px 24px; }
 .tour-position { font: 500 13px/1 var(--mono); white-space: nowrap; }
 .tour-position span { color: var(--muted); }
+.tour-segments { display: flex; gap: 6px; flex: 1; max-width: 260px; }
+.tour-segments span { position: relative; flex: 1; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; cursor: pointer; }
+.tour-segments span::after { content: ""; position: absolute; inset: 0; transform: scaleX(var(--p, 0)); transform-origin: left; background: var(--signal); }
+.tour-segments span.done::after { transform: scaleX(1); }
+.tour-play { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--card); color: var(--ink); font-size: 11px; cursor: pointer; }
+.tour-play[aria-pressed="false"] { background: var(--ink); color: var(--paper); }
+.tour-slide:not([hidden]) { animation: tour-slide .45s var(--ease) both; }
+@keyframes tour-slide { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
 .tour-progress { height: 2px; max-width: 180px; flex: 1; background: var(--line); overflow: hidden; }
 .tour-progress > span { display: block; height: 100%; width: 20%; background: var(--signal); transition: width .3s var(--ease); }
 .tour-arrows { display: flex; gap: 8px; margin-left: auto; }
@@ -500,6 +511,12 @@ section[id], #walkthrough { scroll-margin-top: 80px; }
 
 /* ---------- Getting Started / quiet, lined disclosures ---------- */
 .getting-started { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.25fr); gap: 72px; border-top: 1px solid var(--line); }
+.quickstart { list-style: none; margin: 0 0 28px; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .quickstart { grid-template-columns: minmax(0, 1fr); } }
+.quickstart li { display: flex; gap: 12px; align-items: flex-start; background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+.quickstart .qs-n { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--sun); font: 400 15px/1 var(--display); }
+.quickstart b { display: block; font-size: 14px; margin-bottom: 4px; }
+.quickstart p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
 .faq-intro .section-title { font-size: clamp(48px,6vw,80px); line-height: 1; }
 .faq-intro .lede { font-size: 17px; line-height: 1.65; margin-top: 24px; }
 .faq-intro .btn { margin-top: 26px; font-size: 13px; }

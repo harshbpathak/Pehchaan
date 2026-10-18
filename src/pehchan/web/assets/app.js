@@ -477,6 +477,44 @@
     $("#status-pill-text").textContent = text;
   }
 
+  // A real LPG run, replayed on the diagram: part index, caption, how long that step took.
+  const REPLAY = [
+    [0, "<b>Forwards.</b> The LPG message arrives. Recall checks past submissions: none.", 56],
+    [4, "<b>Agents.</b> Claim Scout searches the vector index and runs the relevance check both ways.", 1200],
+    [1, "<b>Fact-checks.</b> 10 recorded wordings come back; none is the same proposition.", 600],
+    [3, "<b>Frames &amp; entities.</b> The message is tagged: entity LPG, frame fuel prices as weapons.", 300],
+    [5, "<b>FalkorDB claim graph.</b> The detective widens through the shared nodes, 1/degree weighted.", 900],
+    [6, "<b>Drafted reply.</b> The Quint and Fact Crescendo reviews, cited as context, not evidence.", 700],
+    [7, "<b>Review queue.</b> Finding: variant of a known narrative. Queued for a human at high priority.", 700],
+    [8, "<b>Written back.</b> On save, the message becomes a Submission with MATCHES and MENTIONS edges.", 800],
+  ];
+  function setupReplay() {
+    const button = $("#replay-run");
+    const diagram = document.querySelector(".diagram");
+    if (!button || !diagram) return;
+    const parts = diagram.querySelectorAll(".part");
+    const caption = $("#diagram-caption");
+    let running = false;
+    button.addEventListener("click", async () => {
+      if (running) return;
+      running = true;
+      button.disabled = true;
+      diagram.classList.add("replaying");
+      for (const [index, text, ms] of REPLAY) {
+        parts.forEach((p) => p.removeAttribute("data-on"));
+        parts[index]?.setAttribute("data-on", "");
+        const [title, ...rest] = text.replace(/<\/?b>/g, "\u0000").split("\u0000").filter(Boolean);
+        caption.replaceChildren(el("b", { text: title }), rest.join(""), el("span", { class: "muted small", text: `  · ${ms} ms` }));
+        await new Promise((r) => setTimeout(r, Math.max(900, Math.min(2200, ms + 700))));
+      }
+      parts.forEach((p) => p.removeAttribute("data-on"));
+      diagram.classList.remove("replaying");
+      caption.replaceChildren(el("b", { text: "Done." }), " One real LPG investigation, replayed step by step. Point at any part for what it does.");
+      button.disabled = false;
+      running = false;
+    });
+  }
+
   async function loadStats() {
     try {
       const health = await api("GET", "/health");
@@ -575,6 +613,15 @@
     const next = $("#tour-next");
     const dialog = $("#tour-lightbox");
     let current = 0;
+    // autoplay: each slide gets a segment that fills over a few seconds; hover, focus or the button pauses it
+    const SLIDE_MS = 7000;
+    let elapsed = 0;
+    let playing = true;
+    const segments = tabs.map((_, i) => {
+      const seg = el("span", { onclick: () => select(i) });
+      $("#tour-segments").append(seg);
+      return seg;
+    });
     const select = (index, focus = false) => {
       current = Math.max(0, Math.min(index, tabs.length - 1));
       tabs.forEach((tab, i) => {
@@ -586,7 +633,8 @@
       prev.disabled = current === 0;
       next.disabled = current === tabs.length - 1;
       $("#tour-position").replaceChildren(String(current + 1).padStart(2, "0") + " ", el("span", { text: "/ " + String(tabs.length).padStart(2, "0") }));
-      $("#tour-progress").style.width = ((current + 1) / tabs.length * 100) + "%";
+      segments.forEach((seg, i) => { seg.classList.toggle("done", i < current); seg.style.setProperty("--p", i < current ? 1 : 0); });
+      elapsed = 0;
       // Keep the active mobile tab in its own scroll area without moving the page.
       const strip = tabs[current].parentElement;
       const tabRect = tabs[current].getBoundingClientRect();
@@ -596,6 +644,31 @@
       }
       if (focus) tabs[current].focus({ preventScroll: true });
     };
+    const playButton = $("#tour-play");
+    const setPlaying = (on) => {
+      playing = on;
+      playButton.setAttribute("aria-pressed", String(on));
+      playButton.textContent = on ? "❚❚" : "▶";
+      playButton.setAttribute("aria-label", on ? "Pause the walkthrough" : "Play the walkthrough");
+    };
+    playButton.addEventListener("click", () => setPlaying(!playing));
+    let paused = false;
+    tour.addEventListener("mouseenter", () => { paused = true; });
+    tour.addEventListener("mouseleave", () => { paused = false; });
+    tour.addEventListener("focusin", () => { paused = true; });
+    tour.addEventListener("focusout", () => { paused = false; });
+    let last = performance.now();
+    const tick = (now) => {
+      const dt = now - last; last = now;
+      const visible = tour.getBoundingClientRect().bottom > 0 && tour.getBoundingClientRect().top < innerHeight;
+      if (playing && !paused && visible && !document.hidden && !$("#tour-lightbox").open) {
+        elapsed += dt;
+        segments[current].style.setProperty("--p", Math.min(1, elapsed / SLIDE_MS));
+        if (elapsed >= SLIDE_MS) { select((current + 1) % tabs.length); }
+      }
+      requestAnimationFrame(tick);
+    };
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) requestAnimationFrame(tick); else setPlaying(false);
     tabs.forEach((tab, index) => {
       tab.addEventListener("click", () => select(index));
       tab.addEventListener("keydown", (event) => {
@@ -665,6 +738,7 @@
     setupConnect();
     setupStatusPanel();
     setupMotion();
+    setupReplay();
     setupWalkthrough();
     api("GET", "/api/config").then((c) => { serverConfig = c; }).catch(() => { /* defaults */ }).finally(loadStats);
     $("#graph-fit").addEventListener("click", () => network && network.fit({ animation: true }));
