@@ -93,7 +93,7 @@ def shot(name, left, top, width, d, l=0.9, kb=20, cls="slide-l"):
 
 
 def svg_path(dpath, d, l, color="#232842", width=2, dashed=True, length=900):
-    dash = f' stroke-dasharray="{length}"' if not dashed else f' stroke-dasharray="{length}"'
+    dash = f' stroke-dasharray="{length}"'
     return (
         f'<path class="a draw" style="--d:{d:.2f}s;--l:{l:.2f}s;--len:{length}" d="{dpath}" fill="none" '
         f'stroke="{color}" stroke-width="{width}" stroke-linecap="round"{dash}/>'
