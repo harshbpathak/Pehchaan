@@ -173,13 +173,28 @@
       widened.length ? el("div", { class: "sources" }, widened) : null,
     );
 
+    // Consecutive identical calls (the model reading evidence for each candidate) collapse into one row.
+    const grouped = [];
+    for (const step of report.agent_trace || []) {
+      const last = grouped[grouped.length - 1];
+      if (last && last.agent === step.agent && last.tool === step.tool && last.status === step.status && !step.reason && !last.reason) {
+        last.count += 1;
+        last.duration_ms = (last.duration_ms || 0) + (step.duration_ms || 0);
+      } else {
+        grouped.push({ ...step, count: 1 });
+      }
+    }
     const timeline = el("ol", { class: "timeline" },
-      (report.agent_trace || []).map((step, i) =>
+      grouped.map((step, i) =>
         el("li", { style: `animation-delay:${i * 120}ms` },
           el("div", {},
             el("span", { class: "agent", text: step.agent }), " ",
             el("span", { class: "tool", text: step.tool || step.status }),
+            step.count > 1 ? el("span", { class: "muted small", text: ` × ${step.count}` }) : null,
             step.duration_ms !== undefined ? el("span", { class: "muted small", text: ` · ${step.duration_ms} ms` }) : null,
+            step.count > 1 && step.tool === "get_claim_evidence"
+              ? el("span", { class: "why", text: `Read the publisher records of ${step.count} candidates, one call each.` })
+              : null,
             step.reason ? el("span", { class: "why", text: step.reason }) : null,
           ),
         ),
