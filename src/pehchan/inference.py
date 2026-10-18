@@ -1,4 +1,4 @@
-"""Gemma tool-calling inference over bounded, read-only investigation capabilities."""
+"""Hosted-model tool-calling inference over bounded, read-only investigation capabilities."""
 
 from __future__ import annotations
 
@@ -162,7 +162,7 @@ class GeminiProvider:
 
     def generate(self, contents):
         if not self.key:
-            raise RuntimeError("Gemma inference requires GEMINI_API_KEY (or GOOGLE_API_KEY).")
+            raise RuntimeError("AI Studio inference requires GEMINI_API_KEY (or GOOGLE_API_KEY).")
         try:
             import httpx
         except ImportError:
@@ -184,14 +184,14 @@ class GeminiProvider:
                 )
             if response.is_error:
                 raise RuntimeError(
-                    f"Gemma API request failed (HTTP {response.status_code}); check key, model access or quota."
+                    f"AI Studio request failed (HTTP {response.status_code}); check key, model access or quota."
                 )
             payload = response.json()
             candidate = payload["candidates"][0]
             if not isinstance(candidate, dict):
                 raise TypeError("Invalid candidate")
             if candidate.get("finishReason") not in {None, "STOP"}:
-                raise RuntimeError("Gemma response was blocked or incomplete.")
+                raise RuntimeError("AI Studio response was blocked or incomplete.")
             content = candidate["content"]
             if (
                 not isinstance(content, dict)
@@ -207,7 +207,7 @@ class GeminiProvider:
                 raise ValueError("Invalid model parts")
             return content
         except (httpx.HTTPError, ValueError, KeyError, IndexError, TypeError):
-            raise RuntimeError("Gemma API unavailable or returned an invalid response.") from None
+            raise RuntimeError("AI Studio unavailable or returned an invalid response.") from None
 
 
 class OpenRouterProvider:
@@ -321,6 +321,20 @@ class OpenRouterProvider:
             raise RuntimeError("OpenRouter unavailable or returned an invalid response.") from None
 
 
+MODEL_LABELS = {
+    "openai/gpt-oss-20b": "GPT-OSS 20B",
+    "openai/gpt-oss-120b": "GPT-OSS 120B",
+    "google/gemma-4-31b-it": "Gemma 4 31B",
+    "gemma-4-31b-it": "Gemma 4 31B",
+    "google/gemma-4-26b-a4b-it": "Gemma 4 26B",
+    "gemma-4-26b-a4b-it": "Gemma 4 26B",
+}
+
+
+def model_label(model_id):
+    return MODEL_LABELS.get(model_id, model_id or "hosted model")
+
+
 class ToolRefused(Exception):
     """A well-formed tool call outside the allowed scope; reported back to the model."""
 
@@ -348,6 +362,7 @@ class GeminiInference:
         claim = claim.strip()
         if not 1 <= len(claim) <= 4000:
             raise ValueError("Claim must contain 1–4000 characters.")
+        agent_name = f"AI Investigator · {model_label(self.provider.model)}"
         contents = [{"role": "user", "parts": [{"text": json.dumps({"submitted_claim": claim})}]}]
         scout, evidence, explored, trace = None, {}, set(), []
         known, direct = set(), set()
@@ -361,12 +376,12 @@ class GeminiInference:
         started = time.monotonic()
         for turn in range(8):
             if time.monotonic() - started > 120:
-                raise RuntimeError("Gemma investigation exceeded its time budget.")
+                raise RuntimeError("The model investigation exceeded its time budget.")
             content = self.provider.generate(contents)
             parts = content.get("parts", [])
             requests = [p["functionCall"] for p in parts if "functionCall" in p]
             if not requests or calls + len(requests) > 24:
-                raise RuntimeError("Gemma must complete within the tool-call budget.")
+                raise RuntimeError("The model must complete within the tool-call budget.")
             contents.append(content)  # Preserve opaque thought signatures and complete model turn.
             responses = []
             for call in requests:
@@ -378,9 +393,11 @@ class GeminiInference:
                     or not isinstance(args, dict)
                     or set(args) != set(schema.get("parameters", {}).get("properties", {}))
                 ):
-                    raise RuntimeError("Gemma requested an unapproved tool or invalid arguments.")
+                    raise RuntimeError(
+                        "The model requested an unapproved tool or invalid arguments."
+                    )
                 if any(not isinstance(v, str) for k, v in args.items() if k != "factcheck_ids"):
-                    raise RuntimeError("Gemma supplied invalid tool argument types.")
+                    raise RuntimeError("The model supplied invalid tool argument types.")
                 tool_started = time.monotonic()
                 status = "completed"
                 try:
@@ -388,7 +405,9 @@ class GeminiInference:
                         # The application always searches the exact submitted wording; the
                         # model never retypes it (non-Latin scripts made models degenerate).
                         if scout is not None:
-                            raise ToolRefused("Gemma must search the original claim exactly once.")
+                            raise ToolRefused(
+                                "The model must search the original claim exactly once."
+                            )
                         result = scout = scout_agent.scout(claim)
                         direct = set(scout["handoff_variant_ids"][:3])
                         known.update(direct)
@@ -399,7 +418,7 @@ class GeminiInference:
                         ]
                         relevant_ids = {c["variant_id"] for c in relevant}
                     elif scout is None:
-                        raise ToolRefused("Gemma must retrieve candidates before other tools.")
+                        raise ToolRefused("The model must retrieve candidates before other tools.")
                     elif name == "finish_investigation":
                         if (
                             len(requests) != 1
@@ -407,7 +426,7 @@ class GeminiInference:
                             or not direct <= explored
                         ):
                             raise ToolRefused(
-                                "Gemma attempted to finish before required evidence/graph retrieval."
+                                "The model attempted to finish before required evidence/graph retrieval."
                             )
                         report = EvidenceResponse(
                             RESPONSE_POLICY, {"get_claim_evidence": evidence.__getitem__}, trace
@@ -420,7 +439,7 @@ class GeminiInference:
                             or len(args["analyst_note"]) > 4000
                         ):
                             raise RuntimeError(
-                                "Gemma returned an unsupported evidence reference or invalid note."
+                                "The model returned an unsupported evidence reference or invalid note."
                             )
                         # References the application cannot confirm are dropped and disclosed;
                         # citations and status never come from the model, so dropping is safe.
@@ -431,9 +450,7 @@ class GeminiInference:
                                 f"Model referenced {len(dropped)} record(s) outside the validated "
                                 "citations; they were dropped: " + ", ".join(sorted(set(dropped)))
                             )
-                        trace.append(
-                            {"agent": "Gemma Investigator", "tool": name, "status": "completed"}
-                        )
+                        trace.append({"agent": agent_name, "tool": name, "status": "completed"})
                         report.update(
                             agent_trace=trace,
                             inference={
@@ -455,20 +472,20 @@ class GeminiInference:
                     elif name == "get_claim_evidence":
                         if args["variant_id"] not in relevant_ids:
                             raise ToolRefused(
-                                "Gemma evidence ID is outside relevant retrieved candidates."
+                                "The model evidence ID is outside relevant retrieved candidates."
                             )
                         result = store.evidence(args["variant_id"])
                         evidence[args["variant_id"]] = result
                     elif name == "find_evidence_path":
                         if not {args["from_id"], args["to_id"]} <= known:
-                            raise ToolRefused("Gemma path IDs were not retrieved.")
+                            raise ToolRefused("The model path IDs were not retrieved.")
                         result = store.shortest_path(args["from_id"], args["to_id"])
                         findings["connection"].extend(result)
                     else:
                         variant_id = args["variant_id"]
                         if variant_id not in direct:
                             raise ToolRefused(
-                                "Gemma graph ID is outside the bounded Scout handoff."
+                                "The model graph ID is outside the bounded Scout handoff."
                             )
                         if name == "explore_narrative_graph":
                             result = store.narrative_paths(variant_id)
@@ -497,7 +514,7 @@ class GeminiInference:
                         )
                 trace.append(
                     {
-                        "agent": "Gemma Investigator",
+                        "agent": agent_name,
                         "tool": name,
                         "status": status,
                         "duration_ms": round((time.monotonic() - tool_started) * 1000),
@@ -509,5 +526,5 @@ class GeminiInference:
                 responses.append({"functionResponse": response})
             contents.append({"role": "user", "parts": responses})
             if len(json.dumps(contents)) > 180000:
-                raise RuntimeError("Gemma investigation exceeded its context budget.")
-        raise RuntimeError("Gemma investigation exceeded its turn budget.")
+                raise RuntimeError("The model investigation exceeded its context budget.")
+        raise RuntimeError("The model investigation exceeded its turn budget.")
